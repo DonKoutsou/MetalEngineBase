@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dxqn4r530yphc" path="res://MetalEngineBase/Inventory/character_inventory_Interface.gd" id="1_ikw7a"]
 [ext_resource type="PackedScene" uid="uid://b1k2h35khc40y" path="res://MetalEngineBase/Inventory/InventoryBox.tscn" id="2_m0fx1"]
-[ext_resource type="StyleBox" uid="uid://ci3yyoa54a17w" path="res://Theme/YellowPanel.tres" id="3_x1m2h"]
+[ext_resource type="StyleBox" uid="uid://ci3yyoa54a17w" path="res://MetalEngineBase/Inventory/YellowPanel.tres" id="3_x1m2h"]
 
 [node name="InventoryInterface" type="VBoxContainer" unique_id=399381214 node_paths=PackedStringArray("EngineInventoryBoxParent", "SensorInventoryBoxParent", "FuelTankInventoryBoxParent", "WeaponInventoryBoxParent", "ShieldInventoryBoxParent", "InventoryBoxParent")]
 offset_right = 189.0

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cqjgceykpax6c"]
 
-[ext_resource type="StyleBox" uid="uid://ci3yyoa54a17w" path="res://Theme/YellowPanel.tres" id="1_y2t8f"]
+[ext_resource type="StyleBox" uid="uid://ci3yyoa54a17w" path="res://MetalEngineBase/Inventory/YellowPanel.tres" id="1_y2t8f"]
+
 
 [node name="PanelContainer" type="PanelContainer" unique_id=861191945]
 z_index = 1
