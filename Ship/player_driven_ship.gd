@@ -1,0 +1,393 @@
+extends MapShip
+
+class_name PlayerDrivenShip
+
+@export var AccelerationAudio : AudioStreamPlayer2D
+@export var L : PointLight2D
+
+@export var MissileD : MissileDock
+var CommingBack = false
+
+var StoredSteer : float = 0.0
+
+var TargetLocations : Array[Vector2]
+var TargetShip : MapShip
+var TargetShipPos : Vector2
+
+signal DroneReturning
+signal Crosswind
+
+func  _ready() -> void:
+	super()
+	ShipContoller.GetInstance().RegisterSelf(self)
+	WeatherManage.RegisterShip(self)
+	Teleported.connect(WeatherManage.GetInstance().OnShipTeleported.bind(self))
+
+func _on_return_sound_trigger_area_entered(area: Area2D) -> void:
+	if (area.get_parent() == TargetShip and CommingBack):
+		RadioSpeaker.GetInstance().PlaySound(RadioSpeaker.RadioSound.APROACHING)
+
+func Regroup(NewCommander : MapShip):
+	TargetLocations.clear()
+	TargetShip = NewCommander
+	TargetShipPos = IntersectShip(TargetShip)
+	NewCommander.OnShipDestroyed.connect(TargetShipDestroyed)
+	
+	AccelerationChanged(GetShipMaxSpeed(), true)
+	SetSpeed(GetShipMaxSpeed())
+	CommingBack = true
+	DroneReturning.emit()
+
+
+func GetSaveData() -> DroneSaveData:
+	var dat = DroneSaveData.new()
+	dat.CommingBack = CommingBack
+	if (TargetShip != null):
+		dat.RegroupTargetName = TargetShip.GetShipName()
+	dat.Cpt = Cpt
+	dat.Docked = Docked
+	dat.Pos = global_position
+	dat.Rot = global_rotation
+	dat.Speed = GetShipSpeed()
+	dat.RepairParts = Cpt.Repair_Parts
+	dat.TempName = Cpt.TempName
+	dat.Altitude = Altitude
+	dat.TargetAltitude = TargetAltitude
+	for g in GetDock().GetDockedShips():
+		dat.DockedDrones.append(g.GetSaveData())
+
+	return dat
+
+func _exit_tree() -> void:
+	WeatherManage.UnregisterShip(self)
+
+
+func Update(delta: float, _unaffectedDelta : float) -> void:
+	ElintShape.UpdateElint(delta)
+	RadarShape.EvaluateRadarrPoint(Altitude)
+	
+	var offset : Vector2 = GetShipSpeedVec()
+	var frontDot = offset.normalized().dot(WindVector.normalized())
+	if (frontDot < 0 and WindVector.length() > 0.4):
+		Crosswind.emit(abs(frontDot))
+		
+	if (SimulationManager.IsPaused()):
+		#for g in TrailLines:
+			#g.call_deferred("UpdateProjected", 0, Altitude / 10000.0)
+		return
+	
+	#for g in TrailLines:
+		#g.call_deferred("UpdateProjected", delta, Altitude / 10000.0)
+	
+	RadarShape.EvaluateRadarTargets(Altitude)
+	
+	if (Docked):
+		return
+	
+	UpdateShipWindManipulationModifier()
+	_HandleLanding(delta)
+	_HandleAutoPilot(delta)
+		
+	if (StoredSteer != 0):
+		var SteertToAdd = min((delta), abs(StoredSteer)) * sign(StoredSteer)
+		StoredSteer -= SteertToAdd
+		ForceSteer(rotation + SteertToAdd)
+	#HandleAcceleration
+	if (AccelChanged):
+		_HandleAccelerationSound()
+
+	if (CurrentPort != null):
+		_HandleRestock(delta)
+	
+	if (Landed()):
+		LastRecordedOffset = Vector2.ZERO
+		return
+	
+	var CorrectionExtra : float = 0.0
+
+	if (ShipContoller.AutoCorrectWind):
+		var Windage = Cpt.GetStatFinalValue(STAT_CONST.STATS.WINDAGE) * 0.0001
+		var SideWindage = Windage * 0.1
+		
+		var neededFuel : float = 0
+		if (offset.length() < WindVector.length() * Windage):
+			neededFuel = (WindVector.length() * Windage) - offset.length()
+		
+		if (ShipHasFuel(neededFuel)):
+			
+			CorrectionExtra = neededFuel
+			
+			var sidecorrection = abs(offset.rotated(PI/2).normalized().dot(WindVector.normalized())) * WindVector.length() * SideWindage
+				
+			var frontcorrection = frontDot * WindVector.length() * Windage
+			
+			offset -= (offset.normalized() * sidecorrection) - (offset.normalized() * frontcorrection)
+		else:
+			offset = GetShipAffectedSpeedVec()
+		#print("Head wind penalty : {0} - Side wind penalty : {1}".format([snapped(frontcorrection * 10, 0.1), snapped(sidecorrection * 100, 0.1)]))
+	else:
+		offset = GetShipAffectedSpeedVec()
+	
+	var ShipWeight = Cpt.GetStatFinalValue(STAT_CONST.STATS.WEIGHT)
+	var ShipEfficiency = (Cpt.GetStatFinalValue(STAT_CONST.STATS.FUEL_EFFICIENCY) / pow(ShipWeight, 0.5)) * 10
+	var FuelConsumtion = (Acceleration.position.x + CorrectionExtra) / ShipEfficiency
+
+	FuelConsumtion *= SimulationManager.SimSpeed()
+	#Consume fuel on shif if enough
+	if (Cpt.GetStatCurrentValue(STAT_CONST.STATS.FUEL_TANK) >= FuelConsumtion):
+		Cpt.ConsumeResource(STAT_CONST.STATS.FUEL_TANK, FuelConsumtion)
+	# If not enough on ship syphoon some from drones in dock
+	else: if (GetDock().DronesHaveFuel(FuelConsumtion)):
+		GetDock().SyphonFuelFromDrones(FuelConsumtion)
+		#SetFuelShaderRange(GetFuelRange())
+	else:
+		HaltShip()
+		PopUpManager.GetInstance().DoFadeNotif("Your drone has run out of fuel.")
+		return
+	
+	for g : PlayerDrivenShip in GetSquad():
+		var Cap = g.Cpt as Captain
+		
+		var droneWeight = Cap.GetStatFinalValue(STAT_CONST.STATS.WEIGHT)
+		var droneEfficiency = (Cap.GetStatFinalValue(STAT_CONST.STATS.FUEL_EFFICIENCY) / pow(droneWeight, 0.5)) * 10
+		var droneCorrectionExtra : float = 0.0
+		if (CorrectionExtra > 0):
+			var Windage = Cap.GetStatFinalValue(STAT_CONST.STATS.WINDAGE) * 0.0001
+			droneCorrectionExtra = (g.WindVector.length() * Windage) - offset.length()
+		
+		var DroneFuelConsumtion = (Acceleration.position.x + droneCorrectionExtra) / droneEfficiency
+		
+		if (StormValue > 0.9):
+			var alt = Altitude / 10000
+			if (alt > 2000):
+				ActionTracker.OnActionCompleted(ActionTracker.Action.STORM_FUEL)
+			var extraConsumption = (DroneFuelConsumtion * 0.3) * alt
+			DroneFuelConsumtion += extraConsumption
+
+		DroneFuelConsumtion *= SimulationManager.SimSpeed()
+		
+		if (Cap.GetStatCurrentValue(STAT_CONST.STATS.FUEL_TANK) > DroneFuelConsumtion):
+			Cap.ConsumeResource(STAT_CONST.STATS.FUEL_TANK,DroneFuelConsumtion)
+		else : if (Cpt.GetStatCurrentValue(STAT_CONST.STATS.FUEL_TANK) >= DroneFuelConsumtion):
+			Cpt.ConsumeResource(STAT_CONST.STATS.FUEL_TANK, DroneFuelConsumtion)
+		else: if (GetDock().DronesHaveFuel(DroneFuelConsumtion)):
+			GetDock().SyphonFuelFromDrones(DroneFuelConsumtion)
+		else:
+			HaltShip()
+			PopUpManager.GetInstance().DoFadeNotif("Your ships have run out of fuel.")
+	
+	LastRecordedOffset = offset
+	global_position += offset * SimulationManager.SimSpeed()
+
+func ShipHasFuel(neededFuel : float) -> bool:
+	var ownedFuel : float = 0
+	if (Cpt.GetStatCurrentValue(STAT_CONST.STATS.FUEL_TANK) > neededFuel):
+		return true
+	else:
+		ownedFuel += Cpt.GetStatCurrentValue(STAT_CONST.STATS.FUEL_TANK)
+	
+	for g in GetSquad():
+		ownedFuel += g.Cpt.GetStatCurrentValue(STAT_CONST.STATS.FUEL_TANK)
+	
+	if (ownedFuel > neededFuel):
+		return true
+	
+	return false
+
+func PartChanged(It : ShipPart) -> void:
+	for g in It.Upgrades:
+		if (g.UpgradeName == STAT_CONST.STATS.VISUAL_RANGE):
+			RadarShape.UpdateVizRange()
+		else : if (g.UpgradeName == STAT_CONST.STATS.ELINT):
+			ElintShape.UpdateELINTTRange()
+		else : if (g.UpgradeName == STAT_CONST.STATS.AEROSONAR_RANGE):
+			SonarShape.UpdateSonarRange()
+
+func IntersectShip(Target : MapShip) -> Vector2:
+	var plship = Target
+
+	var ship_position = plship.position # Get the current position and velocity of the ship
+	var ship_velocity = plship.LastRecordedOffset
+
+	var time_to_interception = min((position.distance_to(ship_position)) / (max(GetShipSpeed(), 0.001) / 360), 999999) # Predict where the ship will be in a future time `t`
+	var predicted_position = ship_position + ship_velocity * time_to_interception # Calculate the predicted interception point
+
+	return predicted_position
+
+func GetBiggestRadarCicle() -> PackedVector2Array:
+	var Biggest : float = RadarShape.CurrentVisualRange
+	var Circle : PackedVector2Array = RadarShape.GetShipRadarLine()
+	for g : PlayerDrivenShip in GetSquad():
+		if g.RadarShape.CurrentVisualRange > Biggest:
+			Biggest = g.RadarShape.CurrentVisualRange
+			Circle = g.RadarShape.GetShipRadarLine()
+	return Circle
+
+func GetBiggestVisRange() -> float:
+	var Biggest : float = RadarShape.CurrentVisualRange
+	for g : PlayerDrivenShip in GetSquad():
+		if g.RadarShape.CurrentVisualRange > Biggest:
+			Biggest = g.RadarShape.CurrentVisualRange
+	return Biggest
+#------------------------------------------------------------
+#Autopilot stuff
+
+func _HandleAutoPilot(delta : float) -> void:
+	#
+	if (TargetShip != null):
+		TargetShipPos = IntersectShip(TargetShip)
+		
+		var directiontoDestination = (TargetShipPos - global_position).normalized().angle()
+		if (rotation != directiontoDestination):
+			var newrot = lerp_angle(rotation, directiontoDestination, delta)
+			ForceSteer(newrot)
+			SteerForced.emit(newrot)
+		
+		if (CommingBack):
+			var Distance = global_position.distance_to(TargetShip.global_position)
+		
+			if (Distance < 30):
+				TargetShip.GetDock().DockShip(self)
+				var MyDock = GetDock()
+				for g in MyDock.DockedShips:
+					MyDock.UndockShip(g)
+					TargetShip.GetDock().DockShip(g)
+				for g in MyDock.Captives:
+					MyDock.UndockCaptive(g)
+					TargetShip.GetDock().DockCaptive(g)
+
+				CommingBack = false
+				ClearTargetShip()
+				return
+		if (TargetShipPos.distance_to(global_position) < 5):
+			ClearTargetShip()
+			HaltShip()
+	else: if (TargetLocations.size() > 0):
+		var NextLoc = TargetLocations[0]
+		if (NextLoc.distance_to(global_position) < 5):
+			TargetLocations.remove_at(0)
+			if (TargetLocations.size() == 0):
+				HaltShip()
+		
+		var directiontoDestination = (NextLoc - global_position).normalized().angle()
+		if (rotation != directiontoDestination):
+			var newrot = lerp_angle(rotation, directiontoDestination, delta)
+			ForceSteer(newrot)
+			SteerForced.emit(newrot)
+	
+
+func SetTargetLocation(pos : Vector2) -> void:
+	if (CommingBack):
+		CommingBack = false
+	ClearTargetShip()
+	AccelerationChanged(GetShipMaxSpeed(), true)
+	TargetLocations.clear()
+	TargetLocations.append(pos)
+
+func AddTargetLocation(pos : Vector2) -> void:
+	if (CommingBack):
+		CommingBack = false
+
+	AccelerationChanged(GetShipMaxSpeed(), true)
+	TargetLocations.append(pos)
+
+func AddTargetShip(Target : MapShip) -> void:
+	if (Target is PlayerDrivenShip):
+		Regroup(Target)
+	else:
+		if (CommingBack):
+			CommingBack = false
+		AccelerationChanged(GetShipMaxSpeed(), true)
+		TargetLocations.clear()
+		TargetShip = Target
+		TargetShipPos = IntersectShip(TargetShip)
+		Target.OnShipDestroyed.connect(TargetShipDestroyed)
+
+func ClearTargetShip() -> void:
+	if (TargetShip != null):
+		TargetShip.OnShipDestroyed.disconnect(TargetShipDestroyed)
+	TargetShip = null
+	TargetShipPos = Vector2.ZERO
+
+func TargetShipDestroyed(_Sh : MapShip) -> void:
+	CommingBack = false
+	TargetLocations.append(TargetShip.global_position)
+	ClearTargetShip()
+	
+#------------------------------------------------------------
+
+func Steer(Rotation : float) -> void:
+	if (CommingBack or Docked):
+		return
+	StoredSteer = wrap(StoredSteer + (Rotation / 50), -PI, PI)
+	#StoredSteer = wrap(StoredSteer, -PI, PI)
+	#var Mat = ShipSprite.material as ShaderMaterial
+	#Mat.set_shader_parameter("sprite_rotation", ShipSprite.global_rotation)
+
+	SteerForced.emit(rotation + StoredSteer)
+
+	for g in GetSquad():
+		g.ForceSteer(rotation)
+	if (TargetLocations.size() > 0):
+		TargetLocations.clear()
+		PopUpManager.GetInstance().DoFadeNotif("Planned Course Aborted\nManual Control Engaged")
+	if (TargetShip != null):
+		ClearTargetShip()
+		PopUpManager.GetInstance().DoFadeNotif("Planned Course Aborted\nManual Control Engaged")
+
+func _HandleAccelerationSound() -> void:
+	if (GetShipSpeed() == 0):
+		AccelerationAudio.stop()
+		return
+	var Audioween = create_tween()
+	Audioween.tween_property(AccelerationAudio, "pitch_scale", lerp(0.1, 1.0, GetShipSpeed() / GetShipMaxSpeed()), 2)
+	if (!AccelerationAudio.playing):
+		AccelerationAudio.play()
+	AccelChanged = false
+
+func _HandleRestock(delta : float) -> void:
+	if(!Landed()):
+		ShipDockActions.emit("Refueling", false, 0)
+		ShipDockActions.emit("Repairing", false, 0)
+		ShipDockActions.emit("Upgrading", false, 0)
+		ShipDockActions.emit("Installing", false, 0)
+		return
+
+	var refuelT = Refuel()
+	var repairT = Repair()
+	var upT = Upgrade(delta)
+	var iT = Install(delta)
+	
+	if (refuelT > 0):
+		ShipDockActions.emit("Refueling", true, refuelT)
+	else:
+		ShipDockActions.emit("Refueling", false, 0)
+	
+	if (repairT > 0):
+		ShipDockActions.emit("Repairing", true, repairT)
+	else:
+		ShipDockActions.emit("Repairing", false, 0)
+	
+	if (upT > 0):
+		ShipDockActions.emit("Upgrading", true, upT)
+	else:
+		ShipDockActions.emit("Upgrading", false, 0)
+	
+	if (iT > 0):
+		ShipDockActions.emit("Installing", true, iT)
+	else:
+		ShipDockActions.emit("Installing", false, 0)
+
+#--------------------------------------------------------------
+
+func UpdateLight(LightAmm : float, Viz : float) -> void:
+	var l = Helper.mapf(LightAmm, 0, 1, 0.9, 1)
+	var c = Helper.mapf(LightAmm, 0.6, 1, 0, 1)
+	
+	var col = Color(0.83, 0.986, 1.0, 1.0).lerp(Color(1, 1, 1), c)
+
+	L.color = col * l
+	L.texture_scale = Viz * 2
+
+func ToggleLight(t : bool) -> void:
+	$PointLight2D.visible = t

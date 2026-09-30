@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://xva4nxui76gv"]
 
-[ext_resource type="Script" uid="uid://bdyunkmrrtpmv" path="res://MetalEngineBase/UISoundManager.gd" id="1_rf4sq"]
+[ext_resource type="Script" uid="uid://bdyunkmrrtpmv" path="res://MetalEngineBase/Audio/UISoundManager.gd" id="1_rf4sq"]
 [ext_resource type="AudioStream" uid="uid://oyvpm41u3k5x" path="res://Assets/Sounds/ButtonIn.wav" id="2_6djbc"]
 [ext_resource type="AudioStream" uid="uid://dav21tobj6piv" path="res://Assets/Sounds/ButtonIn2.mp3" id="2_efhbb"]
 [ext_resource type="AudioStream" uid="uid://52ga378orxqr" path="res://Assets/Sounds/ButtonOut2.mp3" id="3_76ni5"]
