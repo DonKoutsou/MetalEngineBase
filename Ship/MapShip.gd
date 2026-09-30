@@ -409,7 +409,6 @@ func Damage(amm : float, ShowVisuals : bool = true) -> void:
 
 func Kill() -> void:
 	InventoryManager.GetInstance().OnCharacterRemoved(Cpt)
-	MapPointerManager.GetInstance().RemoveShip(self)
 	OnShipDestroyed.emit(self)
 	queue_free()
 	get_parent().remove_child(self)

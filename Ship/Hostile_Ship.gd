@@ -634,7 +634,6 @@ func Evaporate() -> void:
 	if (CurrentPort != null):
 		CurrentPort.OnSpotDeparture(self)
 	ToggleRadar(false)
-	MapPointerManager.GetInstance().RemoveShip(self)
 	queue_free()
 	#get_parent().remove_child(self)
 	
@@ -650,7 +649,6 @@ func Kill() -> void:
 		CurrentPort.OnSpotDeparture(self)
 	
 func DestroyEnemyDebry() -> void:
-	MapPointerManager.GetInstance().RemoveShip(self)
 	get_parent().remove_child(self)
 	queue_free()
 	

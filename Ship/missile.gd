@@ -288,8 +288,6 @@ func _on_missile_body_area_exited(area: Area2D) -> void:
 	if (IsRadar):
 		if (area.get_parent() is PlayerDrivenShip):
 			OnShipUnseen(area.get_parent())
-func _exit_tree() -> void:
-	MapPointerManager.GetInstance().RemoveShip(self)
 
 func HoneAtEnemy(Ship : Node2D, delta : float):
 	
