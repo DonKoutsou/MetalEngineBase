@@ -43,7 +43,7 @@ var _ItemBeingEquipped : ShipPart
 var _EquipLocation : Inventory_Box_Res
 var _EquipTime : float
 
-var inventoryOwner : MapShip
+var inventoryOwner : Captain
 #var CurrentPort : MapSpot
 
 func _ready() -> void:
@@ -65,7 +65,7 @@ func GetCards() -> Array[CardStats]:
 				C.Tier = g.Tier
 				CardsInInventory.append(C)
 	
-	var dispositionCards : Dictionary[CardStats, int] = DispositionManager.Instance.GetRewards(inventoryOwner.Cpt)
+	var dispositionCards : Dictionary[CardStats, int] = DispositionManager.Instance.GetRewards(inventoryOwner)
 	
 	for g in dispositionCards:
 		for z in dispositionCards[g]:
@@ -495,13 +495,13 @@ func ForceUpgradeItem(Box : Inventory_Box_Res) -> bool:
 	return true
 
 func GetUpgradeTimeLeft() -> float:
-	if (inventoryOwner.CurrentPort.HasUpgrade()):
-		return _UpgradeTime / 2.0
+	#if (inventoryOwner.CurrentPort.HasUpgrade()):
+		#return _UpgradeTime / 2.0
 	return _UpgradeTime
 
 func GetEquipTimeLeft() -> float:
-	if (inventoryOwner.CurrentPort.HasUpgrade()):
-		return _EquipTime / 2.0
+	#if (inventoryOwner.CurrentPort.HasUpgrade()):
+		#return _EquipTime / 2.0
 	return _EquipTime
 
 func GetItemBeingUpgraded() -> Inventory_Box_Res:

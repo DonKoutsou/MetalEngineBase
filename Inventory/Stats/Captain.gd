@@ -24,7 +24,6 @@ class_name Captain
 signal ShipPartChanged(P : ShipPart)
 signal StatChanged(NewVal : float)
 signal OnNameChanged(NewName : String)
-var CaptainShip : MapShip
 var _CharInv : CharacterInventory
 
 @export var disp : Dictionary[DispositionManager.Dispositions, float] = {

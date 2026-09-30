@@ -73,8 +73,6 @@ func _ready() -> void:
 	
 	MapPointerManager.GetInstance().AddShip(self, true)
 
-	#TODO probably a better way to do this
-	Cpt.CaptainShip = self
 	RadarShape.VisStat = Cpt._GetStat(STAT_CONST.STATS.VISUAL_RANGE)
 	ElintShape.ElintStat = Cpt._GetStat(STAT_CONST.STATS.ELINT)
 	if (SonarShape != null):
@@ -197,6 +195,9 @@ func Upgrade(delta : float) -> float:
 	for g in GetSquad():
 		timeLeft = max(timeLeft, g.Upgrade(delta))
 	
+	if (CurrentPort.HasUpgrade()):
+		timeLeft /= 2
+			
 	return timeLeft
 	
 func Install(delta :float) -> float:

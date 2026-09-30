@@ -96,9 +96,9 @@ func GetCharacterByName(CharName : String) -> Captain:
 	return null
 
 #-------------------------------------------------------
-func OnMissileLaunched(Mis : Array[MissileItem], _Target : Captain, _User : Captain):
+func OnMissileLaunched(Mis : Array[MissileItem], _Target : MapShip, _User : MapShip):
 	for g in Mis:
-		RemoveItemFromFleet(g, _User.CaptainShip)
+		RemoveItemFromFleet(g, _User)
 	#var CharacterInv = _CharacterInventories[Target] as CharacterInventory
 	#CharacterInv.RemoveItem(Mis)
 
@@ -185,7 +185,8 @@ func BoxSelected(Box : Inventory_Box_Res, OwnerInventory : CharacterInventory) -
 	#if (cpt.CurrentPort != ""):
 		#var cit = GetCity(cpt.CurrentPort)
 		#HasUp = cit.HasUpgrade()
-	CurrentDesc.SetData(Box, false, Box.GetContainedItem().CanTransfer, false, false, true)
+	var HasUp = controller.CurrentPort.HasUpgrade()
+	CurrentDesc.SetData(Box, false, Box.GetContainedItem().CanTransfer, false, false, true, HasUp)
 	#Descriptor.connect("ItemUsed", UseItem)
 	CurrentDesc.ItemUpgraded.connect(OwnerInventory.UpgradeItem)
 	CurrentDesc.ItemDropped.connect(OwnerInventory.RemoveItemFromBox)
@@ -222,7 +223,7 @@ func CancelUpgrade(Box : Inventory_Box_Res, OwnerInventory : CharacterInventory)
 	var PLWallet = World.GetInstance().PlayerWallet
 	PLWallet.AddFunds(Cost / 2.0)
 	PopUpManager.GetInstance().DoFadeNotif("Upgrade canceled\nPartial Refund Of Cost")
-	CurrentDesc.SetData(Box, false, Box.GetContainedItem().CanTransfer, false, false, true)
+	CurrentDesc.SetData(Box, false, Box.GetContainedItem().CanTransfer, false, false, true, false)
 
 #-------------------------------------------------------
 func CancelUpgrades(Cha : Captain) -> void:
@@ -269,7 +270,7 @@ func ItemTranfer(Box : Inventory_Box_Res) -> void:
 	add_child(Transfer)
 	Transfer.SetTransferData(AvailableCaptains, Box._ContentAmmout, It)
 	var amm = await Transfer.CharacterSelected
-	var SelectedChar = Transfer.SelectedCharacter
+	var SelectedChar = Transfer.SelectedCpt
 	if (SelectedChar == null):
 		return
 	var SelectedCharInventory = _CharacterInventories[SelectedChar] as CharacterInventory
@@ -292,7 +293,7 @@ func DroneAdded(Dr : PlayerDrivenShip, _Target : MapShip):
 #-------------------------------------------------------
 func AddCharacter(Cha : Captain) -> void:
 	var CharInv = CharInvScene.instantiate() as CharacterInventory
-	CharInv.inventoryOwner = Cha.CaptainShip
+	CharInv.inventoryOwner = Cha
 	Cha.RegisterInventory(CharInv)
 	CharInv.InitialiseInventory(Cha)
 	_CharacterInventories[Cha] = CharInv
@@ -352,7 +353,7 @@ func LoadCharacter(Data : SD_CharacterInventory) -> void:
 		#CharInv.OnCharacterDeckInspectionPressed.connect(InspectCharacterDeck.bind(Cha))
 		
 	Cha._CharInv = CharInv
-	CharInv.inventoryOwner = Cha.CaptainShip
+	CharInv.inventoryOwner = Cha
 	CharInv.ClearInventory()
 
 

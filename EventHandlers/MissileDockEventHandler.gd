@@ -15,7 +15,7 @@ func MissileArmed(Mis : MissileItem, Owner : Captain) -> void:
 	OnMissileArmed.emit(Mis, Owner)
 func MissileDissarmed(Owner : Captain) -> void:
 	OnMissileDissarmed.emit(Owner)
-func OnMissileLaunched(Mis : Array[MissileItem], Owner : Captain, User : Captain) -> void:
+func OnMissileLaunched(Mis : Array[MissileItem], Owner : MapShip, User : MapShip) -> void:
 	MissileLaunched.emit(Mis, Owner, User)
 func OnMissileAdded(Mis : MissileItem, Owner : Captain) -> void:
 	MissileAdded.emit(Mis, Owner)

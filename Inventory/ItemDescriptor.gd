@@ -101,7 +101,10 @@ func SetWorkShopData(Box : Inventory_Box_Res, CanUpgrade : bool, Owner : Captain
 				#set_physics_process(true)
 				UpgradeButton.visible = false
 				CancelUpgradeButton.visible = true
+				var port = MapHelper.GetSpotByName(Owner.CurrentPort)
 				var TimeLeft = roundi(inv.GetUpgradeTimeLeft())
+				if (port.HasUpgrade()):
+					TimeLeft /= 2
 				UpgradeLabel.text = "Upgrade time left : {0}".format([Clock.MinutesToHours(TimeLeft)])
 			else:
 				UpgradeButton.visible = true
@@ -201,7 +204,7 @@ func SetMerchData(Itm : Item, Ships : Array[MapShip], ShowDesc : bool = false) -
 	else:
 		CardSection.visible = false
 
-func SetData(Box : Inventory_Box_Res, CanUpgrade : bool, CanTransfer : bool, CanAdd : bool, CanRemove : bool, ShowDescription : bool) -> void:
+func SetData(Box : Inventory_Box_Res, CanUpgrade : bool, CanTransfer : bool, CanAdd : bool, CanRemove : bool, ShowDescription : bool, HasUp : bool) -> void:
 	#set_physics_process(false)
 	
 	
@@ -232,7 +235,11 @@ func SetData(Box : Inventory_Box_Res, CanUpgrade : bool, CanTransfer : bool, Can
 				#set_physics_process(true)
 				UpgradeButton.visible = CanUpgrade
 				CancelUpgradeButton.visible = true
+				
 				var TimeLeft = roundi(inv.GetUpgradeTimeLeft())
+				if (HasUp):
+					TimeLeft /= 2
+
 				UpgradeLabel.text = "Upgrade time left : {0} minutes".format([Clock.MinutesToHours(TimeLeft)])
 				UpgradeLabel.visible = true
 			else:

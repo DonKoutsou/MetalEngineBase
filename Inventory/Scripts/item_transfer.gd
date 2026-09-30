@@ -9,12 +9,13 @@ signal CharacterSelected(TransferAmm : int)
 var AmmountOwned : int = 0
 var AmmountToTransfer : int = 1
 
-var SelectedCharacter : Captain
+var SelectedCharacter : MapShip
+var SelectedCpt : Captain
 
-func SetData(Characters : Array[Captain], HeaderText : String = "Transfer To") -> void:
-	for g : Captain in Characters:
+func SetData(Characters : Array[MapShip], HeaderText : String = "Transfer To") -> void:
+	for g : MapShip in Characters:
 		var B = CptnButton.instantiate() as CaptainButton
-		B.SetVisuals2(g)
+		B.SetVisuals2(g.Cpt)
 		ButtonPlecements.add_child(B)
 		B.connect("OnShipSelected", OnCharacterSelected.bind(g))
 
@@ -28,7 +29,7 @@ func SetTransferData(Characters : Array[Captain], OwnedAmm : int, It : Item, Hea
 		var B = CptnButton.instantiate() as CaptainButton
 		B.SetVisuals2(g)
 		ButtonPlecements.add_child(B)
-		B.connect("OnShipSelected", OnCharacterSelected.bind(g))
+		B.connect("OnShipSelected", OnCaptainSelected.bind(g))
 	
 	$VBoxContainer/ItemName.text = It.ItemName
 	AmmountOwned = OwnedAmm
@@ -36,8 +37,13 @@ func SetTransferData(Characters : Array[Captain], OwnedAmm : int, It : Item, Hea
 	$VBoxContainer/Panel/VBoxContainer/HBoxContainer/Label.text = var_to_str(AmmountToTransfer)
 	$VBoxContainer/Panel.visible = OwnedAmm > 1
 		
-func OnCharacterSelected(Ch : Captain) -> void:
+func OnCharacterSelected(Ch : MapShip) -> void:
 	SelectedCharacter = Ch
+	CharacterSelected.emit(AmmountToTransfer)
+	queue_free()
+
+func OnCaptainSelected(Ch : Captain) -> void:
+	SelectedCpt = Ch
 	CharacterSelected.emit(AmmountToTransfer)
 	queue_free()
 
