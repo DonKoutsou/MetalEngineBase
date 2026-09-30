@@ -264,9 +264,6 @@ static func TrySetFire() -> bool:
 	var random_value = randf()
 	return random_value < 0.2
 
-static func GetColorForRegion(R : MapSpotCompleteInfo.REGIONS):
-	return Instance.RegionColors[R]
-
 static func fuel_used_for_distance(dist: float, FuelNow: float, FuelEff: float, Weight: float) -> float:
 	var eff_eff = FuelEff - (Weight / 40.0)
 	var A = pow(FuelNow * eff_eff, 0.55)
