@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://r8hnhjq1f0q0"]
 
-[ext_resource type="Theme" uid="uid://de7fb8k462lxb" path="res://Theme/PopTheme.tres" id="1_bbxa4"]
 [ext_resource type="Script" uid="uid://ba6i2l3wt1dop" path="res://MetalEngineBase/Inventory/Stats/StatContainer/ShipStatContainer.gd" id="2_8mgss"]
-[ext_resource type="StyleBox" uid="uid://0fbvc4n3mb7l" path="res://Theme/ProgrssBarBack.tres" id="3_uo3ul"]
+[ext_resource type="StyleBox" uid="uid://0fbvc4n3mb7l" path="res://MetalEngineBase/Inventory/Stats/StatContainer/ProgrssBarBack.tres" id="3_uo3ul"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jvfpq"]
 content_margin_left = 2.0
@@ -47,7 +46,6 @@ offset_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 0
-theme = ExtResource("1_bbxa4")
 theme_override_constants/separation = 0
 script = ExtResource("2_8mgss")
 Tooltipscene = "uid://cqjgceykpax6c"
