@@ -1,0 +1,251 @@
+extends Resource
+
+class_name UIEventHandler
+
+signal AccelerationEnded(Value : float)
+signal AccelerationChanged(Value : float)
+signal ElevationEnded(Value : float)
+signal ElevationChanged(Value : float)
+signal SpeedSet(Value : float)
+signal SpeedForced(Value : float)
+signal SteerSet(Value : float)
+signal SteerForced(Value : float)
+signal ElevationSet(Value : float)
+signal ElevationForced(Value : float)
+
+signal WindCorrectionToggled(t : bool)
+
+signal LightToggled
+#signal AccelerationForced(ForceVal : float)
+#signal DroneButtonPressed()
+signal MissileButtonPressed()
+signal RadarUpdated(t : bool)
+signal RadarButtonPressed(t : bool)
+#signal SteerDirForced(ForcedVal : float)
+signal SteerDirChanged(NewDir : float)
+signal SteerOffseted(Offset : float)
+
+#Drone tab
+signal ShipSwitchPressed()
+signal ShipUpdated(NewShip : MapShip)
+
+#signal CoverToggled(t : bool)
+signal MarkerEditorToggled(t : bool)
+signal MarkerEditorCleared()
+signal DrawLinePressed()
+signal DrawTextPressed()
+signal MarkerEditorYRangeChanged(NewValue : float)
+signal MarkerEditorXRangeChanged(NewVlaue : float)
+signal MapMarkerCustomOffset(offset : Vector2)
+
+signal RegroupPressed()
+signal LandPressed()
+signal OpenHatchPressed()
+#signal SimPausePressed()
+signal InventoryForceClosed()
+signal InventoryToggled(t : bool)
+signal PausePressed()
+signal FleetSeparationPressed()
+#signal SimStepChanged(NewStep : float)
+
+signal ScreenUIToggled(t : bool)
+
+signal Storm(value : float)
+signal ForecastToggled(t : bool)
+signal GridPressed(t : bool)
+signal TopoPressed(t : bool)
+signal ZoomDialMoved(value : float)
+signal YDialMoved(value : float)
+signal XDialMoved(value : float)
+signal ZoomChangedFromScreen(value : float)
+signal YChangedFromScreen(value : float)
+signal XChangedFromScreen(value : float)
+signal ZoomToggled(t : bool)
+signal AltToggled(t : bool)
+signal TeamToggled(t : bool)
+signal SonarToggled(t : bool)
+
+signal Shake(Amm : float)
+signal DamageShake(Amm : float)
+signal DissableShake
+signal MissileShake
+#signal AlarmRaised
+
+signal ShipDamaged(DammageAmm : float)
+
+func OnWindCorrectionToggled(t : bool) -> void:
+	WindCorrectionToggled.emit(t)
+
+func OnSpeedSet(Speed : float) -> void:
+	SpeedSet.emit(Speed)
+
+func OnSpeedForced(Speed : float) -> void:
+	SpeedForced.emit(Speed)
+
+func OnSteerSet(Speed : float) -> void:
+	SteerSet.emit(Speed)
+
+func OnSteerForced(Speed : float) -> void:
+	SteerForced.emit(Speed)
+
+func OnElevationSet(Elevation : float) -> void:
+	ElevationSet.emit(Elevation)
+
+func OnElevationForced(Elevation : float) -> void:
+	ElevationForced.emit(Elevation)
+
+func OnScreenUIToggled(t : bool):
+	ScreenUIToggled.emit(t)
+
+func OnAccelerationEnded(value_changed: float) -> void:
+	AccelerationEnded.emit(value_changed)
+	DissableShake.emit()
+
+func OnAccelerationChanged(value: float) -> void:
+	AccelerationChanged.emit(value)
+	Shake.emit(value * 1.5)
+
+func OnElevationEnded(value_changed: float) -> void:
+	ElevationEnded.emit(value_changed)
+	DissableShake.emit()
+
+func OnElevationChanged(value: float) -> void:
+	ElevationChanged.emit(value)
+	Shake.emit(value)
+#func OnAccelerationForced(NewVal : float) -> void:
+	#AccelerationForced.emit(NewVal)
+
+#func OnDroneButtonPressed() -> void:
+	#DroneButtonPressed.emit()
+
+
+func OnMissileButtonPressed() -> void:
+	MissileButtonPressed.emit()
+
+
+func OnRadarButtonPressed(t : bool) -> void:
+	RadarButtonPressed.emit(t)
+
+func OnRadarUpdated(t : bool) -> void:
+	RadarUpdated.emit(t)
+
+func OnSteeringDirectionChanged(NewValue: float) -> void:
+	SteerDirChanged.emit(NewValue)
+	Shake.emit(0.5)
+	DissableShake.emit()
+
+func OnSteerOffseted(Offset: float) -> void:
+	SteerOffseted.emit(Offset)
+	Shake.emit(0.5)
+	DissableShake.emit()
+
+func OnShipSwitchPressed() -> void:
+	ShipSwitchPressed.emit()
+
+func OnShipUpdated(NewShip : MapShip) -> void:
+	ShipUpdated.emit(NewShip)
+
+#func OnSteerDirForced(NewVal : float) -> void:
+	#SteerDirForced.emit(NewVal)
+
+func OnMarkerEditorToggled(t : bool) -> void:
+	MarkerEditorToggled.emit(t)
+
+func OnMarkerEditorClearLinesPressed() -> void:
+	MarkerEditorCleared.emit()
+
+func OnMarkerEditorDrawLinePressed() -> void:
+	DrawLinePressed.emit()
+
+func OnMarkerEditorDrawTextPressed() -> void:
+	DrawTextPressed.emit()
+
+func OnMarkerEditorYRangeChanged(NewVal : float) -> void:
+	MarkerEditorYRangeChanged.emit(NewVal)
+
+func OnMarkerEditorXRangeChanged(NewVal : float) -> void:
+	MarkerEditorXRangeChanged.emit(NewVal)
+
+func OnMapMarkerCustomOffset(offset : Vector2) -> void:
+	MapMarkerCustomOffset.emit(offset)
+
+func OnRegroupPressed() -> void:
+	RegroupPressed.emit()
+
+
+func OnLandPressed() -> void:
+	LandPressed.emit()
+
+func OnOpenHatchPressed() -> void:
+	OpenHatchPressed.emit()
+
+#func OnSimPausePressed() -> void:
+	#SimPausePressed.emit()
+func OnLightToggled() -> void:
+	LightToggled.emit()
+
+func OnInventoryForceClosed() -> void:
+	InventoryForceClosed.emit()
+
+func OnInventoryToggled(t : bool) -> void:
+	InventoryToggled.emit(t)
+
+func OnFleetSeparationPressed() -> void:
+	FleetSeparationPressed.emit()
+
+func OnPausePressed() -> void:
+	PausePressed.emit()
+
+func OnStorm(value : float) -> void:
+	Storm.emit(value)
+
+func OnMissilgeLaunched() -> void:
+	MissileShake.emit()
+#func OnButtonCoverToggled(t : bool) -> void:
+	#CoverToggled.emit(t)
+
+func OnControlledShipDamaged(DammageAmm : float) -> void:
+	ShipDamaged.emit(DammageAmm)
+	DamageShake.emit(DammageAmm / 10)
+#func OnSimmulationStepChanged(NewStep: int) -> void:
+	#SimStepChanged.emit(NewStep)
+
+func OnForecastPressed(t : bool) -> void:
+	ForecastToggled.emit(t)
+
+func OnGridPressed(t : bool) -> void:
+	GridPressed.emit(t)
+
+func OnTopoPressed(t : bool) -> void:
+	TopoPressed.emit(t)
+
+func OnZoomTogglePressed(t : bool) -> void:
+	ZoomToggled.emit(t)
+
+func OnAltTogglePressed(t : bool) -> void:
+	AltToggled.emit(t)
+
+
+func OnTeamTogglePressed(t : bool) -> void:
+	TeamToggled.emit(t)
+
+func OnSonarPressed(t : bool) -> void:
+	SonarToggled.emit(t)
+
+func OnZoomChangedFromScreen(value : float) -> void:
+	ZoomChangedFromScreen.emit(value)
+
+func OnYChangedFromScreen(value : float) -> void:
+	YChangedFromScreen.emit(value)
+	
+func OnXchangedFromScreen(value : float) -> void:
+	XChangedFromScreen.emit(value)
+
+func OnZoomDialMoved(value : float) -> void:
+	ZoomDialMoved.emit(value)
+
+func OnYDialMoved(value : float) -> void:
+	YDialMoved.emit(value)
+
+func OnXDialMoved(value : float) -> void:
+	XDialMoved.emit(value)
