@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://b1k2h35khc40y"]
 
 [ext_resource type="Script" uid="uid://faswynkmbrw2" path="res://MetalEngineBase/Inventory/Inventory_Box.gd" id="1_1cx5j"]
-[ext_resource type="StyleBox" uid="uid://elcf43aevshf" path="res://Theme/InventoryBoxNormal.tres" id="2_xojqn"]
-[ext_resource type="StyleBox" uid="uid://cvi8gchh1oopn" path="res://Theme/InventoryBoxPressed.tres" id="3_my7nm"]
-[ext_resource type="StyleBox" uid="uid://ca8x8llgaf2yu" path="res://Theme/InventoryBoxHover.tres" id="4_0gm1e"]
+[ext_resource type="StyleBox" uid="uid://elcf43aevshf" path="res://MetalEngineBase/Inventory/InventoryBoxNormal.tres" id="2_xojqn"]
+[ext_resource type="StyleBox" uid="uid://cvi8gchh1oopn" path="res://MetalEngineBase/Inventory/InventoryBoxPressed.tres" id="3_my7nm"]
+[ext_resource type="StyleBox" uid="uid://ca8x8llgaf2yu" path="res://MetalEngineBase/Inventory/InventoryBoxHover.tres" id="4_0gm1e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3xrnb"]
 bg_color = Color(0.0991728, 0.182517, 0.188478, 1)
@@ -34,7 +34,6 @@ corner_radius_bottom_left = 2
 
 [node name="InventoryBox" type="PanelContainer" unique_id=1449330592 node_paths=PackedStringArray("Butto", "txt", "AmmountLabel")]
 custom_minimum_size = Vector2(125, 80)
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 1.0
