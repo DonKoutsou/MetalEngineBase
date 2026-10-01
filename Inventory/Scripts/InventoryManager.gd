@@ -18,7 +18,7 @@ class_name InventoryManager
 @export var DroneDockEventH : DroneDockEventHandler
 @export var ControlledEventH : ShipControllerEventHandler
 
-var controller : PlayerDrivenShip
+var controller : MapShip
 var CaptainStats : CaptainStatContainer
 
 var _CharacterInventories : Dictionary
@@ -50,7 +50,7 @@ func _ready() -> void:
 	Instance = self
 
 #-------------------------------------------------------
-func ControllerChanged(NewController : PlayerDrivenShip) -> void:
+func ControllerChanged(NewController : MapShip) -> void:
 	#if (controller == NewController):
 		#return
 	controller = NewController
@@ -66,12 +66,12 @@ func ControllerChanged(NewController : PlayerDrivenShip) -> void:
 		inv.visible = g in squad
 
 #-------------------------------------------------------
-func OnDroneDocked(_Dr : PlayerDrivenShip, Target : MapShip) -> void:
+func OnDroneDocked(_Dr : MapShip, Target : MapShip) -> void:
 	if (Target == controller):
 		ControllerChanged(Target)
 
 #-------------------------------------------------------
-func OnDroneUnDocked(_Dr : PlayerDrivenShip, Target : MapShip) -> void:
+func OnDroneUnDocked(_Dr : MapShip, Target : MapShip) -> void:
 	if (Target == controller):
 		ControllerChanged(Target)
 
@@ -198,17 +198,6 @@ func BoxSelected(Box : Inventory_Box_Res, OwnerInventory : CharacterInventory) -
 func RemoveDescriptor() -> void:
 	CaptainStatsPlace.visible = true
 	CurrentDesc.queue_free()
-
-#-------------------------------------------------------
-func GetCity(CityName : String) -> MapSpot:
-	var cities = get_tree().get_nodes_in_group("City")
-	var CorrectCity : MapSpot
-	for g in cities:
-		var cit = g as MapSpot
-		if (cit.GetSpotName() == CityName):
-			CorrectCity = cit
-			break
-	return CorrectCity
 
 #-------------------------------------------------------
 func ItemUpdgrade(Box : Inventory_Box_Res, OwnerInventory : CharacterInventory) -> void:
