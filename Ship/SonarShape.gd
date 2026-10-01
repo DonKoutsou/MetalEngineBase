@@ -45,7 +45,7 @@ func GetSonarTargetInfo() -> Array[SonarTargetInfo]:
 	return TargetInfo
 
 #----------------------------------------
-func isPartOfFleet(controller : PlayerDrivenShip,target: Node2D) -> bool:
+func isPartOfFleet(controller : MapShip ,target: Node2D) -> bool:
 	if (controller.Command != null):
 		return target == controller.Command or target in controller.Command.GetDock().GetDockedShips()
 	return target == controller
