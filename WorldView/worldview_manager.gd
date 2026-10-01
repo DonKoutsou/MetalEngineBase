@@ -33,12 +33,12 @@ static func GetInstance() -> WorldView:
 func AdjustStat(Stat : WorldViews, Amm : int, Notify : bool) -> void:
 	WorldviewStats[Stat] += Amm
 	print("Worldview stat {0} new value is {1}".format([WorldViews.keys()[Stat], WorldviewStats[Stat]]))
-	if (Notify):
-		var WorldviewAdjustNotif : PackedScene = ResourceLoader.load(Notif_File)
-		var notif = WorldviewAdjustNotif.instantiate() as WorldviewNotif
-		notif.AdjustedAmm = Amm
-		notif.NotifStat = Stat
-		Ingame_UIManager.GetInstance().AddUI(notif, false, true)
+	#if (Notify):
+		#var WorldviewAdjustNotif : PackedScene = ResourceLoader.load(Notif_File)
+		#var notif = WorldviewAdjustNotif.instantiate() as WorldviewNotif
+		#notif.AdjustedAmm = Amm
+		#notif.NotifStat = Stat
+		#Ingame_UIManager.GetInstance().AddUI(notif, false, true)
 	StatsChanged.emit()
 	
 static func GetStatValue(StatName : WorldViews) -> int:
