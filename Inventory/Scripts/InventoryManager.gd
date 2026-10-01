@@ -475,7 +475,7 @@ func ToggleInventory(t : bool) -> void:
 		#print(global_position.y)
 		ToggleTween.tween_property(self, "size", Vector2(size.x, s - get_parent().global_position.y), 0.15)
 		await ToggleTween.finished
-		ActionTracker.OnActionCompleted(ActionTracker.Action.INVENTORY_OPEN)
+		#ActionTracker.OnActionCompleted(ActionTracker.Action.INVENTORY_OPEN)
 		
 	else:
 		CaptainStats.queue_free()
