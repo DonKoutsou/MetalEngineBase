@@ -2,11 +2,11 @@ extends Resource
 
 class_name ShipControllerEventHandler
 
-signal OnControlledShipChanged(Ship : PlayerDrivenShip)
+signal OnControlledShipChanged(Ship : MapShip)
 
-var CurrentControlled : PlayerDrivenShip
+var CurrentControlled : MapShip
 
-func ShipChanged(NewShip : PlayerDrivenShip) -> void:
+func ShipChanged(NewShip : MapShip) -> void:
 	CurrentControlled = NewShip
 	OnControlledShipChanged.emit(NewShip)
 
