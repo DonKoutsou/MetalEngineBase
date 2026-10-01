@@ -145,8 +145,6 @@ func TestCard(Mod : CardStats, testType : CardStats.CardType) -> bool:
 
 #--------------------------------------------
 func ExhaustCard(C : CardStats, Manual : bool = false) -> void:
-	if (friendly):
-		PopUpManager.GetInstance().DoFadeNotif("Card Exhausted")
 	ExhaustPile.append(C)
 	C.EnergyReduction = 0
 	#DiscardChanged.emit(true)
@@ -154,8 +152,6 @@ func ExhaustCard(C : CardStats, Manual : bool = false) -> void:
 
 #--------------------------------------------
 func DiscardCard(C : CardStats, Manual : bool = false) -> void:
-	if (friendly):
-		PopUpManager.GetInstance().DoFadeNotif("Card Discarded")
 	DiscardPile.append(C)
 	C.EnergyReduction = 0
 	DiscardChanged.emit(true)
@@ -163,8 +159,6 @@ func DiscardCard(C : CardStats, Manual : bool = false) -> void:
 
 #--------------------------------------------
 func ShuffleDiscardedIntoDeck(DoAnim : bool = true) -> void:
-	if (friendly):
-		PopUpManager.GetInstance().DoFadeNotif("Shuffling Deck")
 	isShuffling = true
 	Shuffling.emit(true)
 	
