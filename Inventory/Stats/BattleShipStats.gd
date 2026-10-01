@@ -17,7 +17,7 @@ var EnergyReserves : int
 var deck : Deck
 var Cards : Array[CardStats]
 
-var ShipViz : CardFightShipViz2
+var ShipViz : Control
 var WindPenalty : float = 0
 #STATS
 var Weight : float
