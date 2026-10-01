@@ -13,8 +13,8 @@ func GetItemDesc() -> String:
 func IsSame(It : Item) -> bool:
 	return ContainedItem.GetItemName() == It.GetItemName()
 
-func GetMerchItemDesc(Ships : Array[MapShip]) -> String:
-	return ContainedItem.GetMerchItemDesc(Ships)
+func GetRequirementDesc() -> String:
+	return ContainedItem.GetRequirementDesc()
 
 func GetWorkshopItemDesc() -> String:
 	return ContainedItem.GetWorkshopItemDesc()
