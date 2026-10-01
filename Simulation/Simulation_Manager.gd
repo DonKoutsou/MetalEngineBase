@@ -42,10 +42,10 @@ func TogglePause(t : bool) -> void:
 
 #----------------------------------------------------------
 func _input(event: InputEvent) -> void:
-	if (World.WORLDST != World.WORLDSTATE.NORMAL):
-		return
-	if (CommandLine.Typing):
-		return
+	#if (World.WORLDST != World.WORLDSTATE.NORMAL):
+		#return
+	#if (CommandLine.Typing):
+		#return
 	if (event.is_action_pressed("PauseSim")):
 		TogglePause(!Paused)
 	if (event.is_action_pressed("SpeedSim")):
