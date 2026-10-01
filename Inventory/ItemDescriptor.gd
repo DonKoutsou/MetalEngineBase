@@ -65,7 +65,7 @@ func PlayIntroAnim() -> void:
 	await tw.finished
 	#scroll.visible = true
 	#get_child(0).get_child(0).visible = true
-	ActionTracker.OnActionCompleted(ActionTracker.Action.ITEM_INSPECTION)
+	#ActionTracker.OnActionCompleted(ActionTracker.Action.ITEM_INSPECTION)
 
 func SetWorkShopData(Box : Inventory_Box_Res, CanUpgrade : bool, Owner : Captain) -> void:
 	var scroll = get_child(0) as Control
@@ -101,10 +101,11 @@ func SetWorkShopData(Box : Inventory_Box_Res, CanUpgrade : bool, Owner : Captain
 				#set_physics_process(true)
 				UpgradeButton.visible = false
 				CancelUpgradeButton.visible = true
-				var port = MapHelper.GetSpotByName(Owner.CurrentPort)
+
 				var TimeLeft = roundi(inv.GetUpgradeTimeLeft())
-				if (port.HasUpgrade()):
+				if (CanUpgrade):
 					TimeLeft /= 2
+					
 				UpgradeLabel.text = "Upgrade time left : {0}".format([Clock.MinutesToHours(TimeLeft)])
 			else:
 				UpgradeButton.visible = true
