@@ -18,7 +18,7 @@ static var Instance : WeatherManage
 static var WindDirection : Vector2 = Vector2.RIGHT
 static var WindSpeed : float = 50
 
-static var LighAmm : Curve = preload("res://Resources/LightCurve.tres")
+static var LighAmm : Curve = preload("res://MetalEngineBase/WeatherMan/LightCurve.tres")
 static var ShipsToUpdate : Array[MapShip]
 
 var Mat : ShaderMaterial
@@ -99,7 +99,7 @@ func Update(delta: float) -> void:
 	for g in ShipsToUpdate:
 		var viz = GetVisibilityInPosition(g.global_position, L)
 		var Storm = StormValueInPosition(g.global_position)
-		if (g is PlayerDrivenShip):
+		if (g.Friendly()):
 			g.UpdateLight(L, viz)
 		g.StormValue = Storm
 		g.RadarShape.VisualRangePenalty = viz
@@ -110,7 +110,7 @@ func OnShipTeleported(ship : MapShip) -> void:
 	var L = GetLightAmm()
 	var viz = GetVisibilityInPosition(ship.global_position, L)
 	var Storm = StormValueInPosition(ship.global_position)
-	if (ship is PlayerDrivenShip):
+	if (ship.Friendly()):
 		ship.UpdateLight(L, viz)
 	ship.StormValue = Storm
 	ship.RadarShape.VisualRangePenalty = viz
