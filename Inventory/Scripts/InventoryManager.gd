@@ -17,7 +17,7 @@ class_name InventoryManager
 @export var MissileDockEventH : MissileDockEventHandler
 @export var DroneDockEventH : DroneDockEventHandler
 @export var ControlledEventH : ShipControllerEventHandler
-
+@export var PlayerWallet : Wallet
 var controller : MapShip
 var CaptainStats : CaptainStatContainer
 
@@ -209,8 +209,7 @@ func CancelUpgrade(Box : Inventory_Box_Res, OwnerInventory : CharacterInventory)
 	var OriginalItem : ShipPart = Box.GetContainedItem()
 	var UpgradedItem : ShipPart = OriginalItem.UpgradeVersion
 	var Cost = UpgradedItem.Cost
-	var PLWallet = World.GetInstance().PlayerWallet
-	PLWallet.AddFunds(Cost / 2.0)
+	PlayerWallet.AddFunds(Cost / 2.0)
 	PopUpManager.GetInstance().DoFadeNotif("Upgrade canceled\nPartial Refund Of Cost")
 	CurrentDesc.SetData(Box, false, Box.GetContainedItem().CanTransfer, false, false, true, false)
 
