@@ -44,15 +44,17 @@ func AdjustStat(Stat : WorldViews, Amm : int, Notify : bool) -> void:
 static func GetStatValue(StatName : WorldViews) -> int:
 	return WorldviewStats[StatName]
 
-func GetSaveData() -> Array[int]:
-	var SavedStats : Array[int]
-	for g in WorldviewStats:
-		SavedStats.append(WorldviewStats[g])
-	return SavedStats
+static func GetSaveData() -> SaveData:
+	var SaveD = SaveData.new()
+	SaveD.DataName = "WorldView"
+	var data = WorldViewSaveData.new()
+	data.WorldviewStats = WorldviewStats
+	SaveD.Datas.append(data)
+	return SaveD
 
-func LoadData(SavedStats : Array[int]) -> void:
-	for g in WorldviewStats.size():
-		WorldviewStats[WorldviewStats.keys()[g]] = SavedStats[g]
+static func LoadData(data : SaveData) -> void:
+	var savedData : WorldViewSaveData = data.Datas[0]
+	WorldviewStats = savedData.WorldviewStats
 
 func SkillCheck(Stat : WorldViews, Possetive : bool, Difficulty : int) -> bool:
 	var skill_value = WorldviewStats[Stat]
@@ -71,34 +73,6 @@ func SkillCheck(Stat : WorldViews, Possetive : bool, Difficulty : int) -> bool:
 	else:
 		print("Skill Check Failed!")
 		return false
-
-static func SaveWorldview() -> void:
-	var sav : TutorialSaveData
-	
-	if (FileAccess.file_exists("user://TutorialData.tres")):
-		sav = load("user://TutorialData.tres") as TutorialSaveData
-	
-	if (sav == null):
-		sav = TutorialSaveData.new()
-	
-	sav.WorldviewStats = WorldviewStats.duplicate()
-
-	ResourceSaver.save(sav, "user://TutorialData.tres")
-	print("Saved tutorial data")
-
-func Load() -> void:
-	if (!FileAccess.file_exists("user://TutorialData.tres")):
-		return
-	
-	var sav = load("user://TutorialData.tres") as TutorialSaveData
-	
-	if (sav == null):
-		return
-	
-	print("Loaded found tutorial data")
-	
-	
-	WorldviewStats = sav.WorldviewStats.duplicate()
 
 enum WorldViews{
 	NONE,
