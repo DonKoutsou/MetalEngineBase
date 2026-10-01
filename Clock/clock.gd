@@ -1,4 +1,4 @@
-extends Control
+extends Node
 
 class_name  Clock
 
@@ -14,30 +14,46 @@ static var CurrentYear : int = 6129
 static var currentHour : int = 6
 static var currentMin : float = 0
 
-
 static var Instance : Clock
 
-func TimePassedInMinutes() -> int:
-	var DaysPassed = CurrentDay - StartingDay
-	var MonthsPassed = CurrentMonth - StartingMonth
-	var YearsPassed = CurrentYear - StartingYear
-	var HoursPassed = currentHour - StartingHour
-	var MinPassed = currentMin - StartingMin
-	while YearsPassed > 0:
-		MonthsPassed += 12
-		YearsPassed -= 1
-	while MonthsPassed > 0:
-		DaysPassed += GetDaysInMonth(wrap(StartingMonth + MonthsPassed, 1, 12))
-		MonthsPassed -= 1
-	while DaysPassed > 0:
-		HoursPassed += 24
-		DaysPassed -= 1
-	while HoursPassed > 0:
-		MinPassed += 60
-		HoursPassed -= 1
-	
-	return MinPassed
+#----------------------------------------------------
+static func GetInstance() -> Clock:
+	return Instance
 
+#----------------------------------------------------
+func _ready() -> void:
+	CurrentDay = StartingDay
+	CurrentMonth = StartingMonth
+	CurrentYear = StartingYear
+	currentHour = StartingHour
+	currentMin = StartingMin
+	
+	Instance = self
+
+#----------------------------------------------------
+func Update(delta: float) -> void:
+	currentMin += (delta * 10)
+	if (currentMin >= 60):
+		currentHour += 1
+		if (currentHour >= 24):
+			currentHour = 0
+			CurrentDay += 1
+			
+			if (CurrentDay > GetDaysInMonth(CurrentMonth)):
+				CurrentDay = 1
+				CurrentMonth += 1
+				if (CurrentMonth > 12):
+					CurrentMonth = 1
+					CurrentYear += 1
+		currentMin = 0
+		
+	#var rot = (360.0/60.0)*currentMin
+	#$Min.rotation = deg_to_rad(rot)
+	#var Hrot = (360.0/12.0)* currentHour
+	#$Hour.rotation = deg_to_rad(Hrot + (rot / 12))
+	#$Label2.text = CheckNumber(var_to_str(CurrentDay)) + " / " + CheckNumber(var_to_str(CurrentMonth)) + " / " + var_to_str(CurrentYear)
+
+#----------------------------------------------------
 static func MinutesToHours(mins : int, short : bool = false) -> String:
 	var finalHours : int = 0
 	
@@ -60,6 +76,7 @@ static func MinutesToHours(mins : int, short : bool = false) -> String:
 		else:
 			return "{0} hours and {1} minutes".format([finalHours, minString])
 
+#----------------------------------------------------
 static func GetDateTimeString() -> String:
 	var minString = "{0}".format([roundi(currentMin)])
 	if (currentMin < 9):
@@ -69,78 +86,48 @@ static func GetDateTimeString() -> String:
 		hourString = "0{0}".format([currentHour])
 		
 	return "{0}/{1}/{2} {3}:{4}".format([CurrentDay, CurrentMonth, CurrentYear, hourString, minString])
+	
+#----------------------------------------------------
+func TimePassedInMinutes() -> int:
+	var DaysPassed = CurrentDay - StartingDay
+	var MonthsPassed = CurrentMonth - StartingMonth
+	var YearsPassed = CurrentYear - StartingYear
+	var HoursPassed = currentHour - StartingHour
+	var MinPassed = currentMin - StartingMin
+	while YearsPassed > 0:
+		MonthsPassed += 12
+		YearsPassed -= 1
+	while MonthsPassed > 0:
+		DaysPassed += GetDaysInMonth(wrap(StartingMonth + MonthsPassed, 1, 12))
+		MonthsPassed -= 1
+	while DaysPassed > 0:
+		HoursPassed += 24
+		DaysPassed -= 1
+	while HoursPassed > 0:
+		MinPassed += 60
+		HoursPassed -= 1
+	
+	return MinPassed
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	CurrentDay = StartingDay
-	CurrentMonth = StartingMonth
-	CurrentYear = StartingYear
-	currentHour = StartingHour
-	currentMin = StartingMin
-	
-	Instance = self
-	#var rot = (360.0/12.0)*currentHour
-	#$Hour.rotation = deg_to_rad(rot)
-	#SimulationSpeed = SimulationManager.SimSpeed()
-	var HourString = CheckNumber(var_to_str(currentHour)) + " : " + CheckNumber(var_to_str(roundi(currentMin)))
-	var DayString = CheckNumber(var_to_str(CurrentDay)) + " / " + CheckNumber(var_to_str(CurrentMonth)) + " / " + var_to_str(CurrentYear)
-	$HBoxContainer/Label.text = HourString
-	$HBoxContainer/Label2.text = DayString
-static func GetInstance() -> Clock:
-	return Instance
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta: float) -> void:
-	var HourString = CheckNumber(var_to_str(currentHour)) + " : " + CheckNumber(var_to_str(roundi(currentMin)))
-	var DayString = CheckNumber(var_to_str(CurrentDay)) + " / " + CheckNumber(var_to_str(CurrentMonth)) + " / " + var_to_str(CurrentYear)
-	$HBoxContainer/Label.text = HourString
-	if (SimulationManager.IsPaused()):
-		$HBoxContainer/Label.text += " ||"
-	else: if (SimulationManager.SimSpeed() > 1):
-		$HBoxContainer/Label.text += " >>"
-	else:
-		$HBoxContainer/Label.text += " >"
-	$HBoxContainer/Label2.text = DayString
-	
-	if (SimulationManager.IsPaused()):
-		return
-		
-	currentMin += (delta * 10) * SimulationManager.SimSpeed()
-	if (currentMin >= 60):
-		currentHour += 1
-		if (currentHour >= 24):
-			currentHour = 0
-			CurrentDay += 1
-			
-			if (CurrentDay > GetDaysInMonth(CurrentMonth)):
-				CurrentDay = 1
-				CurrentMonth += 1
-				if (CurrentMonth > 12):
-					CurrentMonth = 1
-					CurrentYear += 1
-		currentMin = 0
-		
-	#var rot = (360.0/60.0)*currentMin
-	#$Min.rotation = deg_to_rad(rot)
-	#var Hrot = (360.0/12.0)* currentHour
-	#$Hour.rotation = deg_to_rad(Hrot + (rot / 12))
-	#$Label2.text = CheckNumber(var_to_str(CurrentDay)) + " / " + CheckNumber(var_to_str(CurrentMonth)) + " / " + var_to_str(CurrentYear)
-	
-
-func CheckNumber(NumString : String) -> String:
+#----------------------------------------------------
+static func CheckNumber(NumString : String) -> String:
 	if (NumString.length() == 1):
 		return "0" + NumString
 	return NumString
 
-#func SimulationSpeedChanged(i : float) -> void:
-	#SimulationSpeed = i
+#----------------------------------------------------
 static func GetTimeInHours() -> float:
 	return (CurrentDay * 24) + currentHour + (currentMin / 60)
 
+#----------------------------------------------------
 static func GetHours() -> float:
 	return currentHour + (currentMin / 60.0)
+
+#----------------------------------------------------
 static func GetHoursSince(time : float) -> float:
 	return GetTimeInHours() - time
 
+#----------------------------------------------------
 static func GetDaysInMonth(Month : int) -> int:
 	if (Month == 1):
 		return 31
@@ -168,6 +155,7 @@ static func GetDaysInMonth(Month : int) -> int:
 		return 30
 	return 0
 
+#----------------------------------------------------
 func GetSaveData() -> SaveData:
 	var SaveD = SaveData.new()
 	SaveD.DataName = "Clock"
@@ -181,6 +169,7 @@ func GetSaveData() -> SaveData:
 	SaveD.Datas.append(Data)
 	return SaveD
 
+#----------------------------------------------------
 func LoadData(Data : SaveData) -> void:
 	var ClockData = Data.Datas[0] as SD_Clock
 	CurrentDay = ClockData.CurrentDay

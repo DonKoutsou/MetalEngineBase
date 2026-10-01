@@ -15,8 +15,6 @@ func GetDamage(DamageAmm : float, StatAmm : float) -> float:
 		
 	var FinalDmg = DamageAmm * StatDmg
 	
-	
-	
 	return FinalDmg
 
 enum CalcuationMethod {

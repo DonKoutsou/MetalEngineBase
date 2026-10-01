@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="MapSpotEventManager" format=3 uid="uid://hgtjvfrjcjnp"]
-
-[ext_resource type="Script" uid="uid://bibtbjxgmpyqn" path="res://MetalEngineBase/Map/MapSpot/MapSpotEventManager.gd" id="1_cyvd5"]
-
-[resource]
-script = ExtResource("1_cyvd5")
-metadata/_custom_type_script = "uid://bibtbjxgmpyqn"
