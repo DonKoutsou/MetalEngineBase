@@ -9,6 +9,8 @@ static var ENEMY_DEBUG : bool = false
 ##Queue of files being loaded, we store them so we can signal those waiting for them that they are loaded
 static var fileQueue : Dictionary[String, SignalObject]
 
+
+static var PopupPlacement : Node
 static var Instance : Helper
 
 func _ready() -> void:

@@ -25,7 +25,7 @@ func DoConfirm(Text : String, ConfirmText : String, Parent : Node) -> SignalObje
 	if (is_instance_valid(Parent)):
 		Parent.add_child(dig)
 	else:
-		Ingame_UIManager.GetInstance().PopupPlecement.add_child(dig)
+		Helper.PopupPlacement.add_child(dig)
 	return signa
 
 var CurrentlyShownFade : Array[String]
@@ -82,7 +82,7 @@ func DoNext() -> void:
 	#if (is_instance_valid(Parent)):
 		#Parent.add_child(dig)
 	#else:
-	Ingame_UIManager.GetInstance().PopupPlecement.add_child(dig)
+	Helper.PopupPlacement.add_child(dig)
 	
 func FadeFinished(Text : String) -> void:
 	CurrentlyShownFade.erase(Text)
