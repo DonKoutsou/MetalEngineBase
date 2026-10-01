@@ -108,7 +108,6 @@ func ShowDeck() -> void:
 	var shipdeckScene : PackedScene = load(DeckScene)
 	ShipDeck = shipdeckScene.instantiate()
 	$PanelContainer.add_child(ShipDeck)
-	ActionTracker.OnActionCompleted(ActionTracker.Action.DECK)
 	ShipDeck.SetDeck(CurrentlyShownCaptain)
 	transitionToPanel(ShipDeck)
 
@@ -147,7 +146,7 @@ func ShowDisposition() -> void:
 	
 	DispositionScreen.SetStats(CurrentlyShownCaptain)
 	
-	ActionTracker.OnActionCompleted(ActionTracker.Action.DISPOSITION)
+	
 	transitionToPanel(dispositionParent)
 
 func UpdateValues() -> void:
