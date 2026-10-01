@@ -276,7 +276,7 @@ func GetBoxOwner(Box : Inventory_Box_Res) -> Captain:
 	return null
 
 #-------------------------------------------------------
-func DroneAdded(Dr : PlayerDrivenShip, _Target : MapShip):
+func DroneAdded(Dr : MapShip, _Target : MapShip):
 	AddCharacter(Dr.Cpt)
 
 #-------------------------------------------------------
