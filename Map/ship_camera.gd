@@ -247,6 +247,7 @@ var CloudOffset = Vector2.ZERO
 func _physics_process(delta: float) -> void:
 	if (World.WORLDST != World.WORLDSTATE.NORMAL):
 		return
+		
 	if (!SimulationManager.IsPaused()):
 		#CloudTime += delta * SimulationManager.SimSpeed()
 		#CloudMat.set_shader_parameter("custom_time", CloudTime)
@@ -276,8 +277,8 @@ func _physics_process(delta: float) -> void:
 		CloudMat.set_shader_parameter("Light", light)
 		GroundMat.set_shader_parameter("Light", light)
 	
-	if (CommandLine.Typing):
-		return
+	#if (CommandLine.Typing):
+		#return
 	
 	if (MapMarkerEditor.WritingText):
 		return
@@ -312,7 +313,7 @@ func FrameCamToPos(pos : Vector2, OverrideTime : float = 1, Unzoom : bool = true
 	if (Unzoom):
 		ForceZoomOut()
 
-func FrameCamToShip(Ship : PlayerDrivenShip, _OverrideTime : float = 1, _Unzoom : bool = true) -> void:
+func FrameCamToShip(Ship : MapShip, _OverrideTime : float = 1, _Unzoom : bool = true) -> void:
 	if (FrameTween != null):
 		FrameTween.kill()
 	FocusedShip = Ship

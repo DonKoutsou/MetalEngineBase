@@ -166,7 +166,7 @@ transparent_bg = true
 handle_input_locally = false
 canvas_item_default_texture_filter = 4
 oversampling = false
-size = Vector2i(307, 423)
+size = Vector2i(186, 256)
 size_2d_override = Vector2i(186, 256)
 size_2d_override_stretch = true
 

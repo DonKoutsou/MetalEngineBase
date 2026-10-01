@@ -48,7 +48,6 @@ size_flags_vertical = 3
 mouse_filter = 0
 theme_override_constants/separation = 0
 script = ExtResource("2_8mgss")
-Tooltipscene = "uid://cqjgceykpax6c"
 StatNameLabel = NodePath("HBoxContainer/Label")
 StatValueLabel = NodePath("HBoxContainer/Label2")
 ShipStatBar = NodePath("ProgressBar")
