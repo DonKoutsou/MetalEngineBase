@@ -53,7 +53,7 @@ class_name CardStats
 ##IF card is provided from disposition
 @export var IsDisposition : bool = false
 
-@export var PlayAnimation : CardFightShipViz2.AnimatioType = CardFightShipViz2.AnimatioType.NONE
+@export var PlayAnimation : AnimatioType = AnimatioType.NONE
 
 var EnergyReduction : int = 0
 var Tier : int = 0
@@ -288,4 +288,8 @@ enum CardUseCondition{
 	RESERVE_DEPENDANT,
 	ENOUGH_TURNS_PASSED,
 	ON_FIRE,
+}
+enum AnimatioType{
+	NONE,
+	EVASIVE,
 }
