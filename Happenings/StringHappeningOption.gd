@@ -7,5 +7,5 @@ class_name String_Happening_Option
 		StringReply = value
 		emit_changed()
 
-func OptionResault(_EventOrigin : MapSpot) -> String:
+func OptionResault(_EventOrigin) -> String:
 	return StringReply

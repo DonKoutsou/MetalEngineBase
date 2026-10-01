@@ -4,7 +4,7 @@ class_name Item_Happening_Option
 
 @export var HapItems : Array[Item]
 
-func OptionResault(_EventOrigin : MapSpot) -> String:
+func OptionResault(_EventOrigin) -> String:
 	#Inventory.GetInstance().AddItems(HapItems)
 	var returnString = "You have found \n"
 	var Items : Dictionary

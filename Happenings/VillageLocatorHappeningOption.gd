@@ -4,7 +4,7 @@ class_name Village_Locator_Happening_Option
 
 @export var locatorRange : float = 10000
 
-func OptionResault(EventOrigin : MapSpot) -> String:
+func OptionResault(EventOrigin) -> String:
 	var ClosestRecruitLoc = FindClosestRecruit(EventOrigin)
 	if (ClosestRecruitLoc == Vector2.ZERO):
 		return "There are no rebel villages that i know of nearby, sorry."
@@ -13,13 +13,13 @@ func OptionResault(EventOrigin : MapSpot) -> String:
 	
 	return "I know of a small rebel town, it's {0} to the {1}.".format([Dist, Dir])
 
-func FindClosestRecruit(EventOrigin : MapSpot) -> Vector2:
+func FindClosestRecruit(EventOrigin) -> Vector2:
 	var VillageLocations =  EventOrigin.get_tree().get_nodes_in_group("VILLAGE")
 	
-	var ClosestLoc : MapSpot
+	var ClosestLoc
 	var ClosestDist : float = INF
 	
-	for g : MapSpot in VillageLocations:
+	for g in VillageLocations:
 		if (g == EventOrigin):
 			continue
 		if (g.Visited):

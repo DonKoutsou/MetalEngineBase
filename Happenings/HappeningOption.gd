@@ -76,10 +76,10 @@ func SameBranch(branch : HappeningStage) -> bool:
 	print("true")	
 	return true
 
-func OptionResault(_EventOrigin : MapSpot) -> String:
+func OptionResault(_EventOrigin) -> String:
 	return ""
 	
-func OptionOutCome(_Instigator : MapShip)-> bool:
+func OptionOutCome(_Instigator)-> bool:
 	if (CheckResault):
 		if (WorldviewEffect != WorldView.WorldViews.NONE):
 			WorldView.GetInstance().AdjustStat(WorldviewEffect, WorldviewEffectAmm, true)

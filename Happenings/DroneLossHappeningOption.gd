@@ -7,10 +7,10 @@ class_name DroneLossHappening_Option
 #func _init() -> void:
 	#Dron = DroneScene.instantiate()
 
-func OptionResault(_EventOrigin : MapSpot) -> String:
+func OptionResault(_EventOrigin) -> String:
 	return StringReply
 	
-func OptionOutCome(Instigator : MapShip) -> bool:
+func OptionOutCome(Instigator) -> bool:
 	super(Instigator)
 	if (!CheckResault):
 		Instigator.GetDock().RemoveCaptain(Cpt)

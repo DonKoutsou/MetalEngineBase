@@ -4,7 +4,7 @@ class_name Recruit_Locator_Happening_Option
 
 @export var locatorRange : float = 10000
 
-func OptionResault(EventOrigin : MapSpot) -> String:
+func OptionResault(EventOrigin) -> String:
 	var ClosestRecruitLoc = FindClosestRecruit(EventOrigin)
 	if (ClosestRecruitLoc == Vector2.ZERO):
 		return "There are not rebel ships in any of the nearby towns as far as i know."
@@ -13,13 +13,13 @@ func OptionResault(EventOrigin : MapSpot) -> String:
 	
 	return "I know of a fleet nearby who's been looking to joint the rebelion, the are {0} to the {1}.".format([Dist, Dir])
 
-func FindClosestRecruit(EventOrigin : MapSpot) -> Vector2:
+func FindClosestRecruit(EventOrigin) -> Vector2:
 	var RecruitLocations =  EventOrigin.get_tree().get_nodes_in_group("CrewRecruitTown")
 	
-	var ClosestLoc : MapSpot
+	var ClosestLoc
 	var ClosestDist : float = INF
 	
-	for g : MapSpot in RecruitLocations:
+	for g in RecruitLocations:
 		if (g == EventOrigin):
 			continue
 		if (g.Visited):
