@@ -69,7 +69,7 @@ func Init(Ship : Node2D) -> void:
 			if (Ship.Destroyed):
 				OnHostileShipDestroyed()
 			else:
-				if (Commander.ENEMY_DEBUG):
+				if (Helper.ENEMY_DEBUG):
 					SetMarkerDetails(Ship.ShipName + " LOD : {0}".format([Ship.currentLOD]), Ship.Cpt.ShipCallsign ,Ship.GetShipSpeed())
 				else:
 					SetMarkerDetails(Ship.ShipName, Ship.Cpt.ShipCallsign ,Ship.GetShipSpeed())
@@ -228,28 +228,28 @@ func Update(IsControlled : bool, CamPos : Vector2, delta : float) -> void:
 			if (CurrentShip.Destroyed):
 				SetMarkerDetails("Ship Debris", "" ,0)
 				global_position = SavedPosition
-			else: if (CurrentShip.VisibleBy.size() > 0 or Commander.ENEMY_DEBUG):
+			else: if (CurrentShip.VisibleBy.size() > 0 or Helper.ENEMY_DEBUG):
 				#if (ship.StormValue > 0.9):
 					#var newpos = ship.GetShipParalaxPosition(CamPos, CurrentZoom)
 					#newpos += Vector2(randf_range(20, -20), randf_range(20, -20))
 					#global_position = newpos
 					#UpdateTrajectory(randf_range(PI * 2, PI * -2))
 				#else:
-				if (Commander.ENEMY_DEBUG):
+				if (Helper.ENEMY_DEBUG):
 					OnCaptainNameChanged(CurrentShip.ShipName + " LOD : {0}".format([CurrentShip.currentLOD]))
 					
 				global_position = CurrentShip.GetShipParalaxPosition(CamPos, CurrentZoom)
 				SavedPosition = global_position
-				if (Commander.ENEMY_DEBUG):
+				if (Helper.ENEMY_DEBUG):
 					if (LandingNotif != null):
 						UpdateAltitude(CurrentShip.Altitude)
 				
-				if (CurrentShip.ExposedValue > 4 or Commander.ENEMY_DEBUG):
+				if (CurrentShip.ExposedValue > 4 or Helper.ENEMY_DEBUG):
 					UpdateSpeed(CurrentShip.GetShipSpeed())
 				else:
 					SetSpeedUnknown()
 					
-				if (CurrentShip.ExposedValue > 2 or Commander.ENEMY_DEBUG):
+				if (CurrentShip.ExposedValue > 2 or Helper.ENEMY_DEBUG):
 					UpdateTrajectory(CurrentShip.global_rotation)
 				else:
 					HideTrajectory()

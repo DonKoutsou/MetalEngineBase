@@ -5,6 +5,7 @@ class_name Helper
 
 @export var Cog : TextureRect
 
+static var ENEMY_DEBUG : bool = false
 ##Queue of files being loaded, we store them so we can signal those waiting for them that they are loaded
 static var fileQueue : Dictionary[String, SignalObject]
 
