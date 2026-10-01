@@ -32,6 +32,8 @@ var boxes : Dictionary[ShipPart.ShipPartType, Array] = {
 }
 
 signal CharNameChanged(NewName : String)
+signal UpgradeFinished(from : Item, to : Item)
+signal EquipFinished(it : Item)
 #var _CardInventory : Dictionary
 #var _CardAmmo : Dictionary
 
@@ -465,13 +467,13 @@ func ItemUpgradeFinished() -> void:
 		UpgradedItem.Upgrades[g].CurrentValue = Part.Upgrades[g].CurrentValue
 	AddItem(UpgradedItem)
 	_ItemBeingUpgraded = null
-	PopUpManager.GetInstance().DoFadeNotif("{0}'s {1}\nhas succsfully been upgraded to\n{2}".format([CaptainNameLabel.text, Part.ItemName, UpgradedItem.ItemName]), null, 8)
-
+	UpgradeFinished.emit(Part.ItemName, UpgradedItem.ItemName)
+	
 func ItemEquipFinished() -> void:
 	RemoveItemFromBox(_EquipLocation)
 	AddItemToBox(_ItemBeingEquipped, _EquipLocation)
-	PopUpManager.GetInstance().DoFadeNotif("{0}'s {1}\nhas succsfully been Installed".format([CaptainNameLabel.text, _ItemBeingEquipped.GetItemName()]), null, 8)
-
+	EquipFinished.emit(_ItemBeingEquipped)
+	
 	_EquipLocation = null
 	_ItemBeingEquipped = null
 	
