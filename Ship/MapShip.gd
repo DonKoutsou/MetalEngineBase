@@ -264,6 +264,9 @@ func OnElintRangeChanged() -> void:
 func ToggleFuelRangeVisibility(t : bool) -> void:
 	ShowFuelRange = t
 
+func Friendly() -> bool:
+	return true
+
 func SetCurrentPort(Port : MapSpot):
 	CurrentPort = Port
 	Cpt.CurrentPort = Port.GetSpotName()
@@ -477,28 +480,11 @@ func ToggleElint(t : bool):
 
 #-------------------------------------------------
 func BodyEnteredBody(Body : Area2D) -> void:
-	if (Docked):
-		return
-	var Parent = Body.get_parent()
-	if (Parent is MapSpot):
-		ActionTracker.OnActionCompleted(ActionTracker.Action.LANDING)
-		SetCurrentPort(Parent)
-		Parent.OnSpotAproached(self)
-		for g in GetSquad():
-			g.SetCurrentPort(Parent)
-			Parent.OnSpotAproached(g)
+	pass
 
 #-------------------------------------------------
 func BodyLeftBody(Body : Area2D) -> void:
-	if (Docked):
-		return
-	var Parent = Body.get_parent()
-	if (Parent is MapSpot):
-		RemovePort()
-		Parent.OnSpotDeparture(self)
-		for g in GetSquad():
-			g.RemovePort()
-			Parent.OnSpotDeparture(g)
+	pass
 
 #//////////////////////////////////////////////////////
  #██████  ███████ ████████ ████████ ███████ ██████  ███████ 
