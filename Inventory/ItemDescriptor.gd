@@ -163,6 +163,7 @@ func SetMerchData(Itm : Item, Ships : Array[MapShip], ShowDesc : bool = false) -
 	#TransferButton.visible = It.CanTransfer
 	TransferButton.visible = false
 	if (!ShowDesc):
+		
 		ItemDesc.text = Itm.GetMerchItemDesc(Ships).replace("#ffc315", "{0}".format([col]))
 	else:
 		ItemDesc.text = Itm.GetWorkshopItemDesc().replace("#ffc315", "{0}".format([col]))
@@ -204,6 +205,8 @@ func SetMerchData(Itm : Item, Ships : Array[MapShip], ShowDesc : bool = false) -
 		CardSection.visible = true
 	else:
 		CardSection.visible = false
+
+
 
 func SetData(Box : Inventory_Box_Res, CanUpgrade : bool, CanTransfer : bool, CanAdd : bool, CanRemove : bool, ShowDescription : bool, HasUp : bool) -> void:
 	#set_physics_process(false)
