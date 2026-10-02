@@ -9,7 +9,7 @@
 [ext_resource type="Material" uid="uid://dwvsafe1eaxbk" path="res://Shaders/Card.tres" id="6_btfbu"]
 [ext_resource type="StyleBox" uid="uid://bkhv2od4pe3up" path="res://MetalEngineBase/Cardfight/Card/Power_Card_Colors.tres" id="6_cedgx"]
 [ext_resource type="Texture2D" uid="uid://cwbo84yj0q3om" path="res://Assets/Cards/CardBack.png" id="7_ucyjg"]
-[ext_resource type="StyleBox" uid="uid://barkkuipmovom" path="res://Theme/CardAmmPanel.tres" id="10_1l6da"]
+[ext_resource type="StyleBox" uid="uid://barkkuipmovom" path="res://MetalEngineBase/Theme/CardAmmPanel.tres" id="10_1l6da"]
 [ext_resource type="Material" uid="uid://b0dysksj8403q" path="res://Shaders/Card/Bolt.tres" id="10_mchus"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4v2x1"]

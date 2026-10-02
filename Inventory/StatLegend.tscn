@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://nq26hffakumm"]
 
-[ext_resource type="StyleBox" uid="uid://cmk8a60qvg41" path="res://Theme/StatLegendPanel.tres" id="1_a4sqj"]
+[ext_resource type="StyleBox" uid="uid://cmk8a60qvg41" path="res://MetalEngineBase/Theme/StatLegendPanel.tres" id="1_a4sqj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7pj6b"]
 bg_color = Color(1, 1, 1, 1)
