@@ -27,14 +27,14 @@ static var WorldSize : float = 0
 	#if (Special):
 		#Specials.append(self)
 
-func SkipStory(Instigator : MapShip) -> void:
+func SkipStory(Instigator : Node) -> void:
 	var droneOptions : Array[Drone_Happening_Option] = []
 	for g in Stages:
 		SkipStage(g, Instigator, droneOptions)
 	for g in droneOptions:
 		g.OptionOutCome(Instigator)
 
-func SkipStage(stage : HappeningStage, Instigator : MapShip, droneOptions : Array[Drone_Happening_Option]) -> void:
+func SkipStage(stage : HappeningStage, Instigator : Node, droneOptions : Array[Drone_Happening_Option]) -> void:
 	for Opt in stage.Options:
 		if (Opt is Drone_Happening_Option):
 			if (!Opt in droneOptions):
