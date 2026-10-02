@@ -11,7 +11,7 @@
 [ext_resource type="StyleBox" uid="uid://ci3yyoa54a17w" path="res://MetalEngineBase/Inventory/YellowPanel.tres" id="9_udhci"]
 [ext_resource type="StyleBox" uid="uid://elj4u7a13oc1" path="res://MetalEngineBase/Theme/YellowTopPanel.tres" id="9_yv80o"]
 [ext_resource type="StyleBox" uid="uid://b55uyr0b56r5s" path="res://MetalEngineBase/Theme/VSlider_Grabber.tres" id="14_v41hx"]
-[ext_resource type="FontFile" uid="uid://ci3bxu4ymkfll" path="res://Fonts/Perfect DOS VGA 437 Win.ttf" id="14_xwr5s"]
+[ext_resource type="FontFile" uid="uid://ci3bxu4ymkfll" path="res://MetalEngineBase/Fonts/Perfect DOS VGA 437 Win.ttf" id="14_xwr5s"]
 [ext_resource type="StyleBox" uid="uid://cfiw4vt0vjqy4" path="res://MetalEngineBase/Theme/VSlider_GrabberH.tres" id="15_v1byl"]
 [ext_resource type="StyleBox" uid="uid://bdeoxgivjnh2" path="res://MetalEngineBase/Theme/VSlider_Slider.tres" id="16_g4m2n"]
 
