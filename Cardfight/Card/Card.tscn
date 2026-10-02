@@ -2,15 +2,13 @@
 
 [ext_resource type="Script" uid="uid://blvrkfxa5b1t6" path="res://MetalEngineBase/Cardfight/Card/card.gd" id="1_utwiq"]
 [ext_resource type="PackedScene" uid="uid://xuequw4xcwgf" path="res://MetalEngineBase/Cardfight/Card/CardTooltip.tscn" id="2_paso5"]
-[ext_resource type="Texture2D" uid="uid://bf3p61os8mhr7" path="res://Assets/UIPiecies/UI_Icons/Bolt.png" id="4_5n23x"]
+[ext_resource type="Texture2D" uid="uid://bf3p61os8mhr7" path="res://MetalEngineBase/Assets/Bolt.png" id="4_5n23x"]
 [ext_resource type="StyleBox" uid="uid://nx2m88wohluk" path="res://MetalEngineBase/Cardfight/Card/Base_Card_Colors.tres" id="4_22va6"]
 [ext_resource type="StyleBox" uid="uid://c4g6yr1eejnwc" path="res://MetalEngineBase/Cardfight/Card/Disposition_Card_Colors.tres" id="5_oc32p"]
-[ext_resource type="Texture2D" uid="uid://c1d4jybs1oolg" path="res://Assets/Cards/BarraceIncendiery.png" id="5_p48hs"]
-[ext_resource type="Material" uid="uid://dwvsafe1eaxbk" path="res://Shaders/Card.tres" id="6_btfbu"]
+[ext_resource type="Material" uid="uid://dwvsafe1eaxbk" path="res://MetalEngineBase/Assets/Card.tres" id="6_btfbu"]
 [ext_resource type="StyleBox" uid="uid://bkhv2od4pe3up" path="res://MetalEngineBase/Cardfight/Card/Power_Card_Colors.tres" id="6_cedgx"]
-[ext_resource type="Texture2D" uid="uid://cwbo84yj0q3om" path="res://Assets/Cards/CardBack.png" id="7_ucyjg"]
+[ext_resource type="Texture2D" uid="uid://cwbo84yj0q3om" path="res://MetalEngineBase/Assets/CardBack.png" id="7_ucyjg"]
 [ext_resource type="StyleBox" uid="uid://barkkuipmovom" path="res://MetalEngineBase/Theme/CardAmmPanel.tres" id="10_1l6da"]
-[ext_resource type="Material" uid="uid://b0dysksj8403q" path="res://Shaders/Card/Bolt.tres" id="10_mchus"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4v2x1"]
 bg_color = Color(1, 1, 1, 1)
@@ -103,7 +101,7 @@ transparent_bg = true
 handle_input_locally = false
 scaling_3d_mode = 5
 canvas_item_default_texture_filter = 4
-size = Vector2i(186, 256)
+size = Vector2i(231, 318)
 size_2d_override = Vector2i(186, 256)
 size_2d_override_stretch = true
 render_target_update_mode = 1
@@ -251,7 +249,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("5_p48hs")
 expand_mode = 1
 stretch_mode = 5
 
@@ -375,15 +372,6 @@ offset_bottom = -103.76521
 scale = Vector2(0.5, 0.5)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=952484273]
-visible = false
-material = ExtResource("10_mchus")
-layout_mode = 0
-offset_left = -197.0
-offset_top = -182.01004
-offset_right = 353.0
-offset_bottom = 397.01004
 
 [connection signal="button_down" from="SubViewportContainer/SubViewport/Button" to="." method="OnButtonPressed"]
 [connection signal="button_up" from="SubViewportContainer/SubViewport/Button" to="." method="OnButtonReleased"]
