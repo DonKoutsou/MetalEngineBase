@@ -2,7 +2,7 @@ extends Node
 
 class_name DispositionManager
 
-@export var DispositionRewards : Array[Disposition]
+@export var DispRewards : DispositionRewards
 
 enum Dispositions {
 	KINETIC,
@@ -24,7 +24,7 @@ func GetRewards(ch : Captain) -> Dictionary[CardStats, int]:
 	for g in ch.disp:
 		var dispositionValue = ch.disp[g] + ch.itemDisposition[g]
 		
-		var disp : Disposition = DispositionRewards[g]
+		var disp : Disposition = DispRewards.DispositionRewards[g]
 		for d in disp.Levels:
 			if (dispositionValue >= d.DispoistionStage):
 				for reward in d.Rewards:
