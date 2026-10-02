@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://dwvsafe1eaxbk"]
 
-[ext_resource type="Shader" uid="uid://dqjas3kma1fqo" path="res://Shaders/fake3d.gdshader" id="1_ndm65"]
+[ext_resource type="Shader" uid="uid://dqjas3kma1fqo" path="res://MetalEngineBase/Assets/fake3d.gdshader" id="1_ndm65"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_7mr5f"]
 
