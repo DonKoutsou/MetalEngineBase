@@ -4,7 +4,7 @@ extends PanelContainer
 class_name ResourcePicker
 
 @export var resource_Type : FileDialog.FileMode = FileDialog.FileMode.FILE_MODE_OPEN_FILE
-@export var resource_Tyoes : PackedStringArray = []
+@export var resource_Tyoes : PackedStringArray
 @export var locationText : LineEdit
 
 var selected : String = ""
@@ -29,6 +29,9 @@ func _on_change_pressed() -> void:
 		f = await fileDiag.file_selected
 		if (!FileAccess.file_exists(f)):
 			return
+	
+	if (resource_Type == FileDialog.FileMode.FILE_MODE_SAVE_FILE):
+		f = await fileDiag.file_selected
 			
 	else: if (resource_Type == FileDialog.FileMode.FILE_MODE_OPEN_DIR):
 		f = await fileDiag.dir_selected
