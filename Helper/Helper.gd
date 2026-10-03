@@ -89,6 +89,15 @@ static func FromMinutesToString(Minutees : float) -> String:
 		Str += "{0} minute(s) ".format([roundi(Mins)])
 	return Str
 
+static func GetSpotByName(CityName : String) -> Node2D:
+	var CorrectCity : Node2D
+	for g in Instance.get_tree().get_nodes_in_group("City"):
+		var cit = g as Node2D
+		if (cit.GetSpotName() == CityName):
+			CorrectCity = cit
+			break
+	return CorrectCity
+
 static func FromMinutesToStringShort(Minutees : float) -> String:
 	var Str : String = ""
 	var Hours = 0
