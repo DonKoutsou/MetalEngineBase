@@ -38,17 +38,18 @@ func _on_change_pressed() -> void:
 		if (!DirAccess.dir_exists_absolute(f)):
 			return
 	
-	var modDir : String = ProjectSettings.get_setting("application/config/mod_dir")
-	if (!modDir.is_empty()):
-		#check if file is withing our mod
-		if (f.contains(modDir)):
-			#change the dir to res
-			f = f.replace(modDir, "res:/")
-		else:
-			#we need to move the file inside the mod
-			var importedLoc = modDir + "/ImportedAssets/" + f.get_file()
-			_copy_file(f,importedLoc)
-			f = importedLoc.replace(modDir, "res:/")
+	if (ProjectSettings.has_setting("application/config/mod_dir")):
+		var modDir : String = ProjectSettings.get_setting("application/config/mod_dir")
+		if (!modDir.is_empty()):
+			#check if file is withing our mod
+			if (f.contains(modDir)):
+				#change the dir to res
+				f = f.replace(modDir, "res:/")
+			else:
+				#we need to move the file inside the mod
+				var importedLoc = modDir + "/ImportedAssets/" + f.get_file()
+				_copy_file(f,importedLoc)
+				f = importedLoc.replace(modDir, "res:/")
 			
 	SetFile(f)
 	Changed.emit(f)
