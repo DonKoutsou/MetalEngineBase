@@ -39,7 +39,7 @@ func _on_change_pressed() -> void:
 		if (!DirAccess.dir_exists_absolute(f)):
 			return
 	
-	if (allowExternalLinks and ProjectSettings.has_setting("application/config/mod_dir")):
+	if (!allowExternalLinks and ProjectSettings.has_setting("application/config/mod_dir")):
 		var modDir : String = ProjectSettings.get_setting("application/config/mod_dir")
 		if (!modDir.is_empty()):
 			#check if file is withing our mod
