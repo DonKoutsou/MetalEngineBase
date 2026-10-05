@@ -6,6 +6,7 @@ class_name ResourcePicker
 @export var resource_Type : FileDialog.FileMode = FileDialog.FileMode.FILE_MODE_OPEN_FILE
 @export var resource_Tyoes : PackedStringArray
 @export var locationText : LineEdit
+@export var allowExternalLinks : bool
 
 var selected : String = ""
 
@@ -38,7 +39,7 @@ func _on_change_pressed() -> void:
 		if (!DirAccess.dir_exists_absolute(f)):
 			return
 	
-	if (ProjectSettings.has_setting("application/config/mod_dir")):
+	if (allowExternalLinks and ProjectSettings.has_setting("application/config/mod_dir")):
 		var modDir : String = ProjectSettings.get_setting("application/config/mod_dir")
 		if (!modDir.is_empty()):
 			#check if file is withing our mod
