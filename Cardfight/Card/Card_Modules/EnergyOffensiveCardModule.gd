@@ -7,6 +7,9 @@ var StoredEnergy : int = 0
 func NeedsTargetSelect() -> bool:
 	return true
 
+func CanBeInPassive() -> bool:
+	return false
+
 func GetFinalDamage(Performer : BattleShipStats, Tier : int) -> float:
 	var Dmg : float
 	

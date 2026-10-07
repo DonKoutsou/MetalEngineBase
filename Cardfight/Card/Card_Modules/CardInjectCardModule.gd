@@ -7,6 +7,9 @@ class_name CardInjectCardModule
 func NeedsTargetSelect() -> bool:
 	return true
 
+func CanBeInPassive() -> bool:
+	return true
+
 func GetDesc(Tier : int, _targetOverride : String = "") -> String:
 	if (AOE):
 		return "[[CR_ADD]] {0} {1} on each enemy ship's deck".format([GetCardAmmount(Tier), CardToInject.GetCardName()])

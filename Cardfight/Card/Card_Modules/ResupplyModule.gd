@@ -3,13 +3,19 @@ class_name ResupplyModule
 
 @export var ResupplyAmmount : int = 1
 
-func GetDesc(Tier : int, _targetOverride : String = "") -> String:
+func GetDesc(Tier : int, targetOverride : String = "") -> String:
+	if (!targetOverride != ""):
+		return "Adds [color=#ffc315]{0}[/color] Energy to {1}".format([GetEnergyAmmount(Tier), targetOverride])
+	
 	return "Adds [color=#ffc315]{0}[/color] Energy".format([GetEnergyAmmount(Tier)])
 
 func GetEnergyAmmount(Tier : int) -> int:
 	if (TierUpgradeMethod == DamageInfo.CalcuationMethod.ADD):
 		return roundi(ResupplyAmmount + (TierUpgrade * Tier))
 	return ResupplyAmmount * max((TierUpgrade * Tier), 1)
+
+func CanBeInPassive() -> bool:
+	return true
 
 func NeedsTargetSelect() -> bool:
 	return true

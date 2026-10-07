@@ -22,6 +22,9 @@ func GetDesc(Tier : int, _targetOverride : String = "") -> String:
 		return "Debuff team's\n[{3}] {0}[/color] - [color=#308a4d]{1}[/color] for {2} turns".format([Stat.keys()[StatToDeBuff], GetDebuffAmmount(Tier), GetDebuffDuration(Tier), TextColor])
 	return "Debuff \n[{3}] {0}[/color] - [color=#308a4d]{1}[/color] for {2} turns".format([Stat.keys()[StatToDeBuff], GetDebuffAmmount(Tier), GetDebuffDuration(Tier), TextColor])
 
+func CanBeInPassive() -> bool:
+	return true
+
 func GetBattleDesc(_User : BattleShipStats, Tier : int, _targetOverride : String = "") -> String:
 	var TextColor : String
 	if (StatToDeBuff == Stat.FIREPOWER):

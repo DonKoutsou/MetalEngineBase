@@ -8,6 +8,8 @@ func GetDesc(Tier : int, _targetOverride : String = "") -> String:
 		#return "Coverst remaining Energy Reserve to double the Energy to team"
 	return "Coverts remaining [color=#ffc315]Reserve[/color] to [color=#ffc315]Energy[/color]"
 
+func CanBeInPassive() -> bool:
+	return false
 
 func GetBattleDesc(User : BattleShipStats, Tier : int, _targetOverride : String = "") -> String:
 	return "Coverts remaining [color=#ffc315]Reserve[/color] to [color=#ffc315]{0} Energy[/color]".format([GetConversionAmmount(User.EnergyReserves, Tier)])

@@ -16,6 +16,9 @@ class_name OffensiveCardModule
 func NeedsTargetSelect() -> bool:
 	return true
 
+func CanBeInPassive() -> bool:
+	return true
+
 func GetFinalDamage(Performer : BattleShipStats, Tier : int) -> float:
 	var Dmg = 0
 	if (ScaleStat.size() == 0):

@@ -15,6 +15,9 @@ func GetDesc(Tier : int, _targetOverride : String = "") -> String:
 			Desc += g.GetDesc(Tier)
 	return Desc
 
+func CanBeInPassive() -> bool:
+	return false
+
 func GetBattleDesc(User : BattleShipStats, Tier : int, _targetOverride : String = "") -> String:
 	var Desc = "Avoid an incomming\n[color=#ffc315]{0}[/color]".format([OffensiveCardModule.AtackTypes.keys()[CounterType].replace("_", " ")])
 	if (OnSuccesfullDeffenceModules.size() > 0):

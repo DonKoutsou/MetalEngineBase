@@ -11,6 +11,9 @@ func GetDesc(_Tier : int, _targetOverride : String = "") -> String:
 	return ""
 
 @abstract
+func CanBeInPassive() -> bool
+
+@abstract
 func NeedsTargetSelect() -> bool
 
 @abstract

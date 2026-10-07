@@ -6,6 +6,9 @@ class_name BurnEnemyCardModule
 func NeedsTargetSelect() -> bool:
 	return true
 
+func CanBeInPassive() -> bool:
+	return true
+
 func GetDesc(Tier : int, _targetOverride : String = "") -> String:
 	if (AOE):
 		return "[[CT_BURN]] {0} [[CT_CARDSENEM]]".format([GetBurnAmmount(Tier)])

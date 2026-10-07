@@ -9,6 +9,9 @@ func GetDesc(_Tier : int, _targetOverride : String = "") -> String:
 func NeedsTargetSelect() -> bool:
 	return false
 
+func CanBeInPassive() -> bool:
+	return false
+
 func Handle(Performer : BattleShipStats, Action : CardStats, _Targets : Array[BattleShipStats] = []) -> AnimationData:
 	if (Action.Burned):
 		return DeffensiveAnimationData.new()

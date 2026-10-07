@@ -17,6 +17,9 @@ func GetDesc(Tier : int, _targetOverride : String = "") -> String:
 			Desc += g.GetDesc(Tier)
 	return Desc
 
+func CanBeInPassive() -> bool:
+	return false
+
 func GetBattleDesc(User : BattleShipStats, Tier : int, _targetOverride : String = "") -> String:
 	var Desc = ""
 	if (ReductionPercent > 0):

@@ -16,6 +16,9 @@ func GetDesc(Tier : int, targetOverride : String = "") -> String:
 			
 	return "[color=#6be2e9]+{0} Shield[/color] for {1}".format([GetShieldAmm(Tier), targetString]).replace(".0", "")
 
+func CanBeInPassive() -> bool:
+	return true
+
 func GetShieldAmm(Tier : float) -> float:
 	if (TierUpgradeMethod == DamageInfo.CalcuationMethod.ADD):
 		return ShieldAmm + (TierUpgrade * Tier)
