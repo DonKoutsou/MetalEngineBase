@@ -6,7 +6,7 @@ class_name BuffNextAttackModule
 
 const StatText = "[color=#ffc315]HULL[/color][p][color=#6be2e9]SHIELD[/color][p][color=#308a4d]SPEED[/color][p][color=#f35033]FPWR[/color]"
 
-func CanBeInPassive() -> bool:
+static func CanBeInPassive() -> bool:
 	return true
 
 func NeedsTargetSelect() -> bool:

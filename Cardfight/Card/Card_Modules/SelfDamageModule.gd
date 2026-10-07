@@ -14,7 +14,7 @@ func GetFinalDamage(Tier : int) -> float:
 func NeedsTargetSelect() -> bool:
 	return false
 
-func CanBeInPassive() -> bool:
+static func CanBeInPassive() -> bool:
 	return true
 
 func Handle(Performer : BattleShipStats, Action : CardStats, Targets : Array[BattleShipStats] = []) -> AnimationData:

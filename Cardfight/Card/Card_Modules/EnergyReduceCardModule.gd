@@ -9,7 +9,7 @@ const StatText = "[color=#ffc315]HULL[/color][p][color=#6be2e9]SHIELD[/color][p]
 func NeedsTargetSelect() -> bool:
 	return true
 
-func CanBeInPassive() -> bool:
+static func CanBeInPassive() -> bool:
 	return true
 
 func GetDesc(Tier : int, _targetOverride : String = "") -> String:

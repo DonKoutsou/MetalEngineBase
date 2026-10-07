@@ -9,7 +9,7 @@ func GetDesc(Tier : int, targetOverride : String = "") -> String:
 func NeedsTargetSelect() -> bool:
 	return false
 
-func CanBeInPassive() -> bool:
+static func CanBeInPassive() -> bool:
 	return true
 
 func Handle(_Performer : BattleShipStats, Action : CardStats, Targets : Array[BattleShipStats] = []) -> AnimationData:

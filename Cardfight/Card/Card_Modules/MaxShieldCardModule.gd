@@ -19,7 +19,7 @@ func GetDesc(Tier : int, targetOverride : String = "") -> String:
 
 	return "[color=#ffc315]Remaining Energy[/color] * [color=#ffc315]{0}[/color] [color=#6be2e9]Shield[/color] for {1}".format([ShieldPerEnergy * GetShieldPerEnergy(Tier), targetString])
 
-func CanBeInPassive() -> bool:
+static func CanBeInPassive() -> bool:
 	return false
 
 func GetBattleDesc(User : BattleShipStats, Tier : int, _targetOverride : String = "") -> String:

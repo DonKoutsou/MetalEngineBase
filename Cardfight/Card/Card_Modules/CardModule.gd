@@ -10,8 +10,8 @@ class_name CardModule
 func GetDesc(_Tier : int, _targetOverride : String = "") -> String:
 	return ""
 
-@abstract
-func CanBeInPassive() -> bool
+static func CanBeInPassive() -> bool:
+	return true
 
 @abstract
 func NeedsTargetSelect() -> bool

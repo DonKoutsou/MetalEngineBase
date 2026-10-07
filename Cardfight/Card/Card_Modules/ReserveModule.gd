@@ -15,7 +15,7 @@ func GetDesc(Tier : int, targetOverride : String = "") -> String:
 
 	return "Adds [color=#ffc315]{0}[/color] Energy Reserve to {1}".format([GetEnergy(Tier), targetString])
 
-func CanBeInPassive() -> bool:
+static func CanBeInPassive() -> bool:
 	return true
 	
 func GetEnergy(Tier : int) -> int:

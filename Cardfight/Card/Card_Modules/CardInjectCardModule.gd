@@ -7,7 +7,7 @@ class_name CardInjectCardModule
 func NeedsTargetSelect() -> bool:
 	return true
 
-func CanBeInPassive() -> bool:
+static func CanBeInPassive() -> bool:
 	return true
 
 func GetDesc(Tier : int, _targetOverride : String = "") -> String:

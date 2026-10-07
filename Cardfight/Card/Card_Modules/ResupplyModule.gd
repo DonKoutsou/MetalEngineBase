@@ -14,7 +14,7 @@ func GetEnergyAmmount(Tier : int) -> int:
 		return roundi(ResupplyAmmount + (TierUpgrade * Tier))
 	return ResupplyAmmount * max((TierUpgrade * Tier), 1)
 
-func CanBeInPassive() -> bool:
+static func CanBeInPassive() -> bool:
 	return true
 
 func NeedsTargetSelect() -> bool:

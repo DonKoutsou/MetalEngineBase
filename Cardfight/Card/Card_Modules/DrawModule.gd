@@ -15,7 +15,7 @@ func GetDrawAmmount(Tier : int) -> int:
 		return roundi(DrawAmmount + roundi((TierUpgrade * Tier)))
 	return roundi(DrawAmmount * roundi(max((TierUpgrade * Tier), 1)))
 
-func CanBeInPassive() -> bool:
+static func CanBeInPassive() -> bool:
 	return false
 
 func NeedsTargetSelect() -> bool:
