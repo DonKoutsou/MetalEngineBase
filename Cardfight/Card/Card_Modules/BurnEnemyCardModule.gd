@@ -1,4 +1,4 @@
-extends OffensiveCardModule
+extends CardModule
 class_name BurnEnemyCardModule
 
 @export var ammToBurn : int

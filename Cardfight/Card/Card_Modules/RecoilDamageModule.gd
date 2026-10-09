@@ -1,7 +1,7 @@
 extends CardModule
 class_name RecoilDamageModule
 
-@export var RecoilPercent : int
+@export_range(0, 200) var RecoilPercent : int
 
 func GetDesc(_Tier : int, _targetOverride : String = "") -> String:
 	return "[color=#ffc315]{0}%[/color] recoil damage.".format([RecoilPercent])
