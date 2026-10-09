@@ -79,3 +79,8 @@ func _copy_file(source: String, destination: String) -> void:
 
 func _on_line_edit_text_changed(new_text: String) -> void:
 	locationText.text = selected
+
+
+func _on_clear_pressed() -> void:
+	SetFile("")
+	Changed.emit("")

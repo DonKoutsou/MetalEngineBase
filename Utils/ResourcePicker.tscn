@@ -27,5 +27,10 @@ icon = ExtResource("2_tldq8")
 icon_alignment = 1
 expand_icon = true
 
+[node name="Clear" type="Button" parent="HBoxContainer" unique_id=1163586051]
+layout_mode = 2
+text = "X"
+
 [connection signal="text_changed" from="HBoxContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="pressed" from="HBoxContainer/Change" to="." method="_on_change_pressed"]
+[connection signal="pressed" from="HBoxContainer/Clear" to="." method="_on_clear_pressed"]
