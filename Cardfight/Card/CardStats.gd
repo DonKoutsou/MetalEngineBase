@@ -2,7 +2,7 @@ extends Resource
 class_name CardStats
 
 #@export var Icon : Texture
-@export_file() var txFile : String
+@export_file("*.png") var txFile : String
 @export var CardName : String
 @export var CardDescriptionOverride : String
 
