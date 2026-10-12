@@ -86,15 +86,23 @@ func GetDescription() -> String:
 		Desc += "\n"
 	
 	if (OnUseModules.size() > 0):
+		if (Desc.length() > 0):
+			Desc += "\n"
 		Desc += "[color=#ffc315][[CT_ONUSE]][/color] : "
-		for g in OnUseModules:
-			Desc += g.GetDesc(RealTier)
+		for index in OnUseModules.size():
+			if (index > 0):
+				Desc += "\n"
+			Desc += OnUseModules[index].GetDesc(RealTier)
+			
 	if (OnDiscardModules.size() > 0):
 		if (Desc.length() > 0):
 			Desc += "\n"
 		Desc += "[color=#ffc315][[CT_ONDISC]][/color] : "
-		for g in OnDiscardModules:
-			Desc += g.GetDesc(RealTier)
+		
+		for index in OnDiscardModules.size():
+			if (index > 0):
+				Desc += "\n"
+			Desc += OnDiscardModules[index].GetDesc(RealTier)
 	
 	if (Passive != null):
 		Desc += Passive.GetDesc(RealTier)
@@ -122,16 +130,24 @@ func GetBattleDescription(User : BattleShipStats) -> String:
 		Desc += "\n"
 	
 	if (OnUseModules.size() > 0):
+		if (Desc.length() > 0):
+			Desc += "\n"
 		Desc += "[color=#ffc315][[CT_ONUSE]][/color] : "
-		for g in OnUseModules:
-			Desc +=  g.GetBattleDesc(User, RealTier)
+		for index in OnUseModules.size():
+			if (index > 0):
+				Desc += "\n"
+			Desc += OnUseModules[index].GetBattleDesc(User, RealTier)
+			
 	if (OnDiscardModules.size() > 0):
 		if (Desc.length() > 0):
 			Desc += "\n"
 		Desc += "[color=#ffc315][[CT_ONDISC]][/color] : "
 		Desc += "\n"
-		for g in OnDiscardModules:
-			Desc += g.GetBattleDesc(User, RealTier)
+
+		for index in OnDiscardModules.size():
+			if (index > 0):
+				Desc += "\n"
+			Desc += OnDiscardModules[index].GetBattleDesc(User, RealTier)
 	
 	if (Passive != null):
 		Desc += Passive.GetBattleDesc(User, RealTier)
