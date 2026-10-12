@@ -20,11 +20,16 @@ static func CanBeInPassive() -> bool:
 func Handle(_Performer : BattleShipStats, Action : CardStats, _Targets : Array[BattleShipStats] = []) -> AnimationData:
 	if (Action.Burned):
 		return DeffensiveAnimationData.new()
-	var OffensiveModule = Action.OnPerformModule.duplicate() as OffensiveCardModule
-	var NewAction = Action.duplicate()
-	NewAction.OnPerformModule = OffensiveModule
-	Action = NewAction
-	OffensiveModule.Damage += OffensiveModule.Damage * GetStackDamage(Action.Tier)
+	
+	for modIndex in Action.OnUseModules.size():
+		var mod = Action.OnUseModules[modIndex]
+		if (mod is OffensiveCardModule):
+			var newMod = mod.duplicate()
+			var NewAction = Action.duplicate()
+			NewAction.OnUseModules[modIndex] = newMod
+			Action = NewAction
+			newMod.Damage += newMod.Damage * GetStackDamage(Action.Tier)
+		
 	var Data = DeffensiveAnimationData.new()
 	Data.Mod = self
 	#Data.Targets = Targets

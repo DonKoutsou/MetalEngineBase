@@ -4,9 +4,7 @@ class_name OnCardPlayedPassive
 
 func OnActionPerformed(data : Dictionary, _C : CardStats, PassiveOwner : BattleShipStats) -> PassiveAnimationData:
 	var card : CardStats = data["Card"]
-	if (card.OnPerformModule != null and card.OnPerformModule is not OffensiveCardModule):
-		return null
-		
+
 	var actionReceiver : BattleShipStats = data["Receiver"]
 	
 	var possibleReceivers : Array[BattleShipStats] = GetPossibleReceivers(data, PassiveOwner)

@@ -20,8 +20,10 @@ func Handle(Performer : BattleShipStats, Action : CardStats, _Targets : Array[Ba
 	if (Action.Burned):
 		return DeffensiveAnimationData.new()
 	
-	var AtackMod = Action.OnPerformModule as OffensiveCardModule
-	var finalDmg = AtackMod.GetFinalDamage(Performer, Action.Tier)
+	var finalDmg : float = 0
+	for mod in Action.OnUseModules:
+		if (mod is OffensiveCardModule):
+			finalDmg += mod.GetFinalDamage(Performer, Action.Tier)
 	
 	var Callables : Array[Callable]
 	var Recoil = GetRecoilAmmount(finalDmg)
@@ -32,6 +34,7 @@ func Handle(Performer : BattleShipStats, Action : CardStats, _Targets : Array[Ba
 	
 	var Data : Dictionary
 	Data["Def"] = null
+	Data["DefMod"] = null
 	Data["Viz"] = Performer.ShipViz.ShipIcon
 	var DefList : Dictionary[BattleShipStats, Dictionary]
 	DefList[Performer] = Data

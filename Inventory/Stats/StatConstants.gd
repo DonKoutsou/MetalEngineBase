@@ -3,7 +3,7 @@ extends Node
 
 class_name STAT_CONST
 
-const REFUEL_TICK : float = 0.05
+const REFUEL_TICK : float = 0.025
 
 const StatToolTips : Dictionary = {
 	STATS.FUEL_TANK : "Indicates how much fuel a ship can carry. Combined with fuel efficiency, this determines the ship’s maximum travel distance without refueling.",

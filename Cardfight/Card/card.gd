@@ -205,8 +205,6 @@ func SetCardStats(Stats : CardStats, Amm : int = 0) -> void:
 		CardTypeEmblem.modulate = Color("f58800")
 	else:
 		CardTypeEmblem.modulate = Color("8db354")
-	#if (Stats.OnPerformModule is OffensiveCardModule):
-		#CardTex.modulate = Color(1.0, 0.235, 0.132)
 	
 	$SubViewportContainer/SubViewport.set_deferred("render_target_update_mode",  SubViewport.UPDATE_ONCE)
 
@@ -286,15 +284,15 @@ func GetBattleCost(User : BattleShipStats, Stats : CardStats) -> int:
 	if (Stats.Burned):
 		return 0
 	var CCost : int = 0
-	if (Stats.OnPerformModule is EnergyOffensiveCardModule):
-		if (Stats.OnPerformModule.StoredEnergy > 0):
-			CCost = Stats.OnPerformModule.StoredEnergy
-		else:
-			CCost = User.Energy
 			
 	for St in Stats.OnUseModules:
 		if (St is MaxReserveModule or St is MaxShieldCardModule):
 			CCost = User.Energy
+		if (St is EnergyOffensiveCardModule):
+			if (St.StoredEnergy > 0):
+				CCost = St.StoredEnergy
+			else:
+				CCost = User.Energy
 			
 	if (CCost == 0):
 		CCost = Stats.GetCost()

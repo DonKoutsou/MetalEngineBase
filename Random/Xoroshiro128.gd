@@ -109,7 +109,11 @@ func next_i32() -> int:
 	# Uses high bits rather than low bits.
 	return _urshift(next_u64(), 32)
 
-
+func next_float_inclusive() -> float:
+	# Returns a float in [0.0, 1.0].
+	var bits: int = _urshift(next_u64(), 11)
+	return float(bits) / 9007199254740991.0
+	
 func next_float() -> float:
 	# Returns a float in [0.0, 1.0).
 	# Uses the top 53 bits.
@@ -122,12 +126,12 @@ func next_bool() -> bool:
 	return _urshift(next_u64(), 63) != 0
 
 
-func range_int(min_inclusive: int, max_exclusive: int) -> int:
-	if max_exclusive <= min_inclusive:
+func range_int(min_inclusive: int, max_inclusive: int) -> int:
+	if max_inclusive <= min_inclusive:
 		#push_error("max_exclusive must be greater than min_inclusive.")
 		return min_inclusive
 
-	var span: int = max_exclusive - min_inclusive
+	var span: int = max_inclusive - min_inclusive + 1
 
 	# Rejection sampling using 63-bit non-negative values.
 	# This avoids modulo bias.
@@ -142,7 +146,10 @@ func range_int(min_inclusive: int, max_exclusive: int) -> int:
 
 
 func range_float(min_inclusive: float, max_exclusive: float) -> float:
-	return min_inclusive + (max_exclusive - min_inclusive) * next_float()
+	if max_exclusive <= min_inclusive:
+		return min_inclusive
+		
+	return min_inclusive + (max_exclusive - min_inclusive) * next_float_inclusive()
 
 
 func rand_weighted(weights) -> int:

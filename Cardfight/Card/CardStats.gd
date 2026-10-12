@@ -21,9 +21,6 @@ class_name CardStats
 ##Modules applied once card is discarded
 @export var OnDiscardModules : Array[CardModule]
 
-##Modules applied once card is performed, mostly used for attacks. (Applied mostly to AI since players use attacks immidietly)
-@export var OnPerformModule : CardModule
-
 ##Modules applied once turn is finished with card left in hand
 @export var OnLeftOnHandModule : CardModule
 
@@ -82,10 +79,7 @@ func GetDescription() -> String:
 	if (CardDescriptionOverride != ""):
 		return CardDescriptionOverride
 	var Desc = ""
-	if is_instance_valid(OnPerformModule):
-		Desc += OnPerformModule.GetDesc(RealTier)
-		Desc += "\n"
-	
+
 	if (is_instance_valid(OnLeftOnHandModule)):
 		Desc += "[color=#ffc315][[CT_ONLEFT]][/color] : "
 		Desc += OnLeftOnHandModule.GetDesc(RealTier)
@@ -121,9 +115,6 @@ func GetBattleDescription(User : BattleShipStats) -> String:
 		RealTier = Tier
 	
 	var Desc = ""
-	if is_instance_valid(OnPerformModule):
-		Desc += OnPerformModule.GetBattleDesc(User, RealTier)
-		Desc += "\n"
 	
 	if (is_instance_valid(OnLeftOnHandModule)):
 		Desc += "[color=#ffc315][[CT_ONLEFT]][/color] : "
@@ -195,11 +186,6 @@ static func FindTooltips(card : CardStats) -> PackedStringArray:
 		tips.append("TLTP_ONDISC")
 	if (card.UseConditions.has(CardStats.CardUseCondition.ENERGY_DEPENDANT)):
 		tips.append("TLTP_ENDEP")
-
-	var perfModule = card.OnPerformModule
-	if (perfModule != null):
-		tips.append_array(GetTooltipsForModule(perfModule))
-	
 	return tips
 
 #-------------------------------------------------------
