@@ -189,7 +189,8 @@ func SetCardStats(Stats : CardStats, Amm : int = 0) -> void:
 		
 
 	CardName.text = Stats.GetCardName().to_upper()
-	CardTex.texture = ResourceLoader.load(Stats.txFile)
+	if (!Stats.txFile.is_empty()):
+		CardTex.texture = ResourceLoader.load(Stats.txFile)
 	
 	$Amm.visible = Amm > 1
 	AmmountLabel.text = "{0}x".format([Amm])
