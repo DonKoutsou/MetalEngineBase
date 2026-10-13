@@ -290,6 +290,7 @@ enum CardUseCondition{
 	RESERVE_DEPENDANT,
 	ENOUGH_TURNS_PASSED,
 	ON_FIRE,
+	NOT_LAST,
 }
 enum AnimatioType{
 	NONE,
