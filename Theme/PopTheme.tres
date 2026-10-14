@@ -144,6 +144,27 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xybg7"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ecge5"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -179,27 +200,6 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xybg7"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(1, 1, 1, 0.75)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
 
 [sub_resource type="Image" id="Image_xwr5s"]
 data = {
@@ -1401,21 +1401,21 @@ LinkButton/colors/font_outline_color = Color(0.21176471, 0.14901961, 0, 1)
 LinkButton/colors/font_pressed_color = Color(1, 0.7647059, 0.08235294, 1)
 LinkButton/constants/outline_size = 4
 LinkButton/styles/focus = ExtResource("9_udhci")
-MenuBar/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+MenuBar/colors/font_color = Color(0.4862745, 0.59607846, 0.67058825, 1)
 MenuBar/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 MenuBar/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
 MenuBar/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 MenuBar/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-MenuBar/colors/font_outline_color = Color(0, 0, 0, 1)
+MenuBar/colors/font_outline_color = Color(0.21176471, 0.21176471, 0.21176471, 1)
 MenuBar/colors/font_pressed_color = Color(1, 1, 1, 1)
 MenuBar/constants/h_separation = 4
-MenuBar/constants/outline_size = 0
-MenuBar/font_sizes/font_size = 16
+MenuBar/constants/outline_size = 2
+MenuBar/font_sizes/font_size = 18
 MenuBar/fonts/font = ExtResource("14_xwr5s")
 MenuBar/styles/disabled = SubResource("StyleBoxFlat_nyryc")
-MenuBar/styles/hover = SubResource("StyleBoxFlat_ecge5")
-MenuBar/styles/normal = SubResource("StyleBoxFlat_sxi1e")
-MenuBar/styles/pressed = SubResource("StyleBoxFlat_wwfp1")
+MenuBar/styles/hover = ExtResource("3_n3ok3")
+MenuBar/styles/normal = ExtResource("4_dknas")
+MenuBar/styles/pressed = ExtResource("5_27xf5")
 MenuButton/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 MenuButton/colors/font_disabled_color = Color(1, 1, 1, 0.3)
 MenuButton/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
