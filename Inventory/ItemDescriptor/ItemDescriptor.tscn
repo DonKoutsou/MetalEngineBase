@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://cgs0u1j4mhhx5"]
 
-[ext_resource type="Script" uid="uid://dgovu7lhdjrjv" path="res://MetalEngineBase/Inventory/ItemDescriptor/ItemDescriptor.gd" id="1_2v1h2"]
-[ext_resource type="PackedScene" uid="uid://b4yumrb4c0xyd" path="res://MetalEngineBase/Cardfight/Card/Card.tscn" id="3_40o7a"]
-[ext_resource type="StyleBox" uid="uid://0fbvc4n3mb7l" path="res://MetalEngineBase/Inventory/Stats/StatContainer/ProgrssBarBack.tres" id="4_si1ht"]
-[ext_resource type="Script" uid="uid://bcrnrsyr12m2a" path="res://MetalEngineBase/Utils/InputScroll.gd" id="4_ytvfy"]
-[ext_resource type="Script" uid="uid://bm68ow8pgjukx" path="res://Scenes/Card_Fight/External_UI/CardHandContainer.gd" id="5_si1ht"]
+[ext_resource type="Script" uid="uid://dgovu7lhdjrjv" path="res://MetalEngineBase/Inventory/ItemDescriptor/ItemDescriptor.gd" id="1_b8hf8"]
+[ext_resource type="PackedScene" uid="uid://b4yumrb4c0xyd" path="res://MetalEngineBase/Cardfight/Card/Card.tscn" id="2_rrcjt"]
+[ext_resource type="Script" uid="uid://bcrnrsyr12m2a" path="res://MetalEngineBase/Utils/InputScroll.gd" id="3_rt2lv"]
+[ext_resource type="StyleBox" uid="uid://0fbvc4n3mb7l" path="res://MetalEngineBase/Inventory/Stats/StatContainer/ProgrssBarBack.tres" id="4_crofd"]
+[ext_resource type="Script" uid="uid://bm68ow8pgjukx" path="res://Scenes/Card_Fight/External_UI/CardHandContainer.gd" id="5_up4vf"]
 
 [node name="ItemDesc" type="PanelContainer" unique_id=784805534 node_paths=PackedStringArray("ItemName", "ItemDesc", "TransferButton", "UpgradeButton", "CancelUpgradeButton", "CancelInstallButton", "AddItemButton", "IncreaseItemButton", "RemoveItemButton", "UpgradeLabel", "CardSection", "CardPlecement", "CloseButton") groups=["ItemDescriptor"]]
 anchors_preset = 15
@@ -15,8 +15,8 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-script = ExtResource("1_2v1h2")
-CardScene = ExtResource("3_40o7a")
+script = ExtResource("1_b8hf8")
+CardScene = ExtResource("2_rrcjt")
 ItemName = NodePath("HBoxContainer/HBoxContainer/ItemName")
 ItemDesc = NodePath("HBoxContainer/InputScroll/VBoxContainer/ItemDesc")
 TransferButton = NodePath("HBoxContainer/ShipPartActions/Transfer")
@@ -62,7 +62,7 @@ layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
-script = ExtResource("4_ytvfy")
+script = ExtResource("3_rt2lv")
 metadata/_custom_type_script = "uid://bcrnrsyr12m2a"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/InputScroll" unique_id=480395351]
@@ -74,7 +74,7 @@ size_flags_vertical = 3
 visible = false
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
-theme_override_styles/panel = ExtResource("4_si1ht")
+theme_override_styles/panel = ExtResource("4_crofd")
 
 [node name="Label" type="RichTextLabel" parent="HBoxContainer/InputScroll/VBoxContainer" unique_id=1157459895]
 clip_contents = false
@@ -109,7 +109,7 @@ layout_mode = 2
 visible = false
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
-theme_override_styles/panel = ExtResource("4_si1ht")
+theme_override_styles/panel = ExtResource("4_crofd")
 
 [node name="CardsSection" type="VBoxContainer" parent="HBoxContainer/InputScroll/VBoxContainer/VBoxContainer" unique_id=861473671]
 layout_mode = 2
@@ -126,14 +126,14 @@ custom_minimum_size = Vector2(325, 270)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 3
-script = ExtResource("5_si1ht")
+script = ExtResource("5_up4vf")
 metadata/_custom_type_script = "uid://bm68ow8pgjukx"
 
 [node name="Panel4" type="Panel" parent="HBoxContainer/InputScroll/VBoxContainer/VBoxContainer" unique_id=1832707288]
 visible = false
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
-theme_override_styles/panel = ExtResource("4_si1ht")
+theme_override_styles/panel = ExtResource("4_crofd")
 
 [node name="ShipPartActions" type="HBoxContainer" parent="HBoxContainer" unique_id=596959331]
 layout_mode = 2
