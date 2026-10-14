@@ -150,6 +150,33 @@ func SetWorkShopData(Box : Inventory_Box_Res, CanUpgrade : bool, Owner : Captain
 	else:
 		CardSection.visible = false
 
+func SetManual(It : Item) -> void:
+	var col = ColorManager.GetCurrentColor().to_html()
+	ItemName.text = It.GetItemName().replace("#ffc315", "{0}".format([col]))
+	ItemDesc.text = It.GetItemDesc().replace("#ffc315", "{0}".format([col]))
+	ItemDesc.visible = true
+	
+	for g in CardPlecement.get_children():
+		g.queue_free()
+		
+	if (It.CardProviding.size() > 0):
+		CardSection.get_parent().visible = true
+		var CardsChecked : Array[CardStats]
+		for g in It.CardProviding:
+			if (CardsChecked.has(g)):
+				continue
+			
+			CardsChecked.append(g)
+			
+			var CardS = g.duplicate() as CardStats
+			CardS.Tier = It.Tier
+			var card = CardScene.instantiate() as Card
+			card.SetCardStats(CardS, It.CardProviding.count(g))
+			CardPlecement.add_child(card)
+			card.Dissable()
+	else:
+		CardSection.get_parent().visible = false
+	
 
 func SetData(Box : Inventory_Box_Res, CanUpgrade : bool, CanTransfer : bool, CanAdd : bool, CanRemove : bool, ShowDescription : bool, HasUp : bool) -> void:
 	#set_physics_process(false)
