@@ -156,6 +156,11 @@ func SetManual(It : Item) -> void:
 	ItemDesc.text = It.GetItemDesc().replace("#ffc315", "{0}".format([col]))
 	ItemDesc.visible = true
 	
+	TransferButton.visible = false
+	AddItemButton.visible = false
+	UpgradeButton.visible = false
+	CancelUpgradeButton.visible = false
+	
 	for g in CardPlecement.get_children():
 		g.queue_free()
 		
