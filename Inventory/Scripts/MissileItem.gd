@@ -3,7 +3,6 @@ extends Item
 class_name MissileItem
 
 @export_file("*.tscn") var MissileFile : String
-#@export var MissileName : String
 @export var Distance : int = 1500
 @export var Speed : float = 1
 @export var Damage : int = 30

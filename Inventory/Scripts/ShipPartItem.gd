@@ -2,10 +2,11 @@
 extends Item
 class_name ShipPart
 
+@export_group("Upgrade")
 @export var Upgrades : Array[ShipPartUpgrade]
 @export var UpgradeVersion : ShipPart
 @export var UpgradeTime : float
-@export var IsDamaged : bool = false
+@export_group("Dispsition")
 @export var disp : DispositionManager.Dispositions = DispositionManager.Dispositions.KINETIC
 @export var DispositionAmm : float = 0.1
 
