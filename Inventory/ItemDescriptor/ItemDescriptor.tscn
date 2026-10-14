@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b4yumrb4c0xyd" path="res://MetalEngineBase/Cardfight/Card/Card.tscn" id="2_rrcjt"]
 [ext_resource type="Script" uid="uid://bcrnrsyr12m2a" path="res://MetalEngineBase/Utils/InputScroll.gd" id="3_rt2lv"]
 [ext_resource type="StyleBox" uid="uid://0fbvc4n3mb7l" path="res://MetalEngineBase/Inventory/Stats/StatContainer/ProgrssBarBack.tres" id="4_crofd"]
-[ext_resource type="Script" uid="uid://bm68ow8pgjukx" path="res://Scenes/Card_Fight/External_UI/CardHandContainer.gd" id="5_up4vf"]
+[ext_resource type="Script" uid="uid://bm68ow8pgjukx" path="res://MetalEngineBase/Utils/CardHandContainer.gd" id="5_up4vf"]
 
 [node name="ItemDesc" type="PanelContainer" unique_id=784805534 node_paths=PackedStringArray("ItemName", "ItemDesc", "TransferButton", "UpgradeButton", "CancelUpgradeButton", "CancelInstallButton", "AddItemButton", "IncreaseItemButton", "RemoveItemButton", "UpgradeLabel", "CardSection", "CardPlecement", "CloseButton") groups=["ItemDescriptor"]]
 anchors_preset = 15
