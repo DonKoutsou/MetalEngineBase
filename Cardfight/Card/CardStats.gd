@@ -113,6 +113,12 @@ func GetDescription() -> String:
 	
 	return Helper.Translate(Desc)
 
+func GetTier() -> int :
+	var RealTier = 1
+	if (AllowTier):
+		RealTier = Tier
+	return RealTier
+
 #-------------------------------------------------------
 func GetBattleDescription(User : BattleShipStats) -> String:
 	if (CardDescriptionOverride != ""):

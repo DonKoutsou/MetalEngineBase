@@ -30,7 +30,7 @@ func _exit_tree() -> void:
 static func GetInstance() -> WorldView:
 	return Instance
 
-func AdjustStat(Stat : WorldViews, Amm : int, Notify : bool) -> void:
+func AdjustStat(Stat : WorldViews, Amm : int, _notify : bool) -> void:
 	WorldviewStats[Stat] += Amm
 	print("Worldview stat {0} new value is {1}".format([WorldViews.keys()[Stat], WorldviewStats[Stat]]))
 	#if (Notify):

@@ -1,2 +1,3 @@
+@tool
 extends String_Happening_Option
 class_name EndGame_Happening_Option

@@ -467,7 +467,7 @@ func ItemUpgradeFinished() -> void:
 		UpgradedItem.Upgrades[g].CurrentValue = Part.Upgrades[g].CurrentValue
 	AddItem(UpgradedItem)
 	_ItemBeingUpgraded = null
-	UpgradeFinished.emit(Part.ItemName, UpgradedItem.ItemName)
+	UpgradeFinished.emit(Part, UpgradedItem)
 	
 func ItemEquipFinished() -> void:
 	RemoveItemFromBox(_EquipLocation)

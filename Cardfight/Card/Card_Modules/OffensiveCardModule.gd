@@ -138,27 +138,7 @@ func GetBattleDesc(User : BattleShipStats, Tier : int, targetOverride : String =
 
 	var Desc = "Hit {0}".format([targetString])
 	
-	var FinalDamage = 0.0
-	if (ScaleStat.size() == 0):
-		FinalDamage = Damage
-	for stat in ScaleStat:
-		var Dmg : float
-		if (stat.ScalingStat == CardModule.Stat.FIREPOWER):
-			Dmg = stat.GetDamage(GetTieredDamage(Tier), User.GetFirePower())
-			
-		else : if (stat.ScalingStat == CardModule.Stat.SPEED):
-			Dmg = stat.GetDamage(GetTieredDamage(Tier), User.GetSpeed())
-		
-		else : if (stat.ScalingStat == CardModule.Stat.WEIGHT):
-			Dmg = stat.GetDamage(GetTieredDamage(Tier), User.GetWeight())
-		
-		else : if (stat.ScalingStat == CardModule.Stat.DEFENCE):
-			Dmg = stat.GetDamage(GetTieredDamage(Tier), User.GetDef())
-		
-		if (stat.Method == DamageInfo.CalcuationMethod.ADD):
-			FinalDamage += Dmg
-		if (stat.Method == DamageInfo.CalcuationMethod.MULTIPLY):
-			FinalDamage *= Dmg
+	var FinalDamage = GetFinalDamage(User, Tier)
 		
 	var DamageString : String = "{0}".format([snapped(max(0, FinalDamage), 0.1)]).replace(".0", "")
 	for stat in ScaleStat.size():

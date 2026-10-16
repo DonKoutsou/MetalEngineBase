@@ -3,7 +3,7 @@ class_name StackDamageCardModule
 
 @export var BuffAmmount : float
 
-func GetDesc(Tier : int, targetOverride : String = "") -> String:
+func GetDesc(Tier : int, _targetOverride : String = "") -> String:
 	return "Card damage +{0}%".format([GetStackDamage(Tier) - 100]).replace(".0", "")
 
 func GetStackDamage(Tier : int) -> float:

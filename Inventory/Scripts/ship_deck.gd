@@ -68,7 +68,7 @@ func SetDeck(Ch : Captain) -> void:
 			if (parent):
 				g.get_parent().remove_child(g)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if (CardToMake.size() > 0):
 		
 		var card = CardToMake.keys().pop_back()

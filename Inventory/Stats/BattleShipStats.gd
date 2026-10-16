@@ -48,6 +48,8 @@ var DefDebuff : float = 0
 var IsOnFire : bool
 var TurnsOnFire : int
 
+var IsDestroyed : bool
+
 var Friendly : bool
 
 func IsSeverelyBurnt() -> bool:
