@@ -53,6 +53,7 @@ const StatMaxValues : Dictionary = {
 	STATS.SOUND_SIGNATURE : 194,
 	STATS.WINDAGE : 1000
 }
+
 const StatShouldStack : Dictionary = {
 	STATS.FUEL_TANK : true,
 	STATS.FUEL_EFFICIENCY : true,
@@ -76,6 +77,32 @@ const StatShouldStack : Dictionary = {
 	STATS.SOUND_SIGNATURE : true,
 	STATS.SPEED : true,
 	STATS.RANGE : true,
+	STATS.VALUE : true,
+}
+
+const CanHaveBase : Dictionary = {
+	STATS.FUEL_TANK : true,
+	STATS.FUEL_EFFICIENCY : false,
+	STATS.THRUST : false,
+	STATS.FIREPOWER : false,
+	STATS.HULL : true,
+	STATS.INVENTORY_SPACE : true,
+	STATS.VISUAL_RANGE : false,
+	STATS.ELINT : false,
+	STATS.MISSILE_SPACE : true,
+	STATS.WEIGHT : true,
+	STATS.ENGINES_SLOTS : true,
+	STATS.SENSOR_SLOTS : true,
+	STATS.FUEL_TANK_SLOTS : true,
+	STATS.SHIELD_SLOTS : true,
+	STATS.WEAPON_SLOTS : true,
+	STATS.MAX_SHIELD : true,
+	STATS.REPAIR_PRICE : true,
+	STATS.AEROSONAR_RANGE : false,
+	STATS.WINDAGE : true,
+	STATS.SOUND_SIGNATURE : true,
+	STATS.SPEED : false,
+	STATS.RANGE : false,
 	STATS.VALUE : true,
 }
 
