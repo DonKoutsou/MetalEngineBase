@@ -250,16 +250,14 @@ static func SmoothLine2(L : Array, res : float = 200) -> Array[Vector2]:
 static func DistanceToDistance(Dist: float) -> String:
 	if Dist > 8000:
 		return "very far"
-	elif Dist > 5000:
+	else : if Dist > 5000:
 		return "far"
-	elif Dist > 3000:
+	else : if Dist > 3000:
 		return "close"
-	elif Dist > 1000:
+	else : if Dist > 1000:
 		return "fairly close"
-	else:
-		return "very close"
 
-
+	return "very close"
 
 static func reconstruct_path(parent: Dictionary, end_city: String) -> Array:
 	var path = []

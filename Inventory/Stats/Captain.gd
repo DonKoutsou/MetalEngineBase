@@ -1,12 +1,12 @@
 @tool
-extends InheritedResource
+extends Resource
 class_name Captain
 
 @export var CaptainName : String
 @export_file("*.png") var CaptainPortrait : String
 
-@export_file() var ShipIconFile : String
-@export_file() var CardFightIconsFiles : Array[String]
+@export_file("*.tres") var hullData : String
+@export var col : int #Row in the color pallete
 
 @export var CaptainStats : Array[ShipStat]
 #var MappedStats : Array[STAT_CONST.STATS]
@@ -73,9 +73,17 @@ func SetUpStats() -> void:
 				_GetStat(st.UpgradeName).AddShipPartPenalty(st.PenaltyAmmount)
 				FullyRefilStat(st.UpgradeName)
 
+func GetHullData() -> HullData:
+	return load(hullData)
+
+func GetPalletSize() -> int:
+	var pallete : Texture2D = ResourceLoader.load(GetHullData().hull_Pallete)
+	return pallete.get_size().y
+
 func LoadCardFightTextures() -> Array[Texture]:
 	var texts : Array[Texture] = []
-	for g in CardFightIconsFiles:
+	var data : HullData = GetHullData()
+	for g in data.cardFightHullTextures:
 		texts.append(ResourceLoader.load(g))
 	return texts
 
@@ -87,7 +95,10 @@ func GetBattleStats() -> BattleShipStats:
 	var Fp = GetStatBaseValue(STAT_CONST.STATS.FIREPOWER)
 	var MaxShield = GetStatBaseValue(STAT_CONST.STATS.MAX_SHIELD)
 	
-	stats.ShipIcon = ResourceLoader.load(ShipIconFile)
+	var data : HullData = GetHullData()
+	stats.ShipIcon = ResourceLoader.load(data.hullTexture)
+	stats.col = col
+	stats.pallete = data.hull_Pallete
 	stats.cardFightIcons = LoadCardFightTextures()
 	stats.CaptainIcon = CaptainPortrait
 	stats.Name = GetCaptainName()
@@ -245,8 +256,8 @@ func CopyStats(Cpt : Captain) -> void:
 	CaptainName = Cpt.CaptainName
 	TempName = Cpt.TempName
 	CaptainPortrait = Cpt.CaptainPortrait
-	ShipIconFile = Cpt.ShipIconFile
-	CardFightIconsFiles = Cpt.CardFightIconsFiles
+	hullData = Cpt.hullData
+	col = Cpt.col
 	ShipCallsign = Cpt.ShipCallsign
 	Cards = Cpt.Cards
 	ProvidingFunds = Cpt.ProvidingFunds
