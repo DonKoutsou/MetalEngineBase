@@ -8,11 +8,13 @@ class_name CaptainStatContainer
 @export_file("*.tscn") var InventoryScene : String
 @export_file("*.tscn") var LegendScene : String
 @export_file("*.tscn") var DispositionScene : String
+@export_file("*.tscn") var PaintShopScene : String
 
 var ShipStats : InventoryShipStats
 var ShipDeck : ShipDeckViz
 var ShipInventory : CharacterInventoryInterface
 var DispositionScreen : CaptainDispositionUI
+var pShop : Paintshop
 
 @export_group("Nodes")
 @export var CaptainIcon : TextureRect
@@ -41,6 +43,9 @@ func SetCaptain(Cha : Captain) -> void:
 	
 	if (DispositionScreen != null):
 		DispositionScreen.SetStats(Cha)
+	
+	if (pShop != null):
+		pShop.SetData(Cha)
 		
 	CaptainIcon.texture = ResourceLoader.load(Cha.GetHullData().hullTexture)
 	var shader : ShaderMaterial = CaptainIcon.material
@@ -106,6 +111,22 @@ func ShowStats() -> void:
 	transitionToPanel(statParent)
 	ShipStats.SetCaptain(CurrentlyShownCaptain)
 	ShipStats.UpdateValues()
+
+func ShipPaintShop() -> void:
+	if (pShop):
+		return
+	
+	var paintShopScene : PackedScene = load(PaintShopScene)
+	pShop = paintShopScene.instantiate()
+	$PanelContainer.add_child(pShop)
+	pShop.SetData(CurrentlyShownCaptain)
+	transitionToPanel(pShop)
+	pShop.colorChanged.connect(PaintChanged)
+
+func PaintChanged(colorIndex : int) -> void:
+	CurrentlyShownCaptain.col = colorIndex
+	var shader : ShaderMaterial = CaptainIcon.material
+	shader.set_shader_parameter("palette_index", colorIndex)
 
 func ShowDeck() -> void:
 	if (ShipDeck != null):

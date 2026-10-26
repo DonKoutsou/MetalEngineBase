@@ -11,7 +11,7 @@ func OptionResault(EventOrigin) -> String:
 	var Dir = Helper.AngleToDirection(EventOrigin.global_position.angle_to_point(ClosestRecruitLoc))
 	var Dist = Helper.DistanceToDistance(EventOrigin.global_position.distance_to(ClosestRecruitLoc))
 	
-	return "I know of a fleet nearby who's been looking to joint the rebelion, the are {0} to the {1}.".format([Dist, Dir])
+	return "I know of a fleet nearby who's been looking to join the rebelion, they are {0} to the {1}.".format([Dist, Dir])
 
 func FindClosestRecruit(EventOrigin) -> Vector2:
 	var RecruitLocations =  EventOrigin.get_tree().get_nodes_in_group("CrewRecruitTown")
