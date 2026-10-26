@@ -77,14 +77,14 @@ func GetHullData() -> HullData:
 	return load(hullData)
 
 func GetPalletSize() -> int:
-	var pallete : Texture2D = ResourceLoader.load(GetHullData().hull_Pallete)
+	var pallete : Texture2D = GetHullData().hullPallete
 	return pallete.get_size().y
 
 func LoadCardFightTextures() -> Array[Texture]:
 	var texts : Array[Texture] = []
 	var data : HullData = GetHullData()
-	for g in data.cardFightHullTextures:
-		texts.append(ResourceLoader.load(g))
+	for g in data.cardFightHullTx:
+		texts.append(g)
 	return texts
 
 func GetBattleStats() -> BattleShipStats:
@@ -96,9 +96,9 @@ func GetBattleStats() -> BattleShipStats:
 	var MaxShield = GetStatBaseValue(STAT_CONST.STATS.MAX_SHIELD)
 	
 	var data : HullData = GetHullData()
-	stats.ShipIcon = ResourceLoader.load(data.hullTexture)
+	stats.ShipIcon = data.hulTx
 	stats.col = col
-	stats.pallete = data.hull_Pallete
+	stats.pallete = data.hullPallete
 	stats.cardFightIcons = LoadCardFightTextures()
 	stats.CaptainIcon = CaptainPortrait
 	stats.Name = GetCaptainName()

@@ -42,10 +42,10 @@ func SetCaptain(Cha : Captain) -> void:
 	if (DispositionScreen != null):
 		DispositionScreen.SetStats(Cha)
 		
-	CaptainIcon.texture = ResourceLoader.load(Cha.GetHullData().hullTexture)
+	CaptainIcon.texture = Cha.GetHullData().hulTx
 	var shader : ShaderMaterial = CaptainIcon.material
 	shader.set_shader_parameter("palette_index", Cha.col)
-	shader.set_shader_parameter("palette_texture", ResourceLoader.load(Cha.GetHullData().hull_Pallete))
+	shader.set_shader_parameter("palette_texture", Cha.GetHullData().hullPallete)
 	
 	if (Cha.CaptainPortrait != ""):
 		CaptainIcon2.texture = load(Cha.CaptainPortrait)
