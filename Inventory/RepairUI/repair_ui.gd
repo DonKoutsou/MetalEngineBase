@@ -24,7 +24,7 @@ func SetStats(Ship : Captain) -> void:
 		RepairPricePerUnit /= 2
 
 	SetHullData(Ship)
-	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull), PlMaxHull])
+	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull), roundi(PlMaxHull)])
 	HullBar.max_value = PlMaxHull
 	HullBar.set_value_no_signal(PlHull + Ship.Repair_Parts)
 	RepairPriceLabel.text = var_to_str(RepairPricePerUnit).replace(".0", "")
@@ -78,7 +78,7 @@ func UpdateRepairBar(AddedRepair : float):
 	#PlayerWallet.AddFunds(-(AddedRepair * RepairpricePerRepairValue))
 	HullBar.value = PlHull + CurrentShip.Repair_Parts
 	#FundAmm.text = var_to_str(roundi(PlFunds)) + " ₯"
-	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull + CurrentShip.Repair_Parts), PlMaxHull])
+	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull + CurrentShip.Repair_Parts), roundi(PlMaxHull)])
 	
 	var TimeMulti = 0.025
 		

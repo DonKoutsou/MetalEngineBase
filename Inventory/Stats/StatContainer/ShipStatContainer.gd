@@ -50,7 +50,7 @@ func SetDataCustom(MaxValue : float, StatMetric : String, StatName : String, Sta
 
 func UpdateStatCustom(StatVal : float, ItemVar : float, ItemPenalty : float) -> void:
 	var finalValue = snappedf(StatVal + ItemVar - ItemPenalty, 0.1)
-	StatValueLabel.text = "{0} {1}".format([finalValue, Metric])
+	StatValueLabel.text = "{0} {1}".format([finalValue, Metric]).replace(".0", "")
 	
 	ShipStatBar.value = 0
 	ItemStatBar.value = 0
