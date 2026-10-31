@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://by2agq1mq41e2"]
+
+[ext_resource type="Script" uid="uid://622u6ks3adbs" path="res://MetalEngineBase/Inventory/RepairUI/repair_ui.gd" id="1_6ilna"]
+[ext_resource type="Resource" uid="uid://cl03ayn238giq" path="res://Resources/Funds/PlayerWallet.tres" id="2_g5qpq"]
+
+[node name="Control" type="Control" unique_id=444651577 node_paths=PackedStringArray("RepairPriceLabel", "CurrentHullLabel", "HullBar", "ReprairTimeLabel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6ilna")
+RepairPriceLabel = NodePath("MarginContainer/VBoxContainer2/HBoxContainer3/RepairPrice")
+CurrentHullLabel = NodePath("MarginContainer/VBoxContainer2/VBoxContainer3/ProgressBar/HullAmm")
+HullBar = NodePath("MarginContainer/VBoxContainer2/VBoxContainer3/ProgressBar")
+ReprairTimeLabel = NodePath("MarginContainer/VBoxContainer2/HBoxContainer4/RepairTime")
+PlayerWallet = ExtResource("2_g5qpq")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=798841325]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer" unique_id=16495264]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer2" unique_id=592753020]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=29492831]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 24
+text = "Hull Integrity"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=1160118675]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_vertical = 3
+value = 27.12
+show_percentage = false
+
+[node name="HullAmm" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer3/ProgressBar" unique_id=1375508069]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 22
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=1518363999]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer" unique_id=1807454398]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "<"
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer" unique_id=402929649]
+layout_mode = 2
+size_flags_horizontal = 3
+text = ">"
+
+[node name="HBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer2" unique_id=266229931]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer2/HBoxContainer3" unique_id=944859262]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "Repair Price:"
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer2/HBoxContainer3" unique_id=576411161]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+
+[node name="RepairPrice" type="Label" parent="MarginContainer/VBoxContainer2/HBoxContainer3" unique_id=2035092843]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "202"
+horizontal_alignment = 2
+
+[node name="HBoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer2" unique_id=43800533]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer2/HBoxContainer4" unique_id=2007035261]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "Repair Time"
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer2/HBoxContainer4" unique_id=704668036]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+
+[node name="RepairTime" type="Label" parent="MarginContainer/VBoxContainer2/HBoxContainer4" unique_id=2082598370]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 22
+text = "10h 30m"
+horizontal_alignment = 2
+
+[connection signal="gui_input" from="MarginContainer/VBoxContainer2/VBoxContainer3/ProgressBar" to="." method="RepairBar_gui_input"]

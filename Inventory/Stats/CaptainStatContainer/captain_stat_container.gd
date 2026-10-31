@@ -9,12 +9,14 @@ class_name CaptainStatContainer
 @export_file("*.tscn") var LegendScene : String
 @export_file("*.tscn") var DispositionScene : String
 @export_file("*.tscn") var PaintShopScene : String
+@export_file("*.tscn") var RepairScene : String
 
 var ShipStats : InventoryShipStats
 var ShipDeck : ShipDeckViz
 var ShipInventory : CharacterInventoryInterface
 var DispositionScreen : CaptainDispositionUI
 var pShop : Paintshop
+var RepairShop : RepairUI
 
 @export_group("Nodes")
 @export var CaptainIcon : TextureRect
@@ -43,6 +45,9 @@ func SetCaptain(Cha : Captain) -> void:
 	
 	if (DispositionScreen != null):
 		DispositionScreen.SetStats(Cha)
+	
+	if (RepairShop):
+		RepairShop.SetStats(Cha)
 	
 	if (pShop != null):
 		pShop.SetData(Cha)
@@ -112,6 +117,17 @@ func ShowStats() -> void:
 	ShipStats.SetCaptain(CurrentlyShownCaptain)
 	ShipStats.UpdateValues()
 
+func ShowRepair(HasRapairBuff : bool) -> void:
+	if (RepairShop):
+		return
+	
+	var repairScene : PackedScene = load(RepairScene)
+	RepairShop = repairScene.instantiate()
+	RepairShop.hasRepair = HasRapairBuff
+	RepairShop.SetStats(CurrentlyShownCaptain)
+	$PanelContainer.add_child(RepairShop)
+	transitionToPanel(RepairShop)
+
 func ShipPaintShop() -> void:
 	if (pShop):
 		return
@@ -122,6 +138,7 @@ func ShipPaintShop() -> void:
 	pShop.SetData(CurrentlyShownCaptain)
 	transitionToPanel(pShop)
 	pShop.colorChanged.connect(PaintChanged)
+
 
 func PaintChanged(colorIndex : int) -> void:
 	CurrentlyShownCaptain.col = colorIndex
