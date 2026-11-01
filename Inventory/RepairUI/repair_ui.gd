@@ -24,7 +24,7 @@ func SetStats(Ship : Captain) -> void:
 		RepairPricePerUnit /= 2
 
 	SetHullData(Ship)
-	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull), roundi(PlMaxHull)])
+	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull + CurrentShip.Repair_Parts), roundi(PlMaxHull)])
 	HullBar.max_value = PlMaxHull
 	HullBar.set_value_no_signal(PlHull + Ship.Repair_Parts)
 	RepairPriceLabel.text = var_to_str(RepairPricePerUnit).replace(".0", "")
@@ -92,5 +92,5 @@ func UpdateRepairBar(AddedRepair : float):
 func RepairBar_gui_input(event: InputEvent) -> void:
 	if (event is InputEventMouseMotion and Input.is_action_pressed("Click") or event is InputEventScreenDrag):
 		var rel = event.relative
-		var AddedRepair = roundi(((rel.x / 3) * (HullBar.max_value / 100)))
+		var AddedRepair = roundi(((rel.x / 6) * (HullBar.max_value / 100)))
 		UpdateRepairBar(AddedRepair)

@@ -43,6 +43,7 @@ class_name CardStats
 
 ##Used for AI to easily determine if card can be used
 @export var UseConditions : Array[CardUseCondition]
+@export var ForceUseAtEnd : bool = false
 
 ##Allow card to be upgraded with its owner ship part
 @export var AllowTier : bool = true
@@ -297,6 +298,7 @@ enum CardUseCondition{
 	ENOUGH_TURNS_PASSED,
 	ON_FIRE,
 	NOT_LAST,
+	TEAM_ENOUGH_FP,
 }
 enum AnimatioType{
 	NONE,
