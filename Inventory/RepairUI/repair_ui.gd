@@ -5,6 +5,7 @@ class_name RepairUI
 @export var RepairPriceLabel : Label
 @export var CurrentHullLabel : Label
 @export var HullBar : ProgressBar
+@export var PartBar : ProgressBar
 @export var ReprairTimeLabel : Label
 
 @export var PlayerWallet : Wallet
@@ -26,7 +27,9 @@ func SetStats(Ship : Captain) -> void:
 	SetHullData(Ship)
 	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull + CurrentShip.Repair_Parts), roundi(PlMaxHull)])
 	HullBar.max_value = PlMaxHull
-	HullBar.set_value_no_signal(PlHull + Ship.Repair_Parts)
+	PartBar.max_value = PlMaxHull
+	HullBar.set_value_no_signal(PlHull)
+	PartBar.set_value_no_signal(PlHull + Ship.Repair_Parts)
 	RepairPriceLabel.text = var_to_str(RepairPricePerUnit).replace(".0", "")
 	
 	var TimeMulti = 0.025
@@ -76,7 +79,7 @@ func UpdateRepairBar(AddedRepair : float):
 	
 	PlayerWallet.AddFunds(-MoneySpent)
 	#PlayerWallet.AddFunds(-(AddedRepair * RepairpricePerRepairValue))
-	HullBar.value = PlHull + CurrentShip.Repair_Parts
+	PartBar.value = PlHull + CurrentShip.Repair_Parts
 	#FundAmm.text = var_to_str(roundi(PlFunds)) + " ₯"
 	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull + CurrentShip.Repair_Parts), roundi(PlMaxHull)])
 	
@@ -94,3 +97,11 @@ func RepairBar_gui_input(event: InputEvent) -> void:
 		var rel = event.relative
 		var AddedRepair = roundi(((rel.x / 6) * (HullBar.max_value / 100)))
 		UpdateRepairBar(AddedRepair)
+
+
+func _on_increase_pressed() -> void:
+	UpdateRepairBar(1)
+
+
+func _on_reduce_pressed() -> void:
+	UpdateRepairBar(-1)

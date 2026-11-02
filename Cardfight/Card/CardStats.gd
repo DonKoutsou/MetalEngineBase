@@ -9,9 +9,6 @@ class_name CardStats
 ## Energy consumption of card
 @export var Energy : int
 
-## Allow this card to be done twice in one turn?
-@export var AllowDuplicates : bool
-
 ## Consume/Exhaust this card after use?
 @export var OnUsed : OnUsePlacement = OnUsePlacement.NORMAL
 
@@ -299,6 +296,7 @@ enum CardUseCondition{
 	ON_FIRE,
 	NOT_LAST,
 	TEAM_ENOUGH_FP,
+	NO_DUPLICATES,
 }
 enum AnimatioType{
 	NONE,
