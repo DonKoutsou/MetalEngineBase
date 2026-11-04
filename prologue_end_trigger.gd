@@ -6,6 +6,7 @@ class_name PrologueEnd_Trigger
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if (area.get_parent() is PlayerDrivenShip):
+		SimulationManager.GetInstance().TogglePause(true)
 		Ingame_UIManager.GetInstance().CallbackDiag(OutroText, null, "", DialogueEnded, true)
 
 func DialogueEnded() -> void:
