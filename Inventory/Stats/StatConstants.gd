@@ -106,6 +106,64 @@ const CanHaveBase : Dictionary = {
 	STATS.VALUE : true,
 }
 
+const ReducedByCondition : Dictionary = {
+	STATS.FUEL_TANK : true,
+	STATS.FUEL_EFFICIENCY : true,
+	STATS.THRUST : true,
+	STATS.FIREPOWER : true,
+	STATS.HULL : true,
+	STATS.INVENTORY_SPACE : false,
+	STATS.VISUAL_RANGE : true,
+	STATS.ELINT : true,
+	STATS.MISSILE_SPACE : true,
+	STATS.WEIGHT : false,
+	STATS.ENGINES_SLOTS : false,
+	STATS.SENSOR_SLOTS : false,
+	STATS.FUEL_TANK_SLOTS : false,
+	STATS.SHIELD_SLOTS : false,
+	STATS.WEAPON_SLOTS : false,
+	STATS.MAX_SHIELD : true,
+	STATS.REPAIR_PRICE : false,
+	STATS.AEROSONAR_RANGE : true,
+	STATS.WINDAGE : false,
+	STATS.SOUND_SIGNATURE : false,
+	STATS.SPEED : true,
+	STATS.RANGE : true,
+	STATS.VALUE : true,
+}
+
+const RefillCurrentOnRepair : Dictionary = {
+	STATS.FUEL_TANK : false,
+	STATS.FUEL_EFFICIENCY : true,
+	STATS.THRUST : true,
+	STATS.FIREPOWER : true,
+	STATS.HULL : true,
+	STATS.INVENTORY_SPACE : true,
+	STATS.VISUAL_RANGE : true,
+	STATS.ELINT : true,
+	STATS.MISSILE_SPACE : true,
+	STATS.WEIGHT : true,
+	STATS.ENGINES_SLOTS : true,
+	STATS.SENSOR_SLOTS : true,
+	STATS.FUEL_TANK_SLOTS : true,
+	STATS.SHIELD_SLOTS : true,
+	STATS.WEAPON_SLOTS : true,
+	STATS.MAX_SHIELD : true,
+	STATS.REPAIR_PRICE : true,
+	STATS.AEROSONAR_RANGE : true,
+	STATS.WINDAGE : true,
+	STATS.SOUND_SIGNATURE : true,
+	STATS.SPEED : true,
+	STATS.RANGE : true,
+	STATS.VALUE : true,
+}
+
+static func IsStatConditionAffected(Stat : STATS) -> bool:
+	return ReducedByCondition[Stat]
+
+static func ShouldRefillOnRepair(Stat : STATS) -> bool:
+	return RefillCurrentOnRepair[Stat]
+
 static func GetTooltip(Stat : STATS) -> String:
 	
 	return StatToolTips[Stat]
@@ -132,24 +190,28 @@ static func GetStatMetric(Stat : STATS) -> String:
 		STATS.WEIGHT:
 			Metric = "tons"
 		STATS.REPAIR_PRICE:
-			Metric = "Drahma"
+			Metric = "₯"
 		STATS.AEROSONAR_RANGE:
 			Metric = "km"
 		STATS.SOUND_SIGNATURE:
 			Metric = "dB"
 		STATS.WINDAGE:
 			Metric = "m²"
+		STATS.VALUE:
+			Metric = "₯"
 	return Metric
 
-static func GetStatItemBuff(Stat : STATS, Buffs : Array[float]) -> float:
+static func GetStatItemBuff(Stat : STATS, Buffs : Array[ShipPartUpgrade]) -> float:
 	var BuffAmm : float = 0
 	if (ShouldStatStack(Stat)):
 		for g in Buffs:
-			BuffAmm += g
+			BuffAmm += g.UpgradeAmmount
+			
 	else:
 		for g in Buffs:
-			if (g > BuffAmm):
-				BuffAmm = g
+			if (g.UpgradeAmmount > BuffAmm):
+				BuffAmm = g.UpgradeAmmount
+
 	return BuffAmm
 
 static func ShouldStatStack(Stat : STATS) -> bool:

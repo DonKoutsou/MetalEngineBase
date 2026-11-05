@@ -34,8 +34,8 @@ func ShowDif(CapBefore : Captain, CapAfter : Captain) -> void:
 		difstats.append(STAT_CONST.STATS.VALUE)
 	
 	
-	var fuel_Eff_Before = (CapBefore.GetStatFinalValue(STAT_CONST.STATS.FUEL_EFFICIENCY) / pow(wBefore, 0.5)) * 10
-	var fuel_Cap_Before = CapBefore.GetStatFinalValue(STAT_CONST.STATS.FUEL_TANK)
+	var fuel_Eff_Before = (CapBefore.GetStatCurrentValue(STAT_CONST.STATS.FUEL_EFFICIENCY) / pow(wBefore, 0.5)) * 10
+	var fuel_Cap_Before = CapBefore.GetStatCurrentValue(STAT_CONST.STATS.FUEL_TANK)
 	var ShipRange_Before = roundi(fuel_Cap_Before * fuel_Eff_Before)
 	
 	var fuel_Eff_After = (CapAfter.GetStatFinalValue(STAT_CONST.STATS.FUEL_EFFICIENCY) / pow(wAfter, 0.5)) * 10

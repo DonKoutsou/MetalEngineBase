@@ -69,8 +69,8 @@ func SetUpStats() -> void:
 		if (g is ShipPart):
 			itemDisposition[g.disp] += g.DispositionAmm
 			for st : ShipPartUpgrade in g.Upgrades:
-				_GetStat(st.UpgradeName).AddShipPartBuff(st.UpgradeAmmount)
-				_GetStat(st.UpgradeName).AddShipPartPenalty(st.PenaltyAmmount)
+				_GetStat(st.UpgradeName).AddShipPartBuff(st)
+				#_GetStat(st.UpgradeName).AddShipPartPenalty(st.PenaltyAmmount)
 				FullyRefilStat(st.UpgradeName)
 
 func GetHullData() -> HullData:
@@ -246,6 +246,9 @@ func GetStatShipPartBuff(StatN : STAT_CONST.STATS) -> float:
 func GetStatShipPartPenalty(StatN : STAT_CONST.STATS) -> float:
 	return _GetStat(StatN).GetShipPartPenalty()
 
+func GetStatShipPartDamage(StatN : STAT_CONST.STATS) -> float:
+	return _GetStat(StatN).GetShipPartDamage()
+
 func GetStatFinalValue(StatN : STAT_CONST.STATS) -> float:
 	return _GetStat(StatN).GetFinalValue()
 			
@@ -287,18 +290,24 @@ func ConsumeResource(StatN : STAT_CONST.STATS, Consumption : float) -> void:
 func OnShipPartAddedToInventory(It : ShipPart) -> void:
 	itemDisposition[It.disp] += It.DispositionAmm
 	for Up in It.Upgrades:
-		_GetStat(Up.UpgradeName).AddShipPartBuff(Up.UpgradeAmmount)
-		_GetStat(Up.UpgradeName).AddShipPartPenalty(Up.PenaltyAmmount)
+		_GetStat(Up.UpgradeName).AddShipPartBuff(Up)
+		#_GetStat(Up.UpgradeName).AddShipPartPenalty(Up.PenaltyAmmount)
 		
 		#TODO fix this
 		RefillResource(Up.UpgradeName, Up.CurrentValue)
 	ShipPartChanged.emit(It)
 
+func OnShipPartHealed(It : ShipPart) -> void:
+	ShipPartChanged.emit(It) #Emit signal to make sure other places are updated on the stat change
+
+func OnShipPartDamaged(It : ShipPart) -> void:
+	ShipPartChanged.emit(It) #Emit signal to make sure other places are updated on the stat change
+
 func OnShipPartRemovedFromInventory(It : ShipPart) -> void:
 	itemDisposition[It.disp] -= It.DispositionAmm
 	for Up in It.Upgrades:
-		_GetStat(Up.UpgradeName).RemoveShipPartBuff(Up.UpgradeAmmount)
-		_GetStat(Up.UpgradeName).AddShipPartPenalty(-Up.PenaltyAmmount)
+		_GetStat(Up.UpgradeName).RemoveShipPartBuff(Up)
+		#_GetStat(Up.UpgradeName).AddShipPartPenalty(-Up.PenaltyAmmount)
 		if (GetStatCurrentValue(Up.UpgradeName) > GetStatFinalValue(Up.UpgradeName)):
 			FullyRefilStat(Up.UpgradeName)
 	ShipPartChanged.emit(It)
@@ -310,16 +319,19 @@ func GetMaxdB() -> float:
 	return GetShipThrust() / 30
 
 func GetShipThrust() -> float:
-	var Thrust = GetStatFinalValue(STAT_CONST.STATS.THRUST)
+	var Thrust = GetStatCurrentValue(STAT_CONST.STATS.THRUST)
 	return Thrust
 
-func GetValue() -> int:
+func GetValue(includeDamaged : bool = true) -> int:
 	var Value : int = roundi(ProvidingFunds / 2.0)
 	if (_CharInv != null):
 		var InvContents : Dictionary[Item, int] = GetCharacterInventory().GetInventoryContents()
 		for g : Item in InvContents.keys():
+			var condition = 1.0
+			if (includeDamaged and g is ShipPart):
+				condition = g.GetPartConditionNormalised()
 			for z in InvContents[g]:
-				Value += g.Cost
+				Value += g.Cost * condition
 	else:
 		for g : Item in StartingItems:
 			Value += g.Cost

@@ -98,7 +98,26 @@ func GetCardDictionary() -> Dictionary[CardStats, int]:
 					c[C] = 1
 
 	return c
+
+func GetShipParts() -> Array[ShipPart]:
+	var parts : Array[ShipPart]
 	
+	for g : Item in _InventoryContents.keys():
+		if (g is ShipPart):
+			parts.append(g)
+	
+	return parts
+
+func GetDagamedShipParts() -> Array[ShipPart]:
+	var parts : Array[ShipPart]
+	
+	for g : Item in _InventoryContents.keys():
+		if (g is ShipPart):
+			if (g.GetPartConditionNormalised() < 1.0):
+				parts.append(g)
+	
+	return parts
+
 #func GetCardAmmo() -> Dictionary:
 	#return _CardAmmo.duplicate()
 

@@ -20,7 +20,7 @@ class_name ItemDescriptor
 @export var CardSection : Control
 @export var CardPlecement : Control
 @export var CloseButton : Button
-
+@export var PartConditionBar : ProgressBar
 signal ItemUpgraded(Box : Inventory_Box_Res)
 signal ItemUpgradeCancel(Box : Inventory_Box_Res)
 signal ItemInstallCanceled(Box : Inventory_Box_Res)
@@ -185,8 +185,7 @@ func SetManual(It : Item) -> void:
 
 func SetData(Box : Inventory_Box_Res, CanUpgrade : bool, CanTransfer : bool, CanAdd : bool, CanRemove : bool, ShowDescription : bool, HasUp : bool) -> void:
 	#set_physics_process(false)
-	
-	
+
 	DescribedContainer = Box
 	var It = DescribedContainer.GetContainedItem()
 	
@@ -203,6 +202,8 @@ func SetData(Box : Inventory_Box_Res, CanUpgrade : bool, CanTransfer : bool, Can
 	RemoveItemButton.visible = CanRemove
 	#Ship Parts
 	if (It is ShipPart):
+		PartConditionBar.get_parent().get_parent().visible = true
+		PartConditionBar.value = It.GetPartConditionNormalised()
 		IncreaseItemButton.visible = false
 		UpgradeLabel.visible = CanUpgrade
 		if (It.UpgradeVersion == null):

@@ -6,7 +6,7 @@
 [ext_resource type="StyleBox" uid="uid://0fbvc4n3mb7l" path="res://MetalEngineBase/Inventory/Stats/StatContainer/ProgrssBarBack.tres" id="4_crofd"]
 [ext_resource type="Script" uid="uid://bm68ow8pgjukx" path="res://MetalEngineBase/Utils/CardHandContainer.gd" id="5_up4vf"]
 
-[node name="ItemDesc" type="PanelContainer" unique_id=784805534 node_paths=PackedStringArray("ItemName", "ItemDesc", "TransferButton", "UpgradeButton", "CancelUpgradeButton", "CancelInstallButton", "AddItemButton", "IncreaseItemButton", "RemoveItemButton", "UpgradeLabel", "CardSection", "CardPlecement", "CloseButton") groups=["ItemDescriptor"]]
+[node name="ItemDesc" type="PanelContainer" unique_id=784805534 node_paths=PackedStringArray("ItemName", "ItemDesc", "TransferButton", "UpgradeButton", "CancelUpgradeButton", "CancelInstallButton", "AddItemButton", "IncreaseItemButton", "RemoveItemButton", "UpgradeLabel", "CardSection", "CardPlecement", "CloseButton", "PartConditionBar") groups=["ItemDescriptor"]]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -30,8 +30,10 @@ UpgradeLabel = NodePath("HBoxContainer/InputScroll/VBoxContainer/Label")
 CardSection = NodePath("HBoxContainer/InputScroll/VBoxContainer/VBoxContainer/CardsSection")
 CardPlecement = NodePath("HBoxContainer/InputScroll/VBoxContainer/VBoxContainer/CardsSection/CardPlecement")
 CloseButton = NodePath("HBoxContainer/HBoxContainer/Button")
+PartConditionBar = NodePath("HBoxContainer/InputScroll/VBoxContainer/MarginContainer/HBoxContainer/ProgressBar")
 
 [node name="HBoxContainer" type="VBoxContainer" parent="." unique_id=295165886]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -81,6 +83,7 @@ clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
@@ -95,12 +98,30 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
 text = "fwafawf affwfafwafwafwaf awfwafwafw awfwafwaf"
 fit_content = true
 autowrap_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/InputScroll/VBoxContainer" unique_id=1025525796]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_right = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/InputScroll/VBoxContainer/MarginContainer" unique_id=600778329]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/InputScroll/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1690075046]
+layout_mode = 2
+text = "Condition : "
+
+[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/InputScroll/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1182053328]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/InputScroll/VBoxContainer" unique_id=66956775]
 layout_mode = 2
