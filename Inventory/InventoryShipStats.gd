@@ -10,7 +10,6 @@ var Stats : Array[ShipStatContainer]
 var SpeedStat : ShipStatContainer
 var Rangestat : ShipStatContainer
 var ValueStat : ShipStatContainer
-var RepairPriceStat : ShipStatContainer
 var NoiseStat : ShipStatContainer
 
 func _ready() -> void:
@@ -37,11 +36,6 @@ func _ready() -> void:
 	ValueStat.STName = STAT_CONST.STATS.VALUE
 	$GridContainer.add_child(ValueStat)
 	
-	RepairPriceStat = ShipStatScene.instantiate() as ShipStatContainer
-	RepairPriceStat.SetDataCustom(1000, "₯", "REPAIR PRICE", STAT_CONST.STATS.REPAIR_PRICE)
-	RepairPriceStat.STName = STAT_CONST.STATS.REPAIR_PRICE
-	$GridContainer.add_child(RepairPriceStat)
-	
 	NoiseStat = ShipStatScene.instantiate() as ShipStatContainer
 	NoiseStat.SetDataCustom(STAT_CONST.GetStatMaxValue(STAT_CONST.STATS.SOUND_SIGNATURE), STAT_CONST.GetStatMetric(STAT_CONST.STATS.SOUND_SIGNATURE), "SOUND SIGNATURE", STAT_CONST.STATS.SOUND_SIGNATURE)
 	NoiseStat.STName = STAT_CONST.STATS.SOUND_SIGNATURE
@@ -61,7 +55,6 @@ func ShowStats(stats : Array[STAT_CONST.STATS]) -> void:
 	SpeedStat.visible = SpeedStat.STName in stats
 	Rangestat.visible = Rangestat.STName in stats
 	ValueStat.visible = ValueStat.STName in stats
-	RepairPriceStat.visible = ValueStat.STName in stats
 	NoiseStat.visible = NoiseStat.STName in stats
 
 func UpdateValues() -> void:
@@ -103,10 +96,6 @@ func UpdateValues() -> void:
 	var Itvalue = CurrentShownCaptain.GetValue() - ChValue
 	var ItvalueFull = CurrentShownCaptain.GetValue(false) - ChValue
 	ValueStat.UpdateStatCustom(ChValue, ItvalueFull, ItvalueFull - Itvalue, 0, false)
-	
-	var ChRepairPrice = CurrentShownCaptain.GetStatBaseValue(STAT_CONST.STATS.REPAIR_PRICE)
-	var ItRepairPrice = CurrentShownCaptain.GetStatShipPartBuff(STAT_CONST.STATS.REPAIR_PRICE)
-	RepairPriceStat.UpdateStatCustom(ChRepairPrice, ItRepairPrice, 0, 0, false)
 	
 	var NormalisedThrust = Helper.normalize_value(CurrentShownCaptain.GetShipThrust(), 0, STAT_CONST.GetStatMaxValue(STAT_CONST.STATS.THRUST))
 	

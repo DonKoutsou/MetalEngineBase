@@ -63,7 +63,8 @@ func RefilCurrentValue(RefAmmount : float) -> void:
 	var addToBase = min(StatBase - CurrentValue, remainingRefill)
 	CurrentValue += addToBase
 	remainingRefill -= addToBase
-	
+	if (remainingRefill == 0):
+		return
 	for g in StatShipPartBuff:
 		var ammToAdd = min(g.UpgradeAmmount - g.CurrentValue, remainingRefill)
 		g.CurrentValue += ammToAdd
@@ -82,4 +83,7 @@ func ConsumeResource(Consumtion : float) -> void:
 		remainingToConsume -= ammToConsume
 	
 func ForceMaxValue() -> void:
-	CurrentValue = GetFinalValue()
+	CurrentValue = GetBaseValue()
+	for g in StatShipPartBuff:
+		g.CurrentValue = g.CurrentValue
+	

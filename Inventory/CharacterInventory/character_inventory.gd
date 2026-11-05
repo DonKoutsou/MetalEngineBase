@@ -57,6 +57,9 @@ func GetCards() -> Array[CardStats]:
 	var CardsInInventory : Array[CardStats]
 	for g : Item in _InventoryContents:
 		var Amm = _InventoryContents[g]
+		if (g is ShipPart):
+			if (g.GetPartConditionNormalised() == 0):
+				continue
 		if (g is AmmoItem and !HasWeapon(g.WType)):
 			continue
 		if (g is MissileItem and !HasWeapon(CardStats.WeaponType.ML)):
@@ -124,6 +127,8 @@ func GetDagamedShipParts() -> Array[ShipPart]:
 func HasWeapon(WType : CardStats.WeaponType) -> bool:
 	for g : Item in _InventoryContents.keys():
 		if (g is WeaponShipPart):
+			if (g.GetPartConditionNormalised() == 0):
+				continue
 			if (g.WType == WType):
 				return true
 	return false

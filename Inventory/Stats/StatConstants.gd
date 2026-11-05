@@ -21,7 +21,7 @@ const StatToolTips : Dictionary = {
 	STATS.FUEL_TANK_SLOTS : "Ammount of fuel ship can carry.",
 	STATS.SHIELD_SLOTS : "Ammount of fuel ship can carry.",
 	STATS.WEAPON_SLOTS : "Ammount of fuel ship can carry.",
-	STATS.MAX_SHIELD : "Ammount of fuel ship can carry.",
+	STATS.MAX_SHIELD : "Maximum amount of shild this ship can have durring a fight.",
 	STATS.REPAIR_PRICE : "The cost to repair one point of [color=#ffc315]HULL[/color] health. All ship parts contribute to this value—the lower it is, the cheaper your ship is to maintain.",
 	STATS.AEROSONAR_RANGE : "Aerosonar allows you to detect ship noise signatures in greater distances.",
 	STATS.SPEED : "Derived stat calculated from other attributes:[p][color=#ffc315]SPEED[/color] = ([color=#ffc315]THRUST[/color] × 1000) / [color=#ffc315]WEIGHT[/color]",

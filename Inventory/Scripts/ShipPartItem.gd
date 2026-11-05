@@ -9,6 +9,7 @@ class_name ShipPart
 @export_group("Dispsition")
 @export var disp : DispositionManager.Dispositions = DispositionManager.Dispositions.KINETIC
 @export var DispositionAmm : float = 0.1
+@export var Repair_Parts : float = 0.0
 
 func _setup_local_to_scene() -> void:
 	for Up in Upgrades:

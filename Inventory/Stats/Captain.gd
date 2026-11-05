@@ -44,6 +44,58 @@ var itemDisposition : Dictionary[DispositionManager.Dispositions, float] = {
 	DispositionManager.Dispositions.NUCLEAR : 0.0,
 }
 
+func AddRepairParts(amm : float) -> void:
+	var receivers : Dictionary[Resource, float] = {self: _GetStat(STAT_CONST.STATS.HULL).StatBase - _GetStat(STAT_CONST.STATS.HULL).CurrentValue - Repair_Parts}
+	for g in GetCharacterInventory().GetShipParts():
+		receivers[g] = g.GetPartMaxCondition() - g.GetPartCondition() - g.Repair_Parts
+	
+	var remainingAmm : float = amm
+	var ammPer : float = remainingAmm / receivers.size()
+	
+	for receiver in receivers.keys():
+		var maxAmm = receivers[receiver]
+		var ammToGive = min(maxAmm, ammPer)
+		receiver.Repair_Parts += ammToGive
+		receivers[receiver] -= ammToGive
+		remainingAmm -= ammToGive
+	
+	while remainingAmm > 0:
+		var receiver = receivers.keys().pick_random()
+		var maxAmm = receivers[receiver]
+		var ammToGive = min(maxAmm, ammPer)
+		receiver.Repair_Parts += ammToGive
+		receivers[receiver] -= ammToGive
+		remainingAmm -= ammToGive
+
+func RemoveRepairParts(amm : float) -> void:
+	var receivers : Dictionary[Resource, float] = {self: Repair_Parts}
+	for g in GetCharacterInventory().GetShipParts():
+		receivers[g] = g.Repair_Parts
+	
+	var remainingAmm : float = amm
+	var ammPer : float = remainingAmm / receivers.size()
+	
+	for receiver in receivers.keys():
+		var maxAmm = receivers[receiver]
+		var ammToRemove = min(maxAmm, ammPer)
+		receiver.Repair_Parts -= ammToRemove
+		receivers[receiver] -= ammToRemove
+		remainingAmm -= ammToRemove
+	
+	while remainingAmm > 0:
+		var receiver = receivers.keys().pick_random()
+		var maxAmm = receivers[receiver]
+		var ammToRemove = min(maxAmm, ammPer)
+		receiver.Repair_Parts -= ammToRemove
+		receivers[receiver] -= ammToRemove
+		remainingAmm -= ammToRemove
+
+func GetRepairParts() -> float:
+	var parts = Repair_Parts
+	for g in GetCharacterInventory().GetShipParts():
+		parts += g.Repair_Parts
+	return parts
+
 func OnCharacterNameChanged(NewName : String) -> void:
 	TempName = NewName
 	OnNameChanged.emit(GetCaptainName())

@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://ddfbg8pabc58t"]
+
+[ext_resource type="Script" uid="uid://b1lpfevw67jpf" path="res://MetalEngineBase/Inventory/RepairUI/ship_part_repair_ui.gd" id="1_1onel"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uil2s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1onel"]
+bg_color = Color(0.3019608, 0.7019608, 0.9137255, 1)
+border_color = Color(1, 0.763983, 0.0812772, 1)
+
+[node name="ShipPart_RepairUI" type="Control" unique_id=177680347 node_paths=PackedStringArray("CurrentHullLabel", "HullBar", "PartBar", "PartName")]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1onel")
+CurrentHullLabel = NodePath("VBoxContainer/ProgressBar/HullAmm")
+HullBar = NodePath("VBoxContainer/ProgressBar")
+PartBar = NodePath("VBoxContainer/ProgressBar/ProgressBar2")
+PartName = NodePath("VBoxContainer/Label")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2062676970]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=986300291]
+layout_mode = 2
+text = "Part Name"
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer" unique_id=1121128633]
+custom_minimum_size = Vector2(400, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxEmpty_uil2s")
+value = 27.12
+show_percentage = false
+
+[node name="ProgressBar2" type="ProgressBar" parent="VBoxContainer/ProgressBar" unique_id=482538584]
+show_behind_parent = true
+custom_minimum_size = Vector2(400, 30)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_1onel")
+value = 34.79
+show_percentage = false
+
+[node name="HullAmm" type="Label" parent="VBoxContainer/ProgressBar" unique_id=716811950]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 22
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=441713890]
+layout_mode = 2
+
+[node name="Reduce" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1383329490 groups=["DigitalButtons"]]
+custom_maximum_size = Vector2(-1, 25)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "<"
+
+[node name="Increase" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1192288545 groups=["DigitalButtons"]]
+custom_maximum_size = Vector2(-1, 25)
+layout_mode = 2
+size_flags_horizontal = 3
+text = ">"
+
+[connection signal="gui_input" from="VBoxContainer/ProgressBar" to="." method="RepairBar_gui_input"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Reduce" to="." method="_on_reduce_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Increase" to="." method="_on_increase_pressed"]

@@ -197,7 +197,7 @@ func UpdateValues() -> void:
 		return
 	if (ShipStats != null):
 		ShipStats.UpdateValues()
-	if (ShipStats != null):
+	if (ShipDeck != null):
 		ShipDeck.SetDeck(CurrentlyShownCaptain)
 
 func _on_inventory_interface_box_selected(Box: Inventory_Box_Res) -> void:
