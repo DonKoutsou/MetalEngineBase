@@ -20,6 +20,7 @@ class_name Captain
 @export var Cards : Dictionary[CardStats, int]
 @export var Repair_Parts : float = 0
 @export var TempName : String = ""
+
 #used to signal ship so it can change size of colliders
 signal ShipPartChanged(P : ShipPart)
 signal StatChanged(NewVal : float)
@@ -43,58 +44,6 @@ var itemDisposition : Dictionary[DispositionManager.Dispositions, float] = {
 	DispositionManager.Dispositions.RADIANT : 0.0,
 	DispositionManager.Dispositions.NUCLEAR : 0.0,
 }
-
-func AddRepairParts(amm : float) -> void:
-	var receivers : Dictionary[Resource, float] = {self: _GetStat(STAT_CONST.STATS.HULL).StatBase - _GetStat(STAT_CONST.STATS.HULL).CurrentValue - Repair_Parts}
-	for g in GetCharacterInventory().GetShipParts():
-		receivers[g] = g.GetPartMaxCondition() - g.GetPartCondition() - g.Repair_Parts
-	
-	var remainingAmm : float = amm
-	var ammPer : float = remainingAmm / receivers.size()
-	
-	for receiver in receivers.keys():
-		var maxAmm = receivers[receiver]
-		var ammToGive = min(maxAmm, ammPer)
-		receiver.Repair_Parts += ammToGive
-		receivers[receiver] -= ammToGive
-		remainingAmm -= ammToGive
-	
-	while remainingAmm > 0 and receivers.size() > 0:
-		var receiver = receivers.keys().pick_random()
-		var maxAmm = receivers[receiver]
-		if (maxAmm == 0):
-			receivers.erase(receiver)
-			continue
-		var ammToGive = min(maxAmm, ammPer)
-		receiver.Repair_Parts += ammToGive
-		receivers[receiver] -= ammToGive
-		remainingAmm -= ammToGive
-
-func RemoveRepairParts(amm : float) -> void:
-	var receivers : Dictionary[Resource, float] = {self: Repair_Parts}
-	for g in GetCharacterInventory().GetShipParts():
-		receivers[g] = g.Repair_Parts
-	
-	var remainingAmm : float = amm
-	var ammPer : float = remainingAmm / receivers.size()
-	
-	for receiver in receivers.keys():
-		var maxAmm = receivers[receiver]
-		var ammToRemove = min(maxAmm, ammPer)
-		receiver.Repair_Parts -= ammToRemove
-		receivers[receiver] -= ammToRemove
-		remainingAmm -= ammToRemove
-	
-	while remainingAmm > 0 and receivers.size() > 0:
-		var receiver = receivers.keys().pick_random()
-		var maxAmm = receivers[receiver]
-		if (maxAmm == 0):
-			receivers.erase(receiver)
-			continue
-		var ammToRemove = min(maxAmm, ammPer)
-		receiver.Repair_Parts -= ammToRemove
-		receivers[receiver] -= ammToRemove
-		remainingAmm -= ammToRemove
 
 func GetRepairParts() -> float:
 	var parts = Repair_Parts
@@ -311,7 +260,7 @@ func GetStatFinalValue(StatN : STAT_CONST.STATS) -> float:
 	return _GetStat(StatN).GetFinalValue()
 			
 func GetStatCurrentValue(StatN : STAT_CONST.STATS) -> float:
-	return _GetStat(StatN).GetCurrentValue()
+	return _GetStat(StatN).GetCurrentValue(HasInventory())
 
 func CopyStats(Cpt : Captain) -> void:
 	CaptainName = Cpt.CaptainName
@@ -331,18 +280,23 @@ func CopyStats(Cpt : Captain) -> void:
 		
 func IsResourceFull(StatN : STAT_CONST.STATS) -> bool:
 	var stat = _GetStat(StatN)
-	return stat.GetCurrentValue() == stat.GetFinalValue()
+	return stat.GetCurrentValue(HasInventory()) == stat.GetFinalValue()
 
 func RefillResource(StatN : STAT_CONST.STATS, RefillAmm : float) -> void:
-	_GetStat(StatN).RefilCurrentValue(RefillAmm)
+	_GetStat(StatN).RefilCurrentValue(RefillAmm, HasInventory())
 	StatChanged.emit(StatN)
 
+func FullyRefilAll() -> void:
+	for g in CaptainStats:
+		g.ForceMaxValue(HasInventory())
+		StatChanged.emit(g.StatName)
+
 func FullyRefilStat(StatN : STAT_CONST.STATS) -> void:
-	_GetStat(StatN).ForceMaxValue()
+	_GetStat(StatN).ForceMaxValue(HasInventory())
 	StatChanged.emit(StatN)
 	
 func ConsumeResource(StatN : STAT_CONST.STATS, Consumption : float) -> void:
-	_GetStat(StatN).ConsumeResource(Consumption)
+	_GetStat(StatN).ConsumeResource(Consumption, HasInventory())
 	StatChanged.emit(StatN)
 
 func OnShipPartAddedToInventory(It : ShipPart) -> void:
@@ -372,6 +326,9 @@ func OnShipPartRemovedFromInventory(It : ShipPart) -> void:
 
 func GetCharacterInventory() -> CharacterInventory:
 	return _CharInv
+
+func HasInventory() -> bool:
+	return _CharInv != null
 
 func GetMaxdB() -> float:
 	return GetShipThrust() / 30

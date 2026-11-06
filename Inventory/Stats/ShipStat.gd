@@ -52,38 +52,50 @@ func GetFinalValue()-> float:
 		return max(StatBase, STAT_CONST.GetStatItemBuff(StatName, StatShipPartBuff)) - GetShipPartPenalty()
 	return StatBase + STAT_CONST.GetStatItemBuff(StatName, StatShipPartBuff) - GetShipPartPenalty()
 	
-func GetCurrentValue()-> float:
+func GetCurrentValue(includeParts : bool)-> float:
 	var current = CurrentValue
-	for g in StatShipPartBuff:
-		current += g.CurrentValue
+	if (includeParts):
+		for g in StatShipPartBuff:
+			current += g.CurrentValue
 	return current
 	
-func RefilCurrentValue(RefAmmount : float) -> void:
+func RefilCurrentValue(RefAmmount : float, includeParts : bool) -> void:
+	var max = StatBase
+	if (!includeParts):
+		max = GetFinalValue()
+		
 	var remainingRefill : float = RefAmmount
-	var addToBase = min(StatBase - CurrentValue, remainingRefill)
+	var addToBase = min(max - CurrentValue, remainingRefill)
 	CurrentValue += addToBase
 	remainingRefill -= addToBase
-	if (remainingRefill == 0):
+	if (remainingRefill == 0 or !includeParts):
 		return
 	for g in StatShipPartBuff:
 		var ammToAdd = min(g.UpgradeAmmount - g.CurrentValue, remainingRefill)
 		g.CurrentValue += ammToAdd
 		remainingRefill -= ammToAdd
 	
-func ConsumeResource(Consumtion : float) -> void:
+func ConsumeResource(Consumtion : float, includeParts : bool) -> void:
 	var remainingToConsume : float = Consumtion
 	
 	var baseToConsume = min(CurrentValue, remainingToConsume)
 	CurrentValue -= baseToConsume
 	remainingToConsume -= baseToConsume
 	
+	if (remainingToConsume == 0 or !includeParts):
+		return
+	
 	for g in StatShipPartBuff:
 		var ammToConsume = min(g.CurrentValue, remainingToConsume)
 		g.CurrentValue -= ammToConsume
 		remainingToConsume -= ammToConsume
 	
-func ForceMaxValue() -> void:
-	CurrentValue = GetBaseValue()
-	for g in StatShipPartBuff:
-		g.CurrentValue = g.CurrentValue
+func ForceMaxValue(includeParts : bool) -> void:
+	if (includeParts):
+		CurrentValue = GetBaseValue()
+		
+		for g in StatShipPartBuff:
+			g.CurrentValue = g.CurrentValue
+	else:
+		CurrentValue = GetFinalValue()
 	

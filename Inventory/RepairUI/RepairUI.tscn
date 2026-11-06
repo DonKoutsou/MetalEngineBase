@@ -103,10 +103,6 @@ theme_override_constants/outline_size = 0
 theme_override_font_sizes/font_size = 24
 text = "Overall Ship Condition"
 
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=36024915]
-custom_minimum_size = Vector2(0, 1)
-layout_mode = 2
-
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1923001643]
 layout_mode = 2
 
