@@ -4,6 +4,11 @@ class_name RepairUI
 
 @export var RepairPriceLabel : Label
 @export var CurrentHullLabel : Label
+
+@export var ConditionBar : ProgressBar
+@export var ConditionPartBar : ProgressBar
+@export var ConditionLabel : Label
+
 @export var HullBar : ProgressBar
 @export var PartBar : ProgressBar
 @export var ReprairTimeLabel : Label
@@ -13,6 +18,8 @@ class_name RepairUI
 @export var partUIScene : PackedScene
 var RepairPricePerUnit : float
 var hasRepair : bool = false
+var PlMaxCondition : float = 0
+var PlCondition : float = 0
 var PlHull : float = 0
 var PlMaxHull : float = 0
 var CurrentShip : Captain
@@ -31,9 +38,17 @@ func SetStats(Ship : Captain) -> void:
 	if (hasRepair):
 		RepairPricePerUnit /= 2
 	
-	var repairParts = CurrentShip.GetRepairParts()
+	var repairParts = CurrentShip.Repair_Parts
+	var overallParts = CurrentShip.GetRepairParts()
 	SetHullData(Ship)
 	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull + repairParts), roundi(PlMaxHull)])
+	ConditionLabel.text = "{0}/{1}".format([roundi(PlCondition + overallParts), roundi(PlMaxCondition)])
+	
+	ConditionBar.max_value = PlMaxCondition
+	ConditionPartBar.max_value = PlMaxCondition
+	ConditionBar.set_value_no_signal(PlCondition)
+	ConditionPartBar.set_value_no_signal(PlCondition + overallParts)
+	
 	HullBar.max_value = PlMaxHull
 	PartBar.max_value = PlMaxHull
 	HullBar.set_value_no_signal(PlHull)
@@ -55,36 +70,34 @@ func SetStats(Ship : Captain) -> void:
 		sc.SetStats(g)
 		sc.RepairRequest.connect(UpdatePartRepairBar.bind(g))
 		partUIS.append(sc)
-		$MarginContainer/ScrollContainer/VBoxContainer2.add_child(sc)
+		$MarginContainer/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer2.add_child(sc)
 
 func SetHullData(Ship : Captain):
-	PlMaxHull = Ship.GetStatFinalValue(STAT_CONST.STATS.HULL)
-	PlHull = Ship.GetStatCurrentValue(STAT_CONST.STATS.HULL)
+	PlMaxCondition = Ship.GetStatFinalValue(STAT_CONST.STATS.HULL)
+	PlMaxHull = Ship.GetStatBaseValue(STAT_CONST.STATS.HULL)
+	PlHull = Ship._GetStat(STAT_CONST.STATS.HULL).CurrentValue
+	PlCondition = Ship.GetStatCurrentValue(STAT_CONST.STATS.HULL)
 
 func UpdatePartUI() -> void:
 	for g in partUIS:
 		g.Update()
 
-func UpdatePartRepairBar(AddedRepair : float, Part : ShipPart):
-	#$AudioStreamPlayer.play()
-	var currentParts = Part.Repair_Parts
-	
+func UpdatePartRepairBar(AddedRepair : int, Part : ShipPart):
 	var partDamage = Part.GetPartMaxCondition() - Part.GetPartCondition()
 	
-	if (AddedRepair * RepairPricePerUnit > PlayerWallet.Funds):
-		AddedRepair = PlayerWallet.Funds / RepairPricePerUnit
+	var added : float = 0
 	
 	if (AddedRepair > 0):
-		AddedRepair = min(partDamage - Part.Repair_Parts, AddedRepair)
-		Part.Repair_Parts += AddedRepair
+		added = min(partDamage - Part.Repair_Parts, min(AddedRepair, PlayerWallet.Funds / RepairPricePerUnit))
+		Part.Repair_Parts += added
 	else:
-		AddedRepair = -min(Part.Repair_Parts, abs(AddedRepair))
-		Part.Repair_Parts += AddedRepair
+		added = -min(Part.Repair_Parts, abs(AddedRepair))
+		Part.Repair_Parts += added
 	
-	if (AddedRepair == 0):
+	if (added == 0):
 		return
 	
-	var MoneySpent = AddedRepair * RepairPricePerUnit
+	var MoneySpent = added * RepairPricePerUnit
 	if (MoneySpent > 0):
 		SpentFunds += MoneySpent
 		if (roundi(SpentFunds/1000) > 1):
@@ -102,11 +115,14 @@ func UpdatePartRepairBar(AddedRepair : float, Part : ShipPart):
 	
 	PlayerWallet.AddFunds(-MoneySpent)
 	#PlayerWallet.AddFunds(-(AddedRepair * RepairpricePerRepairValue))
-	currentParts = CurrentShip.GetRepairParts()
+	var currentParts = CurrentShip.Repair_Parts
+	var overallParts = CurrentShip.GetRepairParts()
 	
 	PartBar.value = PlHull + currentParts
+	ConditionPartBar.value = PlCondition + overallParts
 	#FundAmm.text = var_to_str(roundi(PlFunds)) + " ₯"
 	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull + currentParts), roundi(PlMaxHull)])
+	ConditionLabel.text = "{0}/{1}".format([roundi(PlCondition + overallParts), roundi(PlMaxCondition)])
 	
 	var TimeMulti = 0.025
 		
@@ -117,27 +133,25 @@ func UpdatePartRepairBar(AddedRepair : float, Part : ShipPart):
 	
 	ReprairTimeLabel.text = Clock.MinutesToHours(t, true)
 
-func UpdateRepairBar(AddedRepair : float):
+func UpdateRepairBar(AddedRepair : int):
 	#$AudioStreamPlayer.play()
-	var currentParts = CurrentShip.GetRepairParts()
-	if (AddedRepair * RepairPricePerUnit > PlayerWallet.Funds):
-		AddedRepair = PlayerWallet.Funds / RepairPricePerUnit
-	var NewPlRepair = PlHull + currentParts + AddedRepair
-	
-	if (NewPlRepair < PlHull):
-		AddedRepair = 0
-		NewPlRepair = PlHull + currentParts
+	var currentParts = CurrentShip.Repair_Parts
 
-	if (NewPlRepair > PlMaxHull):
-		AddedRepair = PlMaxHull - (PlHull + currentParts)
-		NewPlRepair = PlMaxHull
+	var added : float = 0
+	var damage = PlMaxHull - PlHull
+	
 	
 	if (AddedRepair > 0):
-		CurrentShip.AddRepairParts(AddedRepair)
+		added = min(damage - currentParts, min(AddedRepair, PlayerWallet.Funds / RepairPricePerUnit))
+		CurrentShip.Repair_Parts += added
 	else:
-		CurrentShip.RemoveRepairParts(-AddedRepair)
+		added = -min(currentParts, abs(AddedRepair))
+		CurrentShip.Repair_Parts += added
 	
-	var MoneySpent = AddedRepair * RepairPricePerUnit
+	if (added == 0):
+		return
+
+	var MoneySpent = added * RepairPricePerUnit
 	if (MoneySpent > 0):
 		SpentFunds += MoneySpent
 		if (roundi(SpentFunds/1000) > 1):
@@ -155,9 +169,10 @@ func UpdateRepairBar(AddedRepair : float):
 	
 	PlayerWallet.AddFunds(-MoneySpent)
 	#PlayerWallet.AddFunds(-(AddedRepair * RepairpricePerRepairValue))
-	currentParts = CurrentShip.GetRepairParts()
+	currentParts = CurrentShip.Repair_Parts
 	
 	PartBar.value = PlHull + currentParts
+	ConditionPartBar.value = PlCondition + CurrentShip.GetRepairParts()
 	#FundAmm.text = var_to_str(roundi(PlFunds)) + " ₯"
 	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull + currentParts), roundi(PlMaxHull)])
 	
@@ -171,10 +186,22 @@ func UpdateRepairBar(AddedRepair : float):
 	ReprairTimeLabel.text = Clock.MinutesToHours(t, true)
 	UpdatePartUI()
 
+var accumulated : float = 0
 func RepairBar_gui_input(event: InputEvent) -> void:
 	if (event is InputEventMouseMotion and Input.is_action_pressed("Click") or event is InputEventScreenDrag):
-		var rel = event.relative
-		var AddedRepair = roundi(((rel.x / 6) * (HullBar.max_value / 100)))
+		var bar_width = HullBar.size.x
+		var max_value = HullBar.max_value
+
+		var progress_per_pixel = max_value / bar_width
+		
+		accumulated += event.relative.x * progress_per_pixel
+		
+		if (accumulated < 1 and accumulated  > -1):
+			return
+		
+		var AddedRepair = roundi(accumulated)
+		accumulated -= AddedRepair
+		
 		UpdateRepairBar(AddedRepair)
 
 
@@ -184,3 +211,59 @@ func _on_increase_pressed() -> void:
 
 func _on_reduce_pressed() -> void:
 	UpdateRepairBar(-1)
+
+
+func _on_reset_pressed() -> void:
+	UpdateRepairBar(-9999999999)
+
+
+func _on_max_pressed() -> void:
+	UpdateRepairBar(9999999999)
+
+func AddToAll(i : bool) -> void:
+	for g in CurrentShip.GetCharacterInventory().GetDagamedShipParts():
+		if (i):
+			var damage = g.GetPartMaxCondition() - g.GetPartCondition()
+			var neededParts = damage - g.Repair_Parts
+			var addedParts = min(neededParts, PlayerWallet.Funds / RepairPricePerUnit)
+			g.Repair_Parts += addedParts
+			PlayerWallet.AddFunds(-addedParts * RepairPricePerUnit)
+		else:
+			var removedParts = g.Repair_Parts
+			g.Repair_Parts -= removedParts
+			PlayerWallet.AddFunds(removedParts * RepairPricePerUnit)
+	
+	if (i):
+		var damage = PlMaxHull - PlHull
+		var neededParts = damage - CurrentShip.Repair_Parts
+		var addedParts = min(neededParts, PlayerWallet.Funds / RepairPricePerUnit)
+		CurrentShip.Repair_Parts += addedParts
+		PlayerWallet.AddFunds(-addedParts * RepairPricePerUnit)
+	else:
+		var removedParts = CurrentShip.Repair_Parts
+		CurrentShip.Repair_Parts -= removedParts
+		PlayerWallet.AddFunds(removedParts * RepairPricePerUnit)
+	
+	var currentParts = CurrentShip.Repair_Parts
+	
+	PartBar.value = PlHull + currentParts
+	ConditionPartBar.value = PlCondition + CurrentShip.GetRepairParts()
+	#FundAmm.text = var_to_str(roundi(PlFunds)) + " ₯"
+	CurrentHullLabel.text = "{0}/{1}".format([roundi(PlHull + currentParts), roundi(PlMaxHull)])
+	
+	var TimeMulti = 0.025
+		
+	if (hasRepair):
+		TimeMulti = 0.10
+		
+	var t = currentParts / TimeMulti / 6
+	
+	ReprairTimeLabel.text = Clock.MinutesToHours(t, true)
+	UpdatePartUI()
+			
+
+func _on_max_all_pressed() -> void:
+	AddToAll(true)
+
+func _on_reset_all_pressed() -> void:
+	AddToAll(false)

@@ -59,9 +59,12 @@ func AddRepairParts(amm : float) -> void:
 		receivers[receiver] -= ammToGive
 		remainingAmm -= ammToGive
 	
-	while remainingAmm > 0:
+	while remainingAmm > 0 and receivers.size() > 0:
 		var receiver = receivers.keys().pick_random()
 		var maxAmm = receivers[receiver]
+		if (maxAmm == 0):
+			receivers.erase(receiver)
+			continue
 		var ammToGive = min(maxAmm, ammPer)
 		receiver.Repair_Parts += ammToGive
 		receivers[receiver] -= ammToGive
@@ -82,9 +85,12 @@ func RemoveRepairParts(amm : float) -> void:
 		receivers[receiver] -= ammToRemove
 		remainingAmm -= ammToRemove
 	
-	while remainingAmm > 0:
+	while remainingAmm > 0 and receivers.size() > 0:
 		var receiver = receivers.keys().pick_random()
 		var maxAmm = receivers[receiver]
+		if (maxAmm == 0):
+			receivers.erase(receiver)
+			continue
 		var ammToRemove = min(maxAmm, ammPer)
 		receiver.Repair_Parts -= ammToRemove
 		receivers[receiver] -= ammToRemove
