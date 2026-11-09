@@ -16,7 +16,7 @@ class_name RepairUI
 @export var PlayerWallet : Wallet
 
 @export var partUIScene : PackedScene
-var RepairPricePerUnit : float
+var RepairPricePerUnit : int
 var hasRepair : bool = false
 var PlMaxCondition : float = 0
 var PlCondition : float = 0
@@ -34,9 +34,10 @@ func SetStats(Ship : Captain) -> void:
 	partUIS.clear()
 	
 	CurrentShip = Ship
-	RepairPricePerUnit = Ship.GetStatFinalValue(STAT_CONST.STATS.REPAIR_PRICE)
+	RepairPricePerUnit = roundi((Ship.GetBaseValue() / Ship.GetStatBaseValue(STAT_CONST.STATS.HULL)))
 	if (hasRepair):
-		RepairPricePerUnit /= 2
+		RepairPricePerUnit = roundi(RepairPricePerUnit * 0.5)
+	
 	
 	var repairParts = CurrentShip.Repair_Parts
 	var overallParts = CurrentShip.GetRepairParts()
@@ -53,21 +54,21 @@ func SetStats(Ship : Captain) -> void:
 	PartBar.max_value = PlMaxHull
 	HullBar.set_value_no_signal(PlHull)
 	PartBar.set_value_no_signal(PlHull + repairParts)
-	RepairPriceLabel.text = var_to_str(RepairPricePerUnit).replace(".0", "")
+	RepairPriceLabel.text = "Repair Price/Unit : {0}₯".format([RepairPricePerUnit]).replace(".0", "")
 	
 	var TimeMulti = 0.025
 		
 	if (hasRepair):
 		TimeMulti = 0.10
 		
-	var t = repairParts/ TimeMulti / 6
+	var t = repairParts/ TimeMulti / 4
 	
 	ReprairTimeLabel.text = Clock.MinutesToHours(t, true)
 	
 	var parts = Ship.GetCharacterInventory().GetDagamedShipParts()
 	for g in parts:
 		var sc : ShipPartRepairUI = partUIScene.instantiate()
-		sc.SetStats(g)
+		sc.SetStats(g, hasRepair)
 		sc.RepairRequest.connect(UpdatePartRepairBar.bind(g))
 		partUIS.append(sc)
 		$MarginContainer/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer2.add_child(sc)
@@ -84,11 +85,11 @@ func UpdatePartUI() -> void:
 
 func UpdatePartRepairBar(AddedRepair : int, Part : ShipPart):
 	var partDamage = Part.GetPartMaxCondition() - Part.GetPartCondition()
-	
+	var repairPrice = Part.GetRepairPrice()
 	var added : float = 0
 	
 	if (AddedRepair > 0):
-		added = min(partDamage - Part.Repair_Parts, min(AddedRepair, PlayerWallet.Funds / RepairPricePerUnit))
+		added = min(partDamage - Part.Repair_Parts, min(AddedRepair, PlayerWallet.Funds / repairPrice))
 		Part.Repair_Parts += added
 	else:
 		added = -min(Part.Repair_Parts, abs(AddedRepair))
@@ -97,7 +98,7 @@ func UpdatePartRepairBar(AddedRepair : int, Part : ShipPart):
 	if (added == 0):
 		return
 	
-	var MoneySpent = added * RepairPricePerUnit
+	var MoneySpent = added * repairPrice
 	if (MoneySpent > 0):
 		SpentFunds += MoneySpent
 		if (roundi(SpentFunds/1000) > 1):
@@ -129,7 +130,7 @@ func UpdatePartRepairBar(AddedRepair : int, Part : ShipPart):
 	if (hasRepair):
 		TimeMulti = 0.10
 		
-	var t = currentParts / TimeMulti / 6
+	var t = currentParts / TimeMulti / 4
 	
 	ReprairTimeLabel.text = Clock.MinutesToHours(t, true)
 
@@ -181,7 +182,7 @@ func UpdateRepairBar(AddedRepair : int):
 	if (hasRepair):
 		TimeMulti = 0.10
 		
-	var t = currentParts / TimeMulti / 6
+	var t = currentParts / TimeMulti / 4
 	
 	ReprairTimeLabel.text = Clock.MinutesToHours(t, true)
 	UpdatePartUI()
@@ -223,15 +224,21 @@ func _on_max_pressed() -> void:
 func AddToAll(i : bool) -> void:
 	for g in CurrentShip.GetCharacterInventory().GetDagamedShipParts():
 		if (i):
+			var repairPrice = g.GetRepairPrice()
+			if (hasRepair):
+				repairPrice = roundi(repairPrice * 0.5)
 			var damage = g.GetPartMaxCondition() - g.GetPartCondition()
 			var neededParts = damage - g.Repair_Parts
-			var addedParts = min(neededParts, PlayerWallet.Funds / RepairPricePerUnit)
+			var addedParts = min(neededParts, PlayerWallet.Funds / repairPrice)
 			g.Repair_Parts += addedParts
-			PlayerWallet.AddFunds(-addedParts * RepairPricePerUnit)
+			PlayerWallet.AddFunds(-addedParts * repairPrice)
 		else:
+			var repairPrice = g.GetRepairPrice()
+			if (hasRepair):
+				repairPrice = roundi(repairPrice * 0.5)
 			var removedParts = g.Repair_Parts
 			g.Repair_Parts -= removedParts
-			PlayerWallet.AddFunds(removedParts * RepairPricePerUnit)
+			PlayerWallet.AddFunds(removedParts * repairPrice)
 	
 	if (i):
 		var damage = PlMaxHull - PlHull
@@ -256,7 +263,7 @@ func AddToAll(i : bool) -> void:
 	if (hasRepair):
 		TimeMulti = 0.10
 		
-	var t = currentParts / TimeMulti / 6
+	var t = currentParts / TimeMulti / 4
 	
 	ReprairTimeLabel.text = Clock.MinutesToHours(t, true)
 	UpdatePartUI()

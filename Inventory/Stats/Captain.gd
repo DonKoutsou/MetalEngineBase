@@ -337,8 +337,11 @@ func GetShipThrust() -> float:
 	var Thrust = GetStatCurrentValue(STAT_CONST.STATS.THRUST)
 	return Thrust
 
+func GetBaseValue() -> int:
+	return roundi(ProvidingFunds / 2.0)
+
 func GetValue(includeDamaged : bool = true) -> int:
-	var Value : int = roundi(ProvidingFunds / 2.0)
+	var Value : int = GetBaseValue()
 	if (_CharInv != null):
 		var InvContents : Dictionary[Item, int] = GetCharacterInventory().GetInventoryContents()
 		for g : Item in InvContents.keys():

@@ -6,6 +6,7 @@ class_name ShipPartRepairUI
 @export var HullBar : ProgressBar
 @export var PartBar : ProgressBar
 @export var PartName : Label
+@export var priceLabel : Label
 
 signal RepairRequest(amm : int)
 
@@ -13,7 +14,7 @@ var part : ShipPart
 
 var accumulated : float = 0
 
-func SetStats(p : ShipPart) -> void:
+func SetStats(p : ShipPart, hasRepair : bool) -> void:
 	PartName.text = p.GetItemName()
 	part = p
 	HullBar.max_value = p.GetPartMaxCondition()
@@ -21,6 +22,10 @@ func SetStats(p : ShipPart) -> void:
 	HullBar.value = p.GetPartCondition()
 	PartBar.value = p.GetPartCondition() + p.Repair_Parts
 	CurrentHullLabel.text = "{0}/{1}".format([roundi(p.GetPartCondition() + part.Repair_Parts), roundi(p.GetPartMaxCondition())])
+	var price = p.GetRepairPrice()
+	if (hasRepair):
+		price = roundi(price * 0.5)
+	priceLabel.text = "Repair Price/Unit : {0}₯".format([price])
 
 func Update() -> void:
 	HullBar.value = part.GetPartCondition()

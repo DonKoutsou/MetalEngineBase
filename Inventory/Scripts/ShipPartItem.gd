@@ -11,6 +11,9 @@ class_name ShipPart
 @export var DispositionAmm : float = 0.1
 @export var Repair_Parts : float = 0.0
 
+func GetRepairPrice() -> int:
+	return roundi(Cost / GetPartMaxCondition())
+
 func _setup_local_to_scene() -> void:
 	for Up in Upgrades:
 		Up.CurrentValue = Up.UpgradeAmmount

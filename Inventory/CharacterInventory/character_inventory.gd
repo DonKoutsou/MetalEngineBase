@@ -136,7 +136,7 @@ func HasWeapon(WType : CardStats.WeaponType) -> bool:
 func HasItem(It : Item) -> bool:
 	for g in _InventoryContents.keys():
 		var it = g as Item
-		if (it.resource_path == It.resource_path):
+		if (it.ItemName == It.ItemName):
 			return true
 	return false
 
@@ -285,17 +285,18 @@ func InitialiseStarting(Cha : Captain, addStarting : bool) -> void:
 
 				continue
 
-
-
+#-------------------------------------------------------
 func ItemSelected(Box : Inventory_Box_Res) -> void:
 	BoxSelected.emit(Box, self)
 
+#-------------------------------------------------------
 func GetBoxType(Box : Inventory_Box_Res) -> ShipPart.ShipPartType:
 	for g : ShipPart.ShipPartType in boxes:
 		if (boxes[g].has(Box)):
 			return g
 	return ShipPart.ShipPartType.INVENTORY
 
+#-------------------------------------------------------
 func FindBox(It : Item) -> Inventory_Box_Res:
 	var boxeList = boxes[It.PartType]
 
@@ -314,12 +315,14 @@ func FindBox(It : Item) -> Inventory_Box_Res:
 
 	return null
 
+#-------------------------------------------------------
 func ClearInventory() -> void:
 	for g in range(_InventoryContents.size() - 1, -1, -1):
 		var it = _InventoryContents.keys()[g]
 		for z in _InventoryContents[it]:
 			RemoveItem(it)
 
+#-------------------------------------------------------
 func AddItem(It : Item) -> void:
 	var boxeList = boxes[It.PartType]
 
@@ -365,6 +368,7 @@ func AddItem(It : Item) -> void:
 	ItemPlecementFailed.emit(It)
 	return
 
+#-------------------------------------------------------
 func AddItemToBox(It : Item, destination : Inventory_Box_Res) -> void:
 	if (destination.IsEmpty()):
 		destination.RegisterItem(It)
@@ -387,7 +391,7 @@ func AddItemToBox(It : Item, destination : Inventory_Box_Res) -> void:
 		OnItemAdded.emit(It)
 		InventoryUpdated.emit()
 
-	
+#-------------------------------------------------------
 func HasSpaceForItem(It : Item) -> bool:
 	var boxeList = boxes[It.PartType]
 
@@ -399,6 +403,7 @@ func HasSpaceForItem(It : Item) -> bool:
 			return true
 	return false
 
+#-------------------------------------------------------
 func GetBoxContainingItem(It : Item) -> Inventory_Box_Res:
 	var boxeList = boxes[It.PartType]
 	
@@ -411,7 +416,9 @@ func GetBoxContainingItem(It : Item) -> Inventory_Box_Res:
 			Box = g
 			
 	return Box
-#called for Item Descriptor once the Drop button is pressed. Signal is connected through Inventory manager when descriptor is created.
+
+#-------------------------------------------------------
+##called for Item Descriptor once the Drop button is pressed. Signal is connected through Inventory manager when descriptor is created.
 func RemoveItemFromBox(Box : Inventory_Box_Res) -> void:
 	var It = Box.GetContainedItem()
 	
@@ -424,35 +431,35 @@ func RemoveItemFromBox(Box : Inventory_Box_Res) -> void:
 		OnShipPartRemoved.emit(It)
 	OnItemRemoved.emit(It)
 	InventoryUpdated.emit()
-	
-func RemoveItem(It : Item) -> void:
+
+#-------------------------------------------------------
+##Returns true if the item was found and removed
+func RemoveItem(It : Item) -> bool:
 	for boxList : Array in boxes.values():
 		for g : Inventory_Box_Res in boxList:
 			if (g.IsEmpty()):
 				continue
 			if (g._ContainedItem.ItemName == It.ItemName):
 				RemoveItemFromBox(g)
-				
-				return
+				return true
+	return false
 
-
+#-------------------------------------------------------
 func UpgradeItem(Box : Inventory_Box_Res) -> void:
-	
-	#else :if (!Player.cu):
-		#PopUpManager.GetInstance().DoFadeNotif("Cant upgrade ship in current port.")
-		#return
 	ItemUpgrade.emit(Box, self)
 
-
+#-------------------------------------------------------
 func TransferItem(Box : Inventory_Box_Res) -> void:
 	ItemTransf.emit(Box, self)
 
+#-------------------------------------------------------
 func StartUpgrade(Box : Inventory_Box_Res) -> void:
 	var Part = Box.GetContainedItem() as ShipPart
 	_UpgradeTime = Part.UpgradeTime
 	_ItemBeingUpgraded = Box
 	#set_physics_process(true)
 
+#-------------------------------------------------------
 func StartEquip(_Box : Inventory_Box_Res, It : ShipPart) -> Inventory_Box_Res:
 	_ItemBeingEquipped = It
 	_EquipLocation = FindBox(It)
@@ -460,39 +467,46 @@ func StartEquip(_Box : Inventory_Box_Res, It : ShipPart) -> Inventory_Box_Res:
 	#set_physics_process(true)
 	return _EquipLocation
 
+#-------------------------------------------------------
 func ReStartEquip(It : ShipPart, EquipTime : float) -> void:
 	_ItemBeingEquipped = It
 	_EquipLocation = FindBox(It)
 	_EquipTime = EquipTime
 	#set_physics_process(true)
 
+#-------------------------------------------------------
 func ReStartUpgrade(Box : Inventory_Box_Res, UpTime : float) -> void:
 	#var Part = Box.GetContainedItem() as ShipPart
 	_UpgradeTime = UpTime
 	_ItemBeingUpgraded = Box
 	#set_physics_process(true)
 
+#-------------------------------------------------------
 func CancelUpgrade() -> void:
 	_ItemBeingUpgraded = null
 	_UpgradeTime = 0
 	#set_physics_process(_UpgradeTime > 0 or _EquipTime > 0)
 
+#-------------------------------------------------------
 func CancelInstall() -> void:
 	_ItemBeingEquipped = null
 	_EquipLocation = null
 	_EquipTime = 0
 	#set_physics_process(_UpgradeTime > 0 or _EquipTime > 0)
 
+#-------------------------------------------------------
 func ItemUpgradeFinished() -> void:
 	var Part = _ItemBeingUpgraded.GetContainedItem() as ShipPart
 	RemoveItemFromBox(_ItemBeingUpgraded)
-	var UpgradedItem = Part.UpgradeVersion
+	var UpgradedItem = Part.UpgradeVersion.duplicate(true)
+	UpgradedItem.Repair_Parts = Part.Repair_Parts
 	for g in Part.Upgrades.size():
 		UpgradedItem.Upgrades[g].CurrentValue = Part.Upgrades[g].CurrentValue
 	AddItem(UpgradedItem)
 	_ItemBeingUpgraded = null
 	UpgradeFinished.emit(Part, UpgradedItem)
 	
+#-------------------------------------------------------
 func ItemEquipFinished() -> void:
 	RemoveItemFromBox(_EquipLocation)
 	AddItemToBox(_ItemBeingEquipped, _EquipLocation)
@@ -501,7 +515,7 @@ func ItemEquipFinished() -> void:
 	_EquipLocation = null
 	_ItemBeingEquipped = null
 	
-
+#-------------------------------------------------------
 func ForceUpgradeItem(Box : Inventory_Box_Res) -> bool:
 	var Part = Box.GetContainedItem() as ShipPart
 	
@@ -520,20 +534,23 @@ func ForceUpgradeItem(Box : Inventory_Box_Res) -> bool:
 	
 	return true
 
+#-------------------------------------------------------
 func GetUpgradeTimeLeft() -> float:
 	#if (inventoryOwner.CurrentPort.HasUpgrade()):
 		#return _UpgradeTime / 2.0
 	return _UpgradeTime
 
+#-------------------------------------------------------
 func GetEquipTimeLeft() -> float:
 	#if (inventoryOwner.CurrentPort.HasUpgrade()):
 		#return _EquipTime / 2.0
 	return _EquipTime
 
+#-------------------------------------------------------
 func GetItemBeingUpgraded() -> Inventory_Box_Res:
 	return _ItemBeingUpgraded
 
-
+#-------------------------------------------------------
 func _on_button_pressed() -> void:
 	OnCharacterInspectionPressed.emit()
 #

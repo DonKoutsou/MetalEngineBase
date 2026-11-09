@@ -9,15 +9,19 @@ class_name ShipStat
 @export var StatShipPartPenalty : float
 @export var CurrentValue : float
 
+#------------------------------------------
 func GetStatName() -> STAT_CONST.STATS:
 	return StatName
 
+#------------------------------------------
 func GetBaseValue()-> float:
 	return StatBase
-	
+
+#------------------------------------------
 func GetShipPartBuff()-> float:
 	return STAT_CONST.GetStatItemBuff(StatName, StatShipPartBuff)
 	
+#------------------------------------------
 func GetShipPartPenalty() -> float:
 	var penalty : float = 0
 	for g in StatShipPartBuff:
@@ -27,6 +31,7 @@ func GetShipPartPenalty() -> float:
 		penalty += partPenalty
 	return penalty
 
+#------------------------------------------
 func GetShipPartDamage() -> float:
 	var damage : float = 0
 	
@@ -38,20 +43,24 @@ func GetShipPartDamage() -> float:
 	
 	return damage
 
+#------------------------------------------
 func AddShipPartBuff(buff : ShipPartUpgrade) -> void:
 	StatShipPartBuff.append(buff)
 
+#------------------------------------------
 func RemoveShipPartBuff(buff : ShipPartUpgrade) -> void:
 	StatShipPartBuff.erase(buff)
 
 #func AddShipPartPenalty(Amm : float) -> void:
 	#StatShipPartPenalty += Amm
-	
+
+#------------------------------------------
 func GetFinalValue()-> float:
 	if (!STAT_CONST.ShouldStatStack(StatName)):
 		return max(StatBase, STAT_CONST.GetStatItemBuff(StatName, StatShipPartBuff)) - GetShipPartPenalty()
 	return StatBase + STAT_CONST.GetStatItemBuff(StatName, StatShipPartBuff) - GetShipPartPenalty()
-	
+
+#------------------------------------------
 func GetCurrentValue(includeParts : bool)-> float:
 	var current = CurrentValue
 	if (includeParts):
@@ -59,13 +68,14 @@ func GetCurrentValue(includeParts : bool)-> float:
 			current += g.CurrentValue
 	return current
 	
+#------------------------------------------
 func RefilCurrentValue(RefAmmount : float, includeParts : bool) -> void:
-	var max = StatBase
+	var maxValue = StatBase
 	if (!includeParts):
-		max = GetFinalValue()
+		maxValue = GetFinalValue()
 		
 	var remainingRefill : float = RefAmmount
-	var addToBase = min(max - CurrentValue, remainingRefill)
+	var addToBase = min(maxValue - CurrentValue, remainingRefill)
 	CurrentValue += addToBase
 	remainingRefill -= addToBase
 	if (remainingRefill == 0 or !includeParts):
@@ -75,6 +85,7 @@ func RefilCurrentValue(RefAmmount : float, includeParts : bool) -> void:
 		g.CurrentValue += ammToAdd
 		remainingRefill -= ammToAdd
 	
+#------------------------------------------
 func ConsumeResource(Consumtion : float, includeParts : bool) -> void:
 	var remainingToConsume : float = Consumtion
 	
@@ -90,6 +101,7 @@ func ConsumeResource(Consumtion : float, includeParts : bool) -> void:
 		g.CurrentValue -= ammToConsume
 		remainingToConsume -= ammToConsume
 	
+#------------------------------------------
 func ForceMaxValue(includeParts : bool) -> void:
 	if (includeParts):
 		CurrentValue = GetBaseValue()

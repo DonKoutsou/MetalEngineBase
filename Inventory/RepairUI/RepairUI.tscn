@@ -20,7 +20,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6ilna")
-RepairPriceLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer3/RepairPrice")
+RepairPriceLabel = NodePath("MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer2/RepairPrice")
 CurrentHullLabel = NodePath("MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer/ProgressBar/HullAmm")
 ConditionBar = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ProgressBar")
 ConditionPartBar = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ProgressBar/ProgressBar2")
@@ -45,52 +45,6 @@ theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1762589399]
 layout_mode = 2
-
-[node name="HBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=266229931]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 2
-
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=944859262]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 0
-theme_override_font_sizes/font_size = 24
-text = "Repair Price:"
-
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=576411161]
-custom_minimum_size = Vector2(0, 1)
-layout_mode = 2
-
-[node name="RepairPrice" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=2035092843]
-layout_mode = 2
-theme_override_font_sizes/font_size = 22
-text = "202"
-horizontal_alignment = 2
-
-[node name="HBoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=43800533]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=2007035261]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 0
-theme_override_font_sizes/font_size = 24
-text = "Repair Time"
-
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=704668036]
-custom_minimum_size = Vector2(0, 1)
-layout_mode = 2
-
-[node name="RepairTime" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=2082598370]
-layout_mode = 2
-size_flags_horizontal = 8
-theme_override_font_sizes/font_size = 22
-text = "10h 30m"
-horizontal_alignment = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1810851805]
 layout_mode = 2
@@ -150,10 +104,40 @@ vertical_alignment = 1
 layout_mode = 2
 text = ">>"
 
+[node name="HBoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=43800533]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=2007035261]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 24
+text = "Overall Repair Time"
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=704668036]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+
+[node name="RepairTime" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=2082598370]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 22
+text = "10h 30m"
+horizontal_alignment = 2
+
+[node name="Panel3" type="Panel" parent="MarginContainer/VBoxContainer" unique_id=1747158350]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+
 [node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=592753020]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer3" unique_id=29492831]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer3" unique_id=2129319310]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" unique_id=29492831]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -161,6 +145,13 @@ theme_override_constants/outline_size = 0
 theme_override_font_sizes/font_size = 24
 text = "Hull Integrity"
 vertical_alignment = 1
+
+[node name="RepairPrice" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" unique_id=2035092843]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "Repair Price/Unit :"
+horizontal_alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer3" unique_id=1518363999]
 custom_minimum_size = Vector2(0, 30)
@@ -217,6 +208,10 @@ text = ">"
 [node name="Max" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer" unique_id=636916312 groups=["DigitalButtons"]]
 layout_mode = 2
 text = ">>"
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer" unique_id=1119328574]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=998635248]
 layout_mode = 2

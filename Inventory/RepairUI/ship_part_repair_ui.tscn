@@ -8,7 +8,7 @@
 bg_color = Color(0.3019608, 0.7019608, 0.9137255, 1)
 border_color = Color(1, 0.763983, 0.0812772, 1)
 
-[node name="ShipPart_RepairUI" type="Control" unique_id=177680347 node_paths=PackedStringArray("CurrentHullLabel", "HullBar", "PartBar", "PartName")]
+[node name="ShipPart_RepairUI" type="Control" unique_id=177680347 node_paths=PackedStringArray("CurrentHullLabel", "HullBar", "PartBar", "PartName", "priceLabel")]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 3
 anchors_preset = 15
@@ -23,7 +23,8 @@ script = ExtResource("1_1onel")
 CurrentHullLabel = NodePath("VBoxContainer/HBoxContainer/ProgressBar/HullAmm")
 HullBar = NodePath("VBoxContainer/HBoxContainer/ProgressBar")
 PartBar = NodePath("VBoxContainer/HBoxContainer/ProgressBar/ProgressBar2")
-PartName = NodePath("VBoxContainer/Label")
+PartName = NodePath("VBoxContainer/HBoxContainer2/Label")
+priceLabel = NodePath("VBoxContainer/HBoxContainer2/Label2")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2062676970]
 layout_mode = 1
@@ -36,10 +37,19 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer" unique_id=986300291]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=1219941556]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=986300291]
 layout_mode = 2
 text = "Part Name"
 horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=1812125845]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Repair Price : 1000"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=441713890]
 layout_mode = 2
